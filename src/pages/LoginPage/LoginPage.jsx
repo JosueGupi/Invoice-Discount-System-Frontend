@@ -1,14 +1,14 @@
 import React,{Fragment} from 'react'
 import {useForm} from 'react-hook-form';
 
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+//import axios from 'axios'
+//import { useNavigate } from 'react-router-dom';
 
 
 
 export function LoginPage () {
-    const {register,handleSubmit} = useForm(),
-    navigate = useNavigate()
+    const {register,handleSubmit} = useForm();
+    //navigate = useNavigate()
   
     
   
