@@ -11,7 +11,7 @@ export function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route exact path="/" element={<LoginPage />} />
+          <Route exact path="/login" element={<LoginPage />} />
         </Routes>
       </Router>
     </div>
