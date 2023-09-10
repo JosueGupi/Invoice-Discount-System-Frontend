@@ -32,7 +32,7 @@ export function LoginPage () {
           
           <body className = "login-body">
             <div className="login-box">
-              <img src="../../resources/logoO.jpg" className="avatar"/>
+              
               <h1>Inicio de sesión</h1>
               <form onSubmit={handleSubmit(onSubmit)}>
                
