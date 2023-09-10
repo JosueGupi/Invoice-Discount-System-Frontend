@@ -28,49 +28,55 @@ export function LoginPage() {
 
   return (
     <Fragment >
+      <div className='backgroundImage'>
+        <div className="container">
+          <div className='row'>
+            <div className='col-md-8 '>
 
-      <div className="backgroundImage">
-        <div style={{  top:40+'%', position: 'relative',transform: "translate(-50%, -50%)",left:50+"%" }}>
-          <h1 className="inversion-title" >Inversiones Ellens</h1>
-        </div>
-        <div style={{ top:10+'%',position: 'relative',transform: "translate(-50%, -50%)",left:110+"%" }}>
-          <div className="login-box">
-            <h1>LOGIN</h1>
-            <br />
-            <br />
-            <br />
+              <h1 className="inversion-title" >Inversiones </h1>
+              <h1 className="inversion-title2" >Ellens</h1>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <center>
+            </div>
+            <div className='col-md-4'>
 
-                <input className="form-input" type="text"
-                  placeholder="Correo"
-                  {...register('email', { required: true })}
-                />
-                <br />
+              <div className="login-box">
+                <h1>LOGIN</h1>
                 <br />
                 <br />
                 <br />
 
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <center>
 
-                <input className="form-input" type="password"
-                  placeholder="Contraseña"
-                  {...register('password', { required: true })}
-                />
-                <br />
-                <br />
-                <br />
-                <br />
-                <input className="form-button" type="submit" value="Iniciar sesión" />
+                    <input className="form-input" type="text"
+                      placeholder="Correo"
+                      {...register('email', { required: true })}
+                    />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
 
-                <label className="login-label" onClick={SendPassword}>Recuperar Contraseña</label>
-              </center>
-            </form>
+
+                    <input className="form-input" type="password"
+                      placeholder="Contraseña"
+                      {...register('password', { required: true })}
+                    />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <input className="form-button" type="submit" value="Iniciar sesión" />
+
+                    <label className="login-label" onClick={SendPassword}>Recuperar Contraseña</label>
+                  </center>
+                </form>
+              </div>
+            </div>
+
           </div>
         </div>
-
       </div>
-
     </Fragment>
   )
 }
