@@ -23,7 +23,7 @@ export function LoginPage() {
   }
 
   const SendPassword = () => {
-    console.log('Send Password');
+    navigate('/emailVerification');
   };
 
   return (
