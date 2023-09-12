@@ -1,17 +1,21 @@
 import React, { Fragment, useEffect,useState } from 'react'
 import { useForm } from 'react-hook-form';
 import './PasswordRecover.css';
-//import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
 export function MatrixVerification() {
+    
     const { register, handleSubmit } = useForm(),
+        {state} = useLocation(),
         navigate = useNavigate(),
         [cord1,setCord1] = useState(0),
         [cord2,setCord2] = useState(0),
-        [cord3,setCord3] = useState(0);
+        [cord3,setCord3] = useState(0),
+        [username,setUsername] = useState(),
+        [idUser,setIdUser] = useState();
         useEffect(() => {
             let xCords = ['A', 'B', 'C', 'D', 'E'],
                 yCords = [1, 2, 3, 4, 5];
@@ -22,23 +26,41 @@ export function MatrixVerification() {
             yCord2 = Math.floor(Math.random() * 5)
             xCord3 = Math.floor(Math.random() * 5)
             yCord3 = Math.floor(Math.random() * 5)
-            console.log(xCord1);
+            
             setCord1(xCords[xCord1]+''+yCords[yCord1]);
             setCord2(xCords[xCord2]+''+yCords[yCord2]);
             setCord3(xCords[xCord3]+''+yCords[yCord3]);
             
+            if (state == null){
+                navigate('/')
+            }else{
+                setUsername(state.user);
+                setIdUser(state.idUser);
+            }
+            
 
         },[]);
-    var username = "TEST"
+    
 
     const onSubmit = async (data) => {
         try {
-
-            console.log(data);
-            navigate('/newPassword');
+            data.cord1Showed = cord1;
+            data.cord2Showed = cord2;
+            data.cord3Showed = cord3;
+            data.idUser = idUser
+            console.log("DATA ",data)
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/evalMatrix',data);
+            console.log(response.data,"response")
+            if(response.data === 0){
+                navigate('/newPassword',{state:{user:username, idUser:idUser}});
+            }
+            else{
+                alert('Las claves son incorrectas, por favor vuelva a digitar los valores')
+            }
+            
 
         } catch (err) {
-            alert('Usuario invalido')
+            alert('Error del servidor')
         }
     }
 

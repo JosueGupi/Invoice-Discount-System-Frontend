@@ -1,27 +1,47 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import './PasswordRecover.css';
-//import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
 export function NewPassword() {
     const { register, handleSubmit } = useForm(),
-        navigate = useNavigate();
+        navigate = useNavigate(),
+        {state} = useLocation(),
+        [username,setUsername] = useState(),
+        [idUser,setIdUser] = useState();
 
-    var username = "TEST"
+    
 
     const onSubmit = async (data) => {
         try {
-
-            console.log(data);
-            navigate('/');
+            data.idUser = idUser;
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/changePassword',data);
+            if(response.data){
+                alert('Contraseña cambiada correctamente');
+                navigate('/');
+            }else{
+                alert('Error del servidor');
+            }
+            
 
         } catch (err) {
-            alert('Usuario invalido')
+            alert('Error del servidor');
         }
     }
+    useEffect(() => {
+        
+        if (state == null){
+            navigate('/')
+        }else{
+            setUsername(state.user);
+            setIdUser(state.idUser);
+        }
+        
+
+    },[]);
 
 
 

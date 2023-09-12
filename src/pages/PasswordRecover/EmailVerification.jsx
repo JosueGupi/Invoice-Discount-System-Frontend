@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { useForm } from 'react-hook-form';
 import './PasswordRecover.css';
-//import axios from 'axios'
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
 
@@ -14,12 +14,22 @@ export function EmailVerification() {
 
     const onSubmit = async (data) => {
         try {
+            
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/evalEmail',data);
+            
+            const name = response.data[0].Name,
+                idUser = response.data[0].idUser;
+                
+            if (name !== undefined) {
+                 navigate('/matrixVerification',{state:{user:name, idUser:idUser}});
+            }else{
+                alert('Este correo no pertenece a ninguna cuenta dentro del sistema.')
+            }
 
-            console.log(data);
-            navigate('/matrixVerification');
+           
 
         } catch (err) {
-            alert('Usuario invalido')
+            alert('Este correo no pertenece a ninguna cuenta dentro del sistema.')
         }
     }
 
