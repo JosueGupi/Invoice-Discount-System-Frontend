@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { useForm } from 'react-hook-form';
 
-//import axios from 'axios'
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
 
@@ -14,9 +14,17 @@ export function LoginPage() {
 
   const onSubmit = async (data) => {
     try {
-
-      console.log(data);
-
+      const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/login',data);
+      const name = response.data[0].Name,
+            idUser = response.data[0].idUser;
+      
+      if (name !== undefined) {
+            localStorage.setItem('name',JSON.stringify(name));
+            localStorage.setItem('menuName',JSON.stringify('Menu'));
+            navigate('/mainMenu',{state:{user:name, idUser:idUser}});
+      }else{
+          alert('El usuario o contraseña son incorrectos')
+      }
     } catch (err) {
       alert('Usuario invalido')
     }
@@ -48,7 +56,7 @@ export function LoginPage() {
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <center>
 
-                    <input className="form-input" type="text"
+                    <input className="form-input" type="email"
                       placeholder="Correo"
                       {...register('email', { required: true })}
                     />

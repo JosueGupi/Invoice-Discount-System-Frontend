@@ -1,0 +1,24 @@
+
+.form-button-menu {
+  
+    display: flex;
+    width: 70%;
+    height: 60px;
+    border-radius: 50px;
+  
+    font-size: 3vh;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  
+    justify-content: center;
+    align-items: center;
+  
+    color: #FFF;
+    background: #232323;
+  
+  }
+.container{
+    
+    padding-top: 15%;
+}

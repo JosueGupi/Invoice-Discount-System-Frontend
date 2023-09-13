@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect,useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import './PasswordRecover.css';
 import axios from 'axios'
@@ -48,9 +48,9 @@ export function MatrixVerification() {
             data.cord2Showed = cord2;
             data.cord3Showed = cord3;
             data.idUser = idUser
-            console.log("DATA ",data)
+            
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/evalMatrix',data);
-            console.log(response.data,"response")
+            
             if(response.data === 0){
                 navigate('/newPassword',{state:{user:username, idUser:idUser}});
             }
