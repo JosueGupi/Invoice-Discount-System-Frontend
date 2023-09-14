@@ -12,6 +12,7 @@ import { MatrixVerification } from './pages/PasswordRecover/MatrixVerification';
 import { NewPassword } from './pages/PasswordRecover/NewPassword';
 import { MainMenu } from './pages/Menu/MainMenu';
 import { DataMenu } from './pages/Menu/DataMenu';
+import { ClientesMenu } from './pages/Menu/ClientesMenu';
 
 import Nav from './molecules/Nav';
 export function App() {
@@ -21,14 +22,15 @@ export function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<LoginPage />} />
-          
+
           <Route exact path="/emailVerification" element={<EmailVerification />} />
           <Route exact path="/matrixVerification" element={<MatrixVerification />} />
           <Route exact path="/newPassword" element={<NewPassword />} />
 
-          <Route path="" element={<Nav/>}>
-            <Route exact path="/mainMenu" element={<MainMenu/>}/>
-            <Route exact path="/dataMenu" element={<DataMenu/>}/>
+          <Route path="" element={<Nav />}>
+            <Route exact path="/mainMenu" element={<MainMenu />} />
+            <Route exact path="/dataMenu" element={<DataMenu />} />
+            <Route exact path="/clientesMenu" element={<ClientesMenu />} />
           </Route>
 
         </Routes>

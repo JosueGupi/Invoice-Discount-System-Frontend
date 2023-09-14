@@ -1,24 +1,66 @@
-
 .form-button-menu {
-  
-    display: flex;
-    width: 70%;
-    height: 60px;
-    border-radius: 50px;
-  
-    font-size: 3vh;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-  
-    justify-content: center;
-    align-items: center;
-  
-    color: #FFF;
-    background: #232323;
-  
-  }
-.container{
-    
-    padding-top: 15%;
+
+  display: flex;
+  width: 70%;
+  height: 60px;
+  border-radius: 50px;
+
+  font-size: 3vh;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  justify-content: center;
+  align-items: center;
+
+  color: #FFF;
+  background: #232323;
+
+}
+
+.container {
+
+  padding-top: 15%;
+}
+
+.person-box {
+  width: 70%;
+  height: 20rem;
+  border-radius: 50px;
+  padding: 1rem;
+
+  font-size: 2vh;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  justify-content: center;
+  align-items: center;
+
+  background: #232323;
+  color: #FFF;
+}
+
+.person-box p {
+  color: #cfc9c9;
+}
+
+.person-box button {
+  display: flex;
+  width: 20rem;
+  height: 3rem;
+  border-radius: 50px;
+  margin-top: 1rem;
+
+  font-size: 1.5vh;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  justify-content: center;
+  align-items: center;
+
+  color: #FFF;
+  background: #7d7d7d;
+
 }
