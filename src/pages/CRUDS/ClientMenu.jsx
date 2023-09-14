@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react'
 
-import './Menu.css';
+import './Cruds.css';
 
 import { useNavigate } from 'react-router-dom';
 
 
 
-export function ClientesMenu() {
+export function ClientMenu() {
     const navigate = useNavigate();
 
 
