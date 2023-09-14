@@ -26,18 +26,23 @@ export function DataMenu() {
 
                         <center>
                             <div className="col-md-5">
-                                <input className="form-button-menu" type="button" value="CRUD 1"  />
+                                <input className="form-button-menu" type="button" value="Manejar Clientes"  />
                                 <br />
                                 <br />
                                 <br />
                                 <br />
 
-                                <input className="form-button-menu" type="button" value="CRUD 2" />
+                                <input className="form-button-menu" type="button" value="Modificar Códigos" />
                                 <br />
                                 <br />
                                 <br />
                                 <br />
-                                <input className="form-button-menu" type="button" value="CRUD 3" />
+                                <input className="form-button-menu" type="button" value="Modificar Cuentas" />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <input className="form-button-menu" type="button" value="Manejar Usuarios" />
                                 <br />
                                 <br />
                                 <br />

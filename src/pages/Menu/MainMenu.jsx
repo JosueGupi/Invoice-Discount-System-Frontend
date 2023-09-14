@@ -20,7 +20,7 @@ export function MainMenu() {
     return (
         <Fragment >
             <div className='backgroundColor'>
-                <div className='container'>
+                <div className='container container2'>
                     <div className='row'>
 
 

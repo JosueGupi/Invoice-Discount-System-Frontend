@@ -15,6 +15,7 @@ export default function Nav() {
 
         useEffect(() => {
             console.log('SE EJECUTA');
+            console.log(location.pathname);
             setName((localStorage.getItem('name')).replace(/"/g, ''));
             setMenuName((localStorage.getItem('menuName')).replace(/"/g, ''));
             
