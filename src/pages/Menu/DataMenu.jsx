@@ -10,7 +10,12 @@ export function DataMenu() {
     const navigate = useNavigate();
 
 
-    
+    const goToClientesMenu = () => {
+        localStorage.setItem('name', JSON.stringify('Lola'));
+        localStorage.setItem('menuName', JSON.stringify('Clientes Menu'));
+        navigate('/clientesMenu');
+    };
+
 
 
 
@@ -47,7 +52,6 @@ export function DataMenu() {
                                 <br />
                                 <br />
                                 <br />
-
                             </div>
                         </center>
 
