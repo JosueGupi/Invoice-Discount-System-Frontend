@@ -15,6 +15,10 @@ import { DataMenu } from './pages/Menu/DataMenu';
 import { ClientMenu } from './pages/CRUDS/ClientMenu';
 import { UserMenu } from './pages/CRUDS/UserMenu';
 import { UserForm } from './pages/CRUDS/UserForm';
+import { AccountMenu } from './pages/CRUDS/AccountMenu';
+import { AccountForm } from './pages/CRUDS/AccountForm';
+import { BankMenu } from './pages/CRUDS/BankMenu';
+import { BankForm } from './pages/CRUDS/BankForm';
 
 import Nav from './molecules/Nav';
 export function App() {
@@ -35,6 +39,10 @@ export function App() {
             <Route exact path="/clientMenu" element={<ClientMenu />} />
             <Route exact path="/userMenu" element={<UserMenu />} />
             <Route exact path="/userForm" element={<UserForm />} />
+            <Route exact path="/accountMenu" element={<AccountMenu />} />
+            <Route exact path="/accountForm" element={<AccountForm />} />
+            <Route exact path="/bankMenu" element={<BankMenu />} />
+            <Route exact path="/bankForm" element={<BankForm />} />
 
           </Route>
 

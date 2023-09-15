@@ -15,12 +15,16 @@ export function DataMenu() {
         localStorage.setItem('menuName', JSON.stringify('Clientes Menu'));
         navigate('/clientesMenu');
     },
-     goToUsersMenu = () => {
+    goToUsersMenu = () => {
         
-        localStorage.setItem('menuName', JSON.stringify('Clientes Menu'));
+        localStorage.setItem('menuName', JSON.stringify('Usuarios Menú'));
         navigate('/userMenu');
+    },
+    goToAccountsMenu = () => {
+        
+        localStorage.setItem('menuName', JSON.stringify('Cuentas Menú'));
+        navigate('/accountMenu');
     };
-
 
 
 
@@ -47,7 +51,7 @@ export function DataMenu() {
                                 <br />
                                 <br />
                                 <br />
-                                <input className="form-button-menu" type="button" value="Modificar Cuentas" />
+                                <input className="form-button-menu" type="button" value="Modificar Cuentas" onClick={goToAccountsMenu} />
                                 <br />
                                 <br />
                                 <br />
