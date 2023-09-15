@@ -13,65 +13,82 @@ export function UserMenu() {
 
     const [dataR, setDataR] = useState([]),
         [search, setSearch] = useState(""),
+        [refresh, setRefresh] = useState(0),
         searcher = (e) => {
             setSearch(e.target.value)
         }
-        , results = !search ? dataR: dataR.filter((customer) => customer.Name.toLowerCase().includes(search.toLocaleLowerCase()));
+        , results = !search ? dataR : dataR.filter((customer) => customer.Name.toLowerCase().includes(search.toLocaleLowerCase()));
 
+    const handleDelete = async (id) => {
+        try {
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/deleteUser', { idUser: id });
+            setRefresh(refresh+1);
+        } catch (err) {
+            console.log(err)
+        }
+
+    };
+    const goToDataMenu = () => {
+        navigate("/dataMenu");
+
+    };
+
+    const handleModify = (id, username, email) => {
+        // Implementar la lógica de modificación aquí
+        navigate("/userForm", { state: { mode: 'edit', id: id, username: username, email: email } });
+    };
+
+    const handleCreate = () => {
+        // Implementar la lógica de creación aquí
+        navigate("/userForm", { state: { mode: 'create' } });
+    };
     useEffect(() => {
         axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/getUsers')
             .then((response) => setDataR(response.data))
-            
-    }, [])
+
+    }, [refresh]);
 
 
 
-    const handleDelete = (id) => {
-        // Implementar la lógica de delete aquí
-        //const updatedPeople = people.filter((person) => person.id !== id);
-        //setPeople(updatedPeople);
-        alert(`Eliminar cliente con ID ${id}`);
-    };
 
-    const handleModify = (id) => {
-        // Implementar la lógica de modificación aquí
-        alert(`Modificar cliente con ID ${id}`);
-    };
 
     return (
         <Fragment >
             <div className='backgroundColor'>
-                <div className='container'>
+                <div className='container-cards'>
                     <div className='row'>
-                        <input type="text" value={search} onChange={searcher} />
+                        <div>
+
+                            <input className='search-space ' placeholder='Buscar por nombre' type="text" value={search} onChange={searcher} />
+                            <button className='back-button' onClick={goToDataMenu}>Menú</button>
+                            <br />
+                            <br />
+                            <button className='create-button' onClick={handleCreate}>Nuevo usuario</button>
+
+                        </div>
                     </div>
-                    <div className='row'>
-
-                        <br />
-                        <br />
-                        <br />
-
-                        <center>
-                            <div className="col-md-5">
-                                {results.map((user)=> <Card title={user.Name} caption={user.Email} description={user.Password} 
-                                handleEdit={()=>{handleModify(user.idUser)}} handleDelete={()=>{handleDelete(user.idUser)}}/>
-
-)}
-
-                                
-
-                                <br />
-                                <br />
-                                <br />
-                                <br />
+                    <br />
+                    <br />
+                    <br />
+                    <div className='container-fluid'>
 
 
-                            </div>
-                        </center>
+                        <div className='row'>
+
+
+
+                            {results.map((user) => <Card title={user.Name} caption={user.Email} description={user.Password}
+                                handleEdit={() => { handleModify(user.idUser, user.Name, user.Email) }} handleDelete={() => { handleDelete(user.idUser) }} />
+
+                            )}
 
 
 
 
+
+
+
+                        </div>
                     </div>
                 </div>
             </div>

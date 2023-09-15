@@ -11,9 +11,14 @@ export function DataMenu() {
 
 
     const goToClientesMenu = () => {
-        localStorage.setItem('name', JSON.stringify('Lola'));
+        
         localStorage.setItem('menuName', JSON.stringify('Clientes Menu'));
         navigate('/clientesMenu');
+    },
+     goToUsersMenu = () => {
+        
+        localStorage.setItem('menuName', JSON.stringify('Clientes Menu'));
+        navigate('/userMenu');
     };
 
 
@@ -47,7 +52,7 @@ export function DataMenu() {
                                 <br />
                                 <br />
                                 <br />
-                                <input className="form-button-menu" type="button" value="Manejar Usuarios" />
+                                <input className="form-button-menu" type="button" value="Manejar Usuarios" onClick={goToUsersMenu}/>
                                 <br />
                                 <br />
                                 <br />

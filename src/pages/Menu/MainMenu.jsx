@@ -11,7 +11,7 @@ export function MainMenu() {
 
 
     const goToDataMenu = () => {
-        localStorage.setItem('name',JSON.stringify('Lola'));
+        
             localStorage.setItem('menuName',JSON.stringify('Data Menu'));
         navigate('/dataMenu');
       };

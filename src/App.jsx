@@ -14,6 +14,7 @@ import { MainMenu } from './pages/Menu/MainMenu';
 import { DataMenu } from './pages/Menu/DataMenu';
 import { ClientMenu } from './pages/CRUDS/ClientMenu';
 import { UserMenu } from './pages/CRUDS/UserMenu';
+import { UserForm } from './pages/CRUDS/UserForm';
 
 import Nav from './molecules/Nav';
 export function App() {
@@ -33,6 +34,8 @@ export function App() {
             <Route exact path="/dataMenu" element={<DataMenu />} />
             <Route exact path="/clientMenu" element={<ClientMenu />} />
             <Route exact path="/userMenu" element={<UserMenu />} />
+            <Route exact path="/userForm" element={<UserForm />} />
+
           </Route>
 
         </Routes>

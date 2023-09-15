@@ -1,6 +1,5 @@
-
-.item-box {
-    width: 70%;
+.tarjeta {
+   
     height: 20rem;
     border-radius: 50px;
     padding: 1rem;
@@ -15,15 +14,16 @@
   
     background: #232323;
     color: #FFF;
+    margin-top: 2%;
   }
   
-  .item-box p {
+  .tarjeta p {
     color: #cfc9c9;
   }
   
-  .item-box button {
+  .tarjeta button {
     display: flex;
-    width: 20rem;
+    width: 70%;
     height: 3rem;
     border-radius: 50px;
     margin-top: 1rem;
@@ -39,4 +39,7 @@
     color: #FFF;
     background: #7d7d7d;
   
+  }
+  .container-cards{
+    margin-top: 2%;
   }
