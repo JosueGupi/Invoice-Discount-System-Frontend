@@ -13,6 +13,7 @@ import { NewPassword } from './pages/PasswordRecover/NewPassword';
 import { MainMenu } from './pages/Menu/MainMenu';
 import { DataMenu } from './pages/Menu/DataMenu';
 import { ClientMenu } from './pages/CRUDS/ClientMenu';
+import { ClientForm } from './pages/CRUDS/ClientForm';
 import { UserMenu } from './pages/CRUDS/UserMenu';
 import { UserForm } from './pages/CRUDS/UserForm';
 import { AccountMenu } from './pages/CRUDS/AccountMenu';
@@ -37,6 +38,7 @@ export function App() {
             <Route exact path="/mainMenu" element={<MainMenu />} />
             <Route exact path="/dataMenu" element={<DataMenu />} />
             <Route exact path="/clientMenu" element={<ClientMenu />} />
+            <Route exact path="/clientForm" element={<ClientForm />} />
             <Route exact path="/userMenu" element={<UserMenu />} />
             <Route exact path="/userForm" element={<UserForm />} />
             <Route exact path="/accountMenu" element={<AccountMenu />} />

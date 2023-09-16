@@ -10,10 +10,10 @@ export function DataMenu() {
     const navigate = useNavigate();
 
 
-    const goToClientesMenu = () => {
+    const goToClientMenu = () => {
         
         localStorage.setItem('menuName', JSON.stringify('Clientes Menu'));
-        navigate('/clientesMenu');
+        navigate('/clientMenu');
     },
     goToUsersMenu = () => {
         
@@ -40,7 +40,7 @@ export function DataMenu() {
 
                         <center>
                             <div className="col-md-5">
-                                <input className="form-button-menu" type="button" value="Manejar Clientes"  />
+                                <input className="form-button-menu" type="button" value="Manejar Clientes"  onClick={goToClientMenu}/>
                                 <br />
                                 <br />
                                 <br />

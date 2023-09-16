@@ -1,64 +1,94 @@
-import React, { Fragment } from 'react'
-
+import React, { Fragment, useEffect, useState } from 'react'
+import Card from '../../atomics/Card';
 import './Cruds.css';
-
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
 export function ClientMenu() {
     const navigate = useNavigate();
 
+    const { state } = useLocation()
 
+    const [dataR, setDataR] = useState([]),
+        [search, setSearch] = useState(""),
+        [refresh, setRefresh] = useState(0),
+        searcher = (e) => {
+            setSearch(e.target.value)
+        }
+        , results = !search ? dataR : dataR.filter((customer) => customer.Name.toLowerCase().includes(search.toLocaleLowerCase()));
 
+    const handleDelete = async (id) => {
+        try {
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/deleteClient', { idClient: id });
+            setRefresh(refresh+1);
+        } catch (err) {
+            console.log(err)
+        }
 
+    };
+    const goToDataMenu = () => {
+        navigate("/dataMenu");
 
-    const handleDelete = (id) => {
-        // Implementar la lógica de delete aquí
-        //const updatedPeople = people.filter((person) => person.id !== id);
-        //setPeople(updatedPeople);
-        alert(`Eliminar cliente con ID ${id}`);
     };
 
-    const handleModify = (id) => {
+    const handleModify = (id, username, email, idenCard) => {
         // Implementar la lógica de modificación aquí
-        alert(`Modificar cliente con ID ${id}`);
+        navigate("/clientForm", { state: { mode: 'edit', id: id, username: username, email: email, idenCard: idenCard} });
     };
+
+    const handleCreate = () => {
+        // Implementar la lógica de creación aquí
+        navigate("/clientForm", { state: { mode: 'create' } });
+    };
+    useEffect(() => {
+        axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
+            .then((response) => setDataR(response.data))
+
+    }, [refresh]);
+
+
+
+
 
     return (
         <Fragment >
             <div className='backgroundColor'>
-                <div className='container'>
+                <div className='container-cards'>
                     <div className='row'>
+                        <div>
 
-                        <br />
-                        <br />
-                        <br />
+                            <input className='search-space ' placeholder='Buscar por nombre' type="text" value={search} onChange={searcher} />
+                            <button className='back-button' onClick={goToDataMenu}>Menú</button>
+                            <br />
+                            <br />
+                            <button className='create-button' onClick={handleCreate}>Nuevo cliente</button>
 
-                        <center>
-                            <div className="col-md-5">
-                                {/*Agregar despues un map para que itere por todos los clientes*/}
-
-                                <div key={1} className="person-box">
-                                    <h2>Nombre</h2>
-                                    <p>Cédula</p>
-                                    <p>Correo</p>
-                                    <button onClick={() => handleModify(1)}>Modificar</button>
-                                    <button onClick={() => handleDelete(1)}>Eliminar</button>
-                                </div>
-
-                                <br />
-                                <br />
-                                <br />
-                                <br />
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                    <div className='container-fluid'>
 
 
-                            </div>
-                        </center>
+                        <div className='row'>
 
 
 
+                            {results.map((client) => <Card title={client.Name} caption={client.Email} description={client.IdentificationCard}
+                                handleEdit={() => { handleModify(client.idUser, client.Name, client.Email, client.IdentificationCard) }} handleDelete={() => { handleDelete(client.idClient) }} />
 
+                            )}
+
+
+
+
+
+
+
+                        </div>
                     </div>
                 </div>
             </div>
