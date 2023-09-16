@@ -30,6 +30,7 @@ export function ClientForm() {
                 alert('Se actualizo el cliente correctamente');
                 navigate('/clientMenu');
             }else{
+                console.log(data)
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/createClient',data);
                 alert('Se creo el cliente correctamente');
                 navigate('/clientMenu');

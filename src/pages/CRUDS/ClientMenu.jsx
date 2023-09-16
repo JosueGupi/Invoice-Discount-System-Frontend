@@ -78,7 +78,7 @@ export function ClientMenu() {
 
 
                             {results.map((client) => <Card title={client.Name} caption={client.Email} description={client.IdentificationCard}
-                                handleEdit={() => { handleModify(client.idUser, client.Name, client.Email, client.IdentificationCard) }} handleDelete={() => { handleDelete(client.idClient) }} />
+                                handleEdit={() => { handleModify(client.idClient, client.Name, client.Email, client.IdentificationCard) }} handleDelete={() => { handleDelete(client.idClient) }} />
 
                             )}
 
