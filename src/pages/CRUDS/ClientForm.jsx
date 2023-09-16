@@ -16,7 +16,7 @@ export function ClientForm() {
         [name,setName] = useState(""),
         [email,setEmail] = useState(""),
         [idenCard,setIdenCard] = useState(""),
-        [idClient,setIdUser] = useState(0);
+        [idClient,setIdClient] = useState(0);
 
 
 
@@ -30,7 +30,7 @@ export function ClientForm() {
                 alert('Se actualizo el cliente correctamente');
                 navigate('/clientMenu');
             }else{
-                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/updateClient',data);
+                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/createClient',data);
                 alert('Se creo el cliente correctamente');
                 navigate('/clientMenu');
             }
@@ -39,7 +39,7 @@ export function ClientForm() {
         }
     }
     const goToClientMenu = () => {
-        navigate("/ClientMenu");
+        navigate("/clientMenu");
 
     };
     useEffect(() => {
@@ -52,7 +52,7 @@ export function ClientForm() {
                 setName(state.username);
                 setEmail(state.email)
                 setIdenCard(state.idenCard)
-                setIdUser(state.id)
+                setIdClient(state.id)
                 
             }
         }
