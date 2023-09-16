@@ -85,7 +85,7 @@
   width: 20%;
   right: 3%;
    position: absolute;
-   text-indent: 5%;
+   text-indent: 9%;
   
 }
 .back-button{
@@ -107,6 +107,12 @@
   font-weight: bold;
 }
 
+
+.input_symbol i{
+  position: absolute;
+  right: 21.4%;
+  top: 16.7%;
+}
 
 
 

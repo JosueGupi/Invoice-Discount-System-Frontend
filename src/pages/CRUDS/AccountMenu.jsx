@@ -61,9 +61,10 @@ export function AccountMenu() {
             <div className='backgroundColor'>
                 <div className='container-cards'>
                     <div className='row'>
-                        <div>
+                        <div className='input_symbol'>
 
                             <input className='search-space ' placeholder='Buscar por dueño' type="text" value={search} onChange={searcher} />
+                            <i class="fa-solid fa-magnifying-glass"></i>
                             <button className='back-button' onClick={goToDataMenu}>Menú</button>
                             <br />
                             <br />
