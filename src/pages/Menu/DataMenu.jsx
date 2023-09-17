@@ -1,30 +1,38 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 
 import './Menu.css';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
 export function DataMenu() {
     const navigate = useNavigate();
-
+    const { state } = useLocation()
 
     const goToClientMenu = () => {
         
-        localStorage.setItem('menuName', JSON.stringify('Clientes Menu'));
-        navigate('/clientMenu');
+        navigate('/clientMenu',{state});
     },
     goToUsersMenu = () => {
         
-        localStorage.setItem('menuName', JSON.stringify('Usuarios Menú'));
-        navigate('/userMenu');
+        navigate('/userMenu',{state});
     },
     goToAccountsMenu = () => {
         
-        localStorage.setItem('menuName', JSON.stringify('Cuentas Menú'));
-        navigate('/accountMenu');
+        navigate('/accountMenu',{state});
     };
+    useEffect(() => {
+            
+        
+        if (state == null){
+            navigate('/')
+        }else{
+            
+        }
+        
+
+    },[]);
 
 
 

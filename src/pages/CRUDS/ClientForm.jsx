@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import Card from '../../atomics/Card';
+
 import './Cruds.css';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -28,19 +28,19 @@ export function ClientForm() {
                 console.log(data)
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/updateClient',data);
                 alert('Se actualizo el cliente correctamente');
-                navigate('/clientMenu');
+                navigate('/clientMenu',{state});
             }else{
                 console.log(data)
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/createClient',data);
                 alert('Se creo el cliente correctamente');
-                navigate('/clientMenu');
+                navigate('/clientMenu',{state});
             }
         } catch (err) {
             alert(err, 'Error');
         }
     }
     const goToClientMenu = () => {
-        navigate("/clientMenu");
+        navigate("/clientMenu",{state});
 
     };
     useEffect(() => {

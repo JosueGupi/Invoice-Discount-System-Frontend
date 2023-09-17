@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import Card from '../../atomics/Card';
+
 import './Cruds.css';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -27,18 +27,18 @@ export function UserForm() {
                 console.log(data)
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/updateUser',data);
                 alert('Se actualizo el usuario correctamente');
-                navigate('/userMenu');
+                navigate('/userMenu',{state});
             }else{
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/createUser',data);
                 alert('Se creo el usuario correctamente');
-                navigate('/userMenu');
+                navigate('/userMenu',{state});
             }
         } catch (err) {
             alert(err, 'Error');
         }
     }
     const goToUserMenu = () => {
-        navigate("/userMenu");
+        navigate("/userMenu",{state});
 
     };
     useEffect(() => {

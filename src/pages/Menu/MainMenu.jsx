@@ -1,21 +1,30 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 
 import './Menu.css';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
 export function MainMenu() {
     const navigate = useNavigate();
-
+    const { state } = useLocation()
 
     const goToDataMenu = () => {
         
-            localStorage.setItem('menuName',JSON.stringify('Data Menu'));
-        navigate('/dataMenu');
+        localStorage.setItem('menuName',JSON.stringify('Data Menu'));
+        console.log('antes de enviar',state)
+        navigate('/dataMenu',{state});
       };
+      useEffect(() => {
+            
+         
+        if (state == null){
+            navigate('/')
+        }
+        
 
+    },[]);
 
     return (
         <Fragment >

@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import Card from '../../atomics/Card';
+
 import './Cruds.css';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -26,18 +26,18 @@ export function BankForm() {
                 console.log(data)
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/banks/updateBank',data);
                 alert('Se actualizo el banco correctamente');
-                navigate('/bankMenu');
+                navigate('/bankMenu',{state});
             }else{
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/banks/createBank',data);
                 alert('Se creo el banco correctamente');
-                navigate('/bankMenu');
+                navigate('/bankMenu',{state});
             }
         } catch (err) {
             alert(err, 'Error');
         }
     }
     const goToBankMenu = () => {
-        navigate("/bankMenu");
+        navigate("/bankMenu",{state});
 
     };
     useEffect(() => {

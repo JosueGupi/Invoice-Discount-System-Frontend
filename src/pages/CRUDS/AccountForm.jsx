@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import Card from '../../atomics/Card';
+
 import './Cruds.css';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -28,21 +28,21 @@ export function AccountForm() {
             console.log(data);
             if (mode === "edit") {
                 data.idAccount = idAccount;
-                console.log(data)
+                
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/accounts/updateAccount', data);
                 alert('Se actualizo la cuenta correctamente');
-                navigate('/accountMenu');
+                navigate('/accountMenu',{state});
             } else {
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/accounts/createAccount', data);
                 alert('Se creo la cuenta correctamente');
-                navigate('/accountMenu');
+                navigate('/accountMenu',{state});
             }
         } catch (err) {
             alert(err, 'Error');
         }
     }
     const goToAccountMenu = () => {
-        navigate("/accountMenu");
+        navigate("/accountMenu",{state});
 
     };
     useEffect(() => {

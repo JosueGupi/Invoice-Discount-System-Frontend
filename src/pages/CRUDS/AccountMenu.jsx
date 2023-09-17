@@ -22,33 +22,44 @@ export function AccountMenu() {
     const handleDelete = async (id) => {
         try {
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/accounts/deleteAccount', { idAccount: id });
-            setRefresh(refresh+1);
+            setRefresh(refresh + 1);
         } catch (err) {
             console.log(err)
         }
 
     };
     const goToDataMenu = () => {
-        navigate("/dataMenu");
+        navigate("/dataMenu",{state});
 
     };
 
     const handleModify = (id, owner, number, bank) => {
         // Implementar la lógica de modificación aquí
-        navigate("/accountForm", { state: { mode: 'edit', id: id, owner: owner, number: number, bank:bank} });
+        navigate("/accountForm", { state: { mode: 'edit', id: id, owner: owner, number: number, bank: bank ,user:state.name, idUser:state.idUser, password:state.password} });
     };
 
     const handleCreate = () => {
         // Implementar la lógica de creación aquí
-        navigate("/accountForm", { state: { mode: 'create' } });
+        navigate("/accountForm", { state: { mode: 'create' ,user:state.name, idUser:state.idUser, password:state.password} });
     };
     const handleBanks = () => {
         // Implementar la lógica de creación aquí
-        navigate("/bankMenu", { state: { mode: 'create' } });
+        navigate("/bankMenu", { state: { mode: 'create',user:state.name, idUser:state.idUser, password:state.password } });
     };
     useEffect(() => {
-        axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/accounts/getAccounts')
-            .then((response) => setDataR(response.data))
+
+
+
+        if (state == null) {
+            navigate('/')
+        }
+        else {
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/accounts/getAccounts')
+                .then((response) => setDataR(response.data))
+        }
+
+
+
 
     }, [refresh]);
 

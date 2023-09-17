@@ -22,31 +22,35 @@ export function BankMenu() {
     const handleDelete = async (id) => {
         try {
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/banks/deleteBank', { idBank: id });
-            setRefresh(refresh+1);
+            setRefresh(refresh + 1);
         } catch (err) {
             console.log(err)
         }
 
     };
     const goToAccountMenu = () => {
-        navigate("/accountMenu");
+        navigate("/accountMenu",{state});
 
     };
 
     const handleModify = (id, bank) => {
         // Implementar la lógica de modificación aquí
-        navigate("/bankForm", { state: { mode: 'edit', id: id, bank:bank} });
+        navigate("/bankForm", { state: { mode: 'edit', id: id, bank: bank,user:state.name, idUser:state.idUser, password:state.password } });
     };
 
     const handleCreate = () => {
         // Implementar la lógica de creación aquí
-        navigate("/bankForm", { state: { mode: 'create' } });
+        navigate("/bankForm", { state: { mode: 'create',user:state.name, idUser:state.idUser, password:state.password } });
     };
-    
-    useEffect(() => {
-        axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/banks/getBanks')
-            .then((response) => setDataR(response.data))
 
+    useEffect(() => {
+        if (state == null) {
+            navigate('/')
+        }
+        else {
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/banks/getBanks')
+                .then((response) => setDataR(response.data))
+        }
     }, [refresh]);
 
 
@@ -66,7 +70,7 @@ export function BankMenu() {
                             <br />
                             <br />
                             <button className='create-button' onClick={handleCreate}>Nuevo banco</button>
-                            
+
 
                         </div>
                     </div>

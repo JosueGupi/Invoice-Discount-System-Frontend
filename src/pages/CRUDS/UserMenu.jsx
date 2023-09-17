@@ -22,30 +22,34 @@ export function UserMenu() {
     const handleDelete = async (id) => {
         try {
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/deleteUser', { idUser: id });
-            setRefresh(refresh+1);
+            setRefresh(refresh + 1);
         } catch (err) {
             console.log(err)
         }
 
     };
     const goToDataMenu = () => {
-        navigate("/dataMenu");
+        navigate("/dataMenu", {state});
 
     };
 
     const handleModify = (id, username, email) => {
         // Implementar la lógica de modificación aquí
-        navigate("/userForm", { state: { mode: 'edit', id: id, username: username, email: email } });
+        navigate("/userForm", { state: { mode: 'edit', id: id, username: username, email: email,user:state.name, idUser:state.idUser, password:state.password } });
     };
 
     const handleCreate = () => {
         // Implementar la lógica de creación aquí
-        navigate("/userForm", { state: { mode: 'create' } });
+        navigate("/userForm", { state: { mode: 'create',user:state.name, idUser:state.idUser, password:state.password } });
     };
     useEffect(() => {
-        axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/getUsers')
-            .then((response) => setDataR(response.data))
-
+        if (state == null) {
+            navigate('/')
+        }
+        else {
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/getUsers')
+                .then((response) => setDataR(response.data))
+        }
     }, [refresh]);
 
 
@@ -59,9 +63,9 @@ export function UserMenu() {
                     <div className='row'>
                         <div className='input_symbol'>
 
-                            
+
                             <input className='search-space' placeholder='Buscar por nombre' type="text" value={search} onChange={searcher} />
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <i className="fa-solid fa-magnifying-glass"></i>
                             <button className='back-button' onClick={goToDataMenu}>Menú</button>
                             <br />
                             <br />
@@ -83,11 +87,6 @@ export function UserMenu() {
                                 handleEdit={() => { handleModify(user.idUser, user.Name, user.Email) }} handleDelete={() => { handleDelete(user.idUser) }} />
 
                             )}
-
-
-
-
-
 
 
                         </div>

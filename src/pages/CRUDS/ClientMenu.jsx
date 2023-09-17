@@ -22,30 +22,34 @@ export function ClientMenu() {
     const handleDelete = async (id) => {
         try {
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/deleteClient', { idClient: id });
-            setRefresh(refresh+1);
+            setRefresh(refresh + 1);
         } catch (err) {
             console.log(err)
         }
 
     };
     const goToDataMenu = () => {
-        navigate("/dataMenu");
+        navigate("/dataMenu",{state});
 
     };
 
     const handleModify = (id, username, email, idenCard) => {
         // Implementar la lógica de modificación aquí
-        navigate("/clientForm", { state: { mode: 'edit', id: id, username: username, email: email, idenCard: idenCard} });
+        navigate("/clientForm", { state: { mode: 'edit', id: id, username: username, email: email, idenCard: idenCard,user:state.name, idUser:state.idUser, password:state.password } });
     };
 
     const handleCreate = () => {
         // Implementar la lógica de creación aquí
-        navigate("/clientForm", { state: { mode: 'create' } });
+        navigate("/clientForm", { state: { mode: 'create',user:state.name, idUser:state.idUser, password:state.password } });
     };
     useEffect(() => {
-        axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
-            .then((response) => setDataR(response.data))
-
+        if (state == null) {
+            navigate('/')
+        }
+        else {
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
+                .then((response) => setDataR(response.data))
+        }
     }, [refresh]);
 
 
