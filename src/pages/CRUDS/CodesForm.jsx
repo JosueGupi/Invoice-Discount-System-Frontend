@@ -28,14 +28,12 @@ export function CodesForm() {
                 data.idAccountingCodes = idAccountingCodes;
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/updateCode', data);
                 alert('Se actualizo el código correctamente');
-                console.log(response)
-                console.log("====================================");
                 navigate('/codesMenu', { state });
             } else {
                 console.log(data)
-                //const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/createClient', data);
-                alert('Se creo el cliente correctamente');
-                //navigate('/clientMenu', { state });
+                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/createCode', data);
+                alert('Se creo el código correctamente');
+                navigate('/codesMenu', { state });
             }
         } catch (err) {
             alert(err, 'Error');

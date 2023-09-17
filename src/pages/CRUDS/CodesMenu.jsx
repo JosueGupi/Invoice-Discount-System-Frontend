@@ -33,7 +33,7 @@ export function CodesMenu() {
     };
 
     const handleCreate = () => {
-        //navigate("/CodesForm", { state: { mode: 'create', user: state.name, idUser: state.idUser, password: state.password } });
+        navigate("/CodesForm", { state: { mode: 'create', user: state.name, idUser: state.idUser, password: state.password } });
     };
 
     const goToDataMenu = () => {
