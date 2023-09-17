@@ -21,7 +21,7 @@ export function CodesMenu() {
 
     const handleDelete = async (id) => {
         try {
-            //const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/deleteUser', { id: id });
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/deleteCode', { idAccountingCodes: id });
             setRefresh(refresh + 1);
         } catch (err) {
             console.log(err)
