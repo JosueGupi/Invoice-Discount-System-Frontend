@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
-export function ClientMenu() {
+export function CodesMenu() {
     const navigate = useNavigate();
 
     const { state } = useLocation()
@@ -21,35 +21,35 @@ export function ClientMenu() {
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/deleteClient', { idClient: id });
+            //const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/deleteUser', { id: id });
             setRefresh(refresh + 1);
         } catch (err) {
             console.log(err)
         }
-
-    };
-    const goToDataMenu = () => {
-        navigate("/dataMenu", { state });
-
     };
 
-    const handleModify = (id, username, email, idenCard) => {
-        // Implementar la lógica de modificación aquí
-        navigate("/clientForm", { state: { mode: 'edit', id: id, username: username, email: email, idenCard: idenCard, user: state.name, idUser: state.idUser, password: state.password } });
+    const handleModify = (id, name, code, description) => {
+        navigate("/CodesForm", { state: { mode: 'edit', id: id, name: name, code: code, description: description, user: state.name, idUser: state.idUser, password: state.password } });
     };
 
     const handleCreate = () => {
-        // Implementar la lógica de creación aquí
-        navigate("/clientForm", { state: { mode: 'create', user: state.name, idUser: state.idUser, password: state.password } });
+        //navigate("/CodesForm", { state: { mode: 'create', user: state.name, idUser: state.idUser, password: state.password } });
     };
+
+    const goToDataMenu = () => {
+        navigate("/dataMenu", { state });
+    };
+
     useEffect(() => {
         if (state == null) {
             navigate('/')
         }
         else {
-            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getCodes')
                 .then((response) => setDataR(response.data))
+            console.log(dataR);
         }
+
     }, [refresh]);
 
 
@@ -63,12 +63,13 @@ export function ClientMenu() {
                     <div className='row'>
                         <div className='input_symbol'>
 
-                            <input className='search-space ' placeholder='Buscar por nombre' type="text" value={search} onChange={searcher} />
-                            <i class="fa-solid fa-magnifying-glass"></i>
+
+                            <input className='search-space' placeholder='Buscar por nombre' type="text" value={search} onChange={searcher} />
+                            <i className="fa-solid fa-magnifying-glass"></i>
                             <button className='back-button' onClick={goToDataMenu}>Menú</button>
                             <br />
                             <br />
-                            <button className='create-button' onClick={handleCreate}>Nuevo cliente</button>
+                            <button className='create-button' onClick={handleCreate}>Nuevo código</button>
 
                         </div>
                     </div>
@@ -80,17 +81,10 @@ export function ClientMenu() {
 
                         <div className='row'>
 
-
-
-                            {results.map((client) => <Card title={client.Name} caption={client.Email} description={client.IdentificationCard}
-                                handleEdit={() => { handleModify(client.idClient, client.Name, client.Email, client.IdentificationCard) }} handleDelete={() => { handleDelete(client.idClient) }} />
+                            {results.map((code) => <Card title={code.Name} caption={code.Code} description={code.Description}
+                                handleEdit={() => { handleModify(code.idAccountingCodes, code.Name, code.Code, code.Description) }} handleDelete={() => { handleDelete(code.idAccountingCodes) }} />
 
                             )}
-
-
-
-
-
 
 
                         </div>

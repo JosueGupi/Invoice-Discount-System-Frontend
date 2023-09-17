@@ -7,40 +7,42 @@ import { useForm } from 'react-hook-form';
 
 
 
-export function ClientForm() {
+export function CodesForm() {
     const navigate = useNavigate();
 
     const { state } = useLocation()
     const { register, handleSubmit } = useForm();
     const [mode, setMode] = useState("edit"),
         [name, setName] = useState(""),
-        [email, setEmail] = useState(""),
+        [code, setCode] = useState(""),
+        [description, setDescription] = useState(""),
         [idenCard, setIdenCard] = useState(""),
-        [idClient, setIdClient] = useState(0);
-
+        [idAccountingCodes, setIdAccountingCodes] = useState(0),
+        [clientOptions, setClientOptions] = useState([]);
 
 
 
     const onSubmit = async (data) => {
         try {
             if (mode === "edit") {
-                data.idClient = idClient;
-                console.log(data)
-                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/updateClient', data);
+                data.idAccountingCodes = idAccountingCodes;
+                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/updateCode', data);
                 alert('Se actualizo el código correctamente');
+                console.log(response)
+                console.log("====================================");
                 navigate('/codesMenu', { state });
             } else {
                 console.log(data)
-                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/createClient', data);
+                //const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/createClient', data);
                 alert('Se creo el cliente correctamente');
-                navigate('/codesMenu', { state });
+                //navigate('/clientMenu', { state });
             }
         } catch (err) {
             alert(err, 'Error');
         }
     }
-    const goToClientMenu = () => {
-        navigate("/clientMenu", { state });
+    const goToCodesMenu = () => {
+        navigate("/codesMenu", { state });
 
     };
     useEffect(() => {
@@ -48,13 +50,14 @@ export function ClientForm() {
             navigate('/');
         } else {
             setMode(state.mode);
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
+                .then((response) => setClientOptions(response.data));
 
             if (state.mode === "edit") {
-                setName(state.username);
-                setEmail(state.email)
-                setIdenCard(state.idenCard)
-                setIdClient(state.id)
-
+                setIdAccountingCodes(state.id);
+                setName(state.name);
+                setCode(state.code);
+                setDescription(state.description);
             }
         }
     }, [])
@@ -71,7 +74,7 @@ export function ClientForm() {
 
                             <br />
                             <br />
-                            <button className='back-button' onClick={goToClientMenu}>Atras</button>
+                            <button className='back-button' onClick={goToCodesMenu}>Atras</button>
 
                         </div>
                     </div>
@@ -80,31 +83,33 @@ export function ClientForm() {
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <center>
 
+                                    <select className="form-input"
+                                        placeholder="Dueño"
+
+                                        {...register('idClient', { required: true })}>
+                                        <option value="none" selected disabled hidden>Dueño</option>
+                                        {clientOptions.map((owners) => <option value={owners.idClient}>{owners.Name}</option>)}
+
+                                    </select>
+                                    <br />
+                                    <br />
+                                    <br />
+
                                     <input className="form-input" type="text"
-                                        placeholder="Nombre"
-                                        defaultValue={name}
-                                        {...register('name', { required: true })}
+                                        placeholder="Código"
+                                        defaultValue={code}
+
+                                        {...register('code', { required: true })}
                                     />
                                     <br />
                                     <br />
                                     <br />
-                                    <input className="form-input" type="email"
-                                        placeholder="Correo"
-                                        defaultValue={email}
-
-                                        {...register('email', { required: true })}
-                                    />
-                                    <br />
-                                    <br />
-                                    <br />
-
-
 
                                     <input className="form-input" type="text"
-                                        placeholder="Identificación"
-                                        defaultValue={idenCard}
+                                        placeholder="Descripción"
+                                        defaultValue={description}
 
-                                        {...register('idenCard', { required: true })}
+                                        {...register('description', { required: true })}
                                     />
 
 
