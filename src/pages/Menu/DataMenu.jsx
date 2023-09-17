@@ -25,6 +25,10 @@ export function DataMenu() {
         goToCodesMenu = () => {
 
             navigate('/codesMenu', { state });
+        },
+        goToMainMenu = () => {
+            localStorage.setItem('menuName', JSON.stringify('Menú Principal'));
+            navigate("/mainMenu", { state });
         };
     useEffect(() => {
 
@@ -43,6 +47,8 @@ export function DataMenu() {
     return (
         <Fragment >
             <div className='backgroundColor'>
+                <br />
+                <button className='back-button' onClick={goToMainMenu}>Menú</button>
                 <div className='container'>
                     <div className='row'>
 

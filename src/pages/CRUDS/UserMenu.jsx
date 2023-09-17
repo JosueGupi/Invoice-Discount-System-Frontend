@@ -11,6 +11,8 @@ export function UserMenu() {
 
     const { state } = useLocation()
 
+    localStorage.setItem('menuName', JSON.stringify('Manejar Usuarios'));
+
     const [dataR, setDataR] = useState([]),
         [search, setSearch] = useState(""),
         [refresh, setRefresh] = useState(0),
@@ -29,18 +31,19 @@ export function UserMenu() {
 
     };
     const goToDataMenu = () => {
-        navigate("/dataMenu", {state});
+        localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
+        navigate("/dataMenu", { state });
 
     };
 
     const handleModify = (id, username, email) => {
         // Implementar la lógica de modificación aquí
-        navigate("/userForm", { state: { mode: 'edit', id: id, username: username, email: email,user:state.name, idUser:state.idUser, password:state.password } });
+        navigate("/userForm", { state: { mode: 'edit', id: id, username: username, email: email, user: state.name, idUser: state.idUser, password: state.password } });
     };
 
     const handleCreate = () => {
         // Implementar la lógica de creación aquí
-        navigate("/userForm", { state: { mode: 'create',user:state.name, idUser:state.idUser, password:state.password } });
+        navigate("/userForm", { state: { mode: 'create', user: state.name, idUser: state.idUser, password: state.password } });
     };
     useEffect(() => {
         if (state == null) {

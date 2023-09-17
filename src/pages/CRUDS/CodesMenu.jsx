@@ -11,6 +11,8 @@ export function CodesMenu() {
 
     const { state } = useLocation()
 
+    localStorage.setItem('menuName', JSON.stringify('Modificar Códigos'));
+
     const [dataR, setDataR] = useState([]),
         [search, setSearch] = useState(""),
         [refresh, setRefresh] = useState(0),
@@ -37,6 +39,7 @@ export function CodesMenu() {
     };
 
     const goToDataMenu = () => {
+        localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
         navigate("/dataMenu", { state });
     };
 

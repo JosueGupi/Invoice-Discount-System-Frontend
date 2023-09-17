@@ -11,6 +11,8 @@ export function ClientMenu() {
 
     const { state } = useLocation()
 
+    localStorage.setItem('menuName', JSON.stringify('Manejar Clientes'));
+
     const [dataR, setDataR] = useState([]),
         [search, setSearch] = useState(""),
         [refresh, setRefresh] = useState(0),
@@ -29,8 +31,8 @@ export function ClientMenu() {
 
     };
     const goToDataMenu = () => {
+        localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
         navigate("/dataMenu", { state });
-
     };
 
     const handleModify = (id, username, email, idenCard) => {

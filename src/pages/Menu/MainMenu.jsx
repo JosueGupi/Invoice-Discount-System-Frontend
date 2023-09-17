@@ -9,22 +9,23 @@ import { useNavigate, useLocation } from 'react-router-dom';
 export function MainMenu() {
     const navigate = useNavigate();
     const { state } = useLocation()
+    localStorage.setItem('menuName', JSON.stringify('Menú Principal'));
 
     const goToDataMenu = () => {
-        
-        localStorage.setItem('menuName',JSON.stringify('Data Menu'));
-        console.log('antes de enviar',state)
-        navigate('/dataMenu',{state});
-      };
-      useEffect(() => {
-            
-         
-        if (state == null){
+
+        localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
+        console.log('antes de enviar', state)
+        navigate('/dataMenu', { state });
+    };
+    useEffect(() => {
+
+
+        if (state == null) {
             navigate('/')
         }
-        
 
-    },[]);
+
+    }, []);
 
     return (
         <Fragment >
@@ -42,7 +43,7 @@ export function MainMenu() {
 
                         <center>
                             <div className="col-md-5">
-                                <input className="form-button-menu" type="button" value="Modificar Datos" onClick={goToDataMenu}/>
+                                <input className="form-button-menu" type="button" value="Modificar Datos" onClick={goToDataMenu} />
                                 <br />
                                 <br />
                                 <br />
