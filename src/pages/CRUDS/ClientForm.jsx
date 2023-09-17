@@ -83,6 +83,7 @@ export function ClientForm() {
                                     <input className="form-input" type="text"
                                         placeholder="Nombre"
                                         defaultValue={name}
+                                        maxLength="64"
                                         {...register('name', { required: true })}
                                     />
                                     <br />
@@ -91,7 +92,7 @@ export function ClientForm() {
                                     <input className="form-input" type="email"
                                         placeholder="Correo"
                                         defaultValue={email}
-
+                                        maxLength="128"
                                         {...register('email', { required: true })}
                                     />
                                     <br />
@@ -103,7 +104,7 @@ export function ClientForm() {
                                     <input className="form-input" type="text"
                                         placeholder="Identificación"
                                         defaultValue={idenCard}
-
+                                        maxLength="16"
                                         {...register('idenCard', { required: true })}
                                     />
 

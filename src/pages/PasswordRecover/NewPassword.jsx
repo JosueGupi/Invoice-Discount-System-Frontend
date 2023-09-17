@@ -60,6 +60,7 @@ export function NewPassword() {
 
                                     <input className="newpassword-input" type="password" 
                                         placeholder='Nueva contraseña'
+                                        maxLength="16"
                                         {...register('password', { required: true })}
                                     />
                                     <br />
@@ -67,6 +68,7 @@ export function NewPassword() {
                                     
                                     <input className="newpassword-input" type="password" 
                                         placeholder='Confirme la contraseña'
+                                        maxLength="16"
                                         {...register('confirmPassword', { required: true })}
                                     />
                                     <br />

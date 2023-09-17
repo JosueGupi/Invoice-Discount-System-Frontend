@@ -96,7 +96,7 @@ export function CodesForm() {
                                     <input className="form-input" type="text"
                                         placeholder="Código"
                                         defaultValue={code}
-
+                                        maxLength="32"
                                         {...register('code', { required: true })}
                                     />
                                     <br />
@@ -106,7 +106,7 @@ export function CodesForm() {
                                     <input className="form-input" type="text"
                                         placeholder="Descripción"
                                         defaultValue={description}
-
+                                        maxLength="128"
                                         {...register('description', { required: true })}
                                     />
 

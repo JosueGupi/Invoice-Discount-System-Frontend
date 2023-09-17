@@ -101,6 +101,7 @@ export function AccountForm() {
                                     <br />
                                     <input className="form-input" type="text"
                                         placeholder="No. de Cuenta"
+                                        maxLength="32"
                                         defaultValue={number}
 
                                         {...register('number', { required: true })}

@@ -78,6 +78,7 @@ export function BankForm() {
                                     <input className="form-input" type="text"
                                         placeholder="Nombre"
                                         defaultValue={bank}
+                                        maxLength="32"
                                         {...register('name', { required: true })}
                                     />
                                     <br />
