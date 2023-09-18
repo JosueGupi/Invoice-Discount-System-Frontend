@@ -6,12 +6,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
-export function UserMenu() {
+export function CodesMenu() {
     const navigate = useNavigate();
 
     const { state } = useLocation()
 
-    localStorage.setItem('menuName', JSON.stringify('Manejar Usuarios'));
+    localStorage.setItem('menuName', JSON.stringify('Modificar Códigos'));
 
     const [dataR, setDataR] = useState([]),
         [search, setSearch] = useState(""),
@@ -23,36 +23,36 @@ export function UserMenu() {
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/deleteUser', { idUser: id });
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/deleteCode', { idAccountingCodes: id });
             setRefresh(refresh + 1);
         } catch (err) {
             console.log(err)
         }
-
-    };
-    const goToDataMenu = () => {
-        localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
-        navigate("/dataMenu", { state });
-
     };
 
-    const handleModify = (id, username, email) => {
-        // Implementar la lógica de modificación aquí
-        navigate("/userForm", { state: { mode: 'edit', id: id, username: username, email: email, user: state.name, idUser: state.idUser, password: state.password } });
+    const handleModify = (id, name, code, description) => {
+        navigate("/CodesForm", { state: { mode: 'edit', id: id, name: name, code: code, description: description, user: state.name, idUser: state.idUser, password: state.password } });
     };
 
     const handleCreate = () => {
-        // Implementar la lógica de creación aquí
-        navigate("/userForm", { state: { mode: 'create', user: state.name, idUser: state.idUser, password: state.password } });
+        navigate("/CodesForm", { state: { mode: 'create', user: state.name, idUser: state.idUser, password: state.password } });
     };
+
+    const goToDataMenu = () => {
+        localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
+        navigate("/dataMenu", { state });
+    };
+
     useEffect(() => {
         if (state == null) {
             navigate('/')
         }
         else {
-            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/getUsers')
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getCodes')
                 .then((response) => setDataR(response.data))
+            console.log(dataR);
         }
+
     }, [refresh]);
 
 
@@ -72,7 +72,7 @@ export function UserMenu() {
                             <button className='back-button' onClick={goToDataMenu}>Menú</button>
                             <br />
                             <br />
-                            <button className='create-button' onClick={handleCreate}>Nuevo usuario</button>
+                            <button className='create-button' onClick={handleCreate}>Nuevo código</button>
 
                         </div>
                     </div>
@@ -84,10 +84,8 @@ export function UserMenu() {
 
                         <div className='row'>
 
-
-
-                            {results.map((user) => <Card title={user.Name} caption={user.Email} description={user.Password}
-                                handleEdit={() => { handleModify(user.idUser, user.Name, user.Email) }} handleDelete={() => { handleDelete(user.idUser) }} />
+                            {results.map((code) => <Card title={code.Name} caption={code.Code} description={code.Description}
+                                handleEdit={() => { handleModify(code.idAccountingCodes, code.Name, code.Code, code.Description) }} handleDelete={() => { handleDelete(code.idAccountingCodes) }} />
 
                             )}
 

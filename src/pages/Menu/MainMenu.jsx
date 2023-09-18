@@ -9,17 +9,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 export function MainMenu() {
     const navigate = useNavigate();
     const { state } = useLocation()
+    localStorage.setItem('menuName', JSON.stringify('Menú Principal'));
 
     const goToDataMenu = () => {
 
-        localStorage.setItem('menuName', JSON.stringify('Data Menu'));
+        localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
         console.log('antes de enviar', state)
         navigate('/dataMenu', { state });
-    },
-        goToLogOut = () => {
-            navigate("/");
-
-        };
+    };
     useEffect(() => {
 
 

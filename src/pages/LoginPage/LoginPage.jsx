@@ -59,6 +59,7 @@ export function LoginPage() {
 
                     <input className="form-input" type="email"
                       placeholder="Correo"
+                      maxLength="128"
                       {...register('email', { required: true })}
                     />
                     <br />
@@ -69,6 +70,7 @@ export function LoginPage() {
 
                     <input className="form-input" type="password"
                       placeholder="Contraseña"
+                      maxLength="16"
                       {...register('password', { required: true })}
                     />
                     <br />

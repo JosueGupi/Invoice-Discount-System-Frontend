@@ -11,6 +11,7 @@ export function DataMenu() {
     const { state } = useLocation()
 
     const goToClientMenu = () => {
+<<<<<<< HEAD
         
         navigate('/clientMenu',{state});
     },
@@ -35,21 +36,46 @@ export function DataMenu() {
             
         }
         
+=======
+>>>>>>> 3c841f217ddb7a28f06848bc29af55c23ee64d2d
 
-    },[]);
+        navigate('/clientMenu', { state });
+    },
+        goToUsersMenu = () => {
+
+            navigate('/userMenu', { state });
+        },
+        goToAccountsMenu = () => {
+
+            navigate('/accountMenu', { state });
+        },
+        goToCodesMenu = () => {
+
+            navigate('/codesMenu', { state });
+        },
+        goToMainMenu = () => {
+            localStorage.setItem('menuName', JSON.stringify('Menú Principal'));
+            navigate("/mainMenu", { state });
+        };
+    useEffect(() => {
+
+
+        if (state == null) {
+            navigate('/')
+        } else {
+
+        }
+
+
+    }, []);
 
 
 
     return (
         <Fragment >
             <div className='backgroundColor'>
-            <div>
-
-<br />
-<br />
-<button className='back-button' onClick={goToMainMenu}>Atras</button>
-
-</div>
+                <br />
+                <button className='back-button' onClick={goToMainMenu}>Menú</button>
                 <div className='container'>
                     <div className='row'>
 
@@ -59,13 +85,13 @@ export function DataMenu() {
 
                         <center>
                             <div className="col-md-5">
-                                <input className="form-button-menu" type="button" value="Manejar Clientes"  onClick={goToClientMenu}/>
+                                <input className="form-button-menu" type="button" value="Manejar Clientes" onClick={goToClientMenu} />
                                 <br />
                                 <br />
                                 <br />
                                 <br />
 
-                                <input className="form-button-menu" type="button" value="Modificar Códigos" />
+                                <input className="form-button-menu" type="button" value="Modificar Códigos" onClick={goToCodesMenu} />
                                 <br />
                                 <br />
                                 <br />
@@ -75,7 +101,7 @@ export function DataMenu() {
                                 <br />
                                 <br />
                                 <br />
-                                <input className="form-button-menu" type="button" value="Manejar Usuarios" onClick={goToUsersMenu}/>
+                                <input className="form-button-menu" type="button" value="Manejar Usuarios" onClick={goToUsersMenu} />
                                 <br />
                                 <br />
                                 <br />

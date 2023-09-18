@@ -80,6 +80,7 @@ export function UserForm() {
                                     <input className="form-input" type="text"
                                         placeholder="Nombre"
                                         defaultValue={name}
+                                        maxLength="64"
                                         {...register('name', { required: true })}
                                     />
                                     <br />
@@ -88,7 +89,7 @@ export function UserForm() {
                                     <input className="form-input" type="email"
                                         placeholder="Correo"
                                         defaultValue = {email}
-                                        
+                                        maxLength="128"                                        
                                         {...register('email', { required: true })}
                                     />
                                     <br />
@@ -101,6 +102,7 @@ export function UserForm() {
                                         placeholder="Contraseña"
                                         
                                         hidden={ (mode !== 'create') }
+                                        maxLength="16"
                                         {...register('password', { required: mode === 'create' })}
                                     />
 

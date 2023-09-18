@@ -11,6 +11,8 @@ export function AccountMenu() {
 
     const { state } = useLocation()
 
+    localStorage.setItem('menuName', JSON.stringify('Modificar Cuentas'));
+
     const [dataR, setDataR] = useState([]),
         [search, setSearch] = useState(""),
         [refresh, setRefresh] = useState(0),
@@ -29,22 +31,23 @@ export function AccountMenu() {
 
     };
     const goToDataMenu = () => {
-        navigate("/dataMenu",{state});
+        localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
+        navigate("/dataMenu", { state });
 
     };
 
     const handleModify = (id, owner, number, bank) => {
         // Implementar la lógica de modificación aquí
-        navigate("/accountForm", { state: { mode: 'edit', id: id, owner: owner, number: number, bank: bank ,user:state.name, idUser:state.idUser, password:state.password} });
+        navigate("/accountForm", { state: { mode: 'edit', id: id, owner: owner, number: number, bank: bank, user: state.name, idUser: state.idUser, password: state.password } });
     };
 
     const handleCreate = () => {
         // Implementar la lógica de creación aquí
-        navigate("/accountForm", { state: { mode: 'create' ,user:state.name, idUser:state.idUser, password:state.password} });
+        navigate("/accountForm", { state: { mode: 'create', user: state.name, idUser: state.idUser, password: state.password } });
     };
     const handleBanks = () => {
         // Implementar la lógica de creación aquí
-        navigate("/bankMenu", { state: { mode: 'create',user:state.name, idUser:state.idUser, password:state.password } });
+        navigate("/bankMenu", { state: { mode: 'create', user: state.name, idUser: state.idUser, password: state.password } });
     };
     useEffect(() => {
 

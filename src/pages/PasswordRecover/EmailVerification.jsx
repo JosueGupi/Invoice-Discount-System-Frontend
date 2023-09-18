@@ -51,6 +51,7 @@ export function EmailVerification() {
 
                                 <input className="form-input" type="email"
                                     placeholder="Correo electronico"
+                                    maxLength="128"
                                     {...register('email', { required: true })}
                                 />
                                 <br />

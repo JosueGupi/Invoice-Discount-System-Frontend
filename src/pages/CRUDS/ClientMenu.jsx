@@ -11,6 +11,8 @@ export function ClientMenu() {
 
     const { state } = useLocation()
 
+    localStorage.setItem('menuName', JSON.stringify('Manejar Clientes'));
+
     const [dataR, setDataR] = useState([]),
         [search, setSearch] = useState(""),
         [refresh, setRefresh] = useState(0),
@@ -29,18 +31,18 @@ export function ClientMenu() {
 
     };
     const goToDataMenu = () => {
-        navigate("/dataMenu",{state});
-
+        localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
+        navigate("/dataMenu", { state });
     };
 
     const handleModify = (id, username, email, idenCard) => {
         // Implementar la lógica de modificación aquí
-        navigate("/clientForm", { state: { mode: 'edit', id: id, username: username, email: email, idenCard: idenCard,user:state.name, idUser:state.idUser, password:state.password } });
+        navigate("/clientForm", { state: { mode: 'edit', id: id, username: username, email: email, idenCard: idenCard, user: state.name, idUser: state.idUser, password: state.password } });
     };
 
     const handleCreate = () => {
         // Implementar la lógica de creación aquí
-        navigate("/clientForm", { state: { mode: 'create',user:state.name, idUser:state.idUser, password:state.password } });
+        navigate("/clientForm", { state: { mode: 'create', user: state.name, idUser: state.idUser, password: state.password } });
     };
     useEffect(() => {
         if (state == null) {

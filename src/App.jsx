@@ -16,12 +16,14 @@ import { ClientMenu } from './pages/CRUDS/ClientMenu';
 import { ClientForm } from './pages/CRUDS/ClientForm';
 import { UserMenu } from './pages/CRUDS/UserMenu';
 import { UserForm } from './pages/CRUDS/UserForm';
+import { CodesMenu } from "./pages/CRUDS/CodesMenu";
+import { CodesForm } from "./pages/CRUDS/CodesForm";
 import { AccountMenu } from './pages/CRUDS/AccountMenu';
 import { AccountForm } from './pages/CRUDS/AccountForm';
 import { BankMenu } from './pages/CRUDS/BankMenu';
 import { BankForm } from './pages/CRUDS/BankForm';
-
 import Nav from './molecules/Nav';
+
 export function App() {
   return (
 
@@ -45,7 +47,8 @@ export function App() {
             <Route exact path="/accountForm" element={<AccountForm />} />
             <Route exact path="/bankMenu" element={<BankMenu />} />
             <Route exact path="/bankForm" element={<BankForm />} />
-
+            <Route exact path="/codesMenu" element={<CodesMenu />} />
+            <Route exact path="/codesForm" element={<CodesForm />} />
           </Route>
 
         </Routes>
