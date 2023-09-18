@@ -11,33 +11,6 @@ export function DataMenu() {
     const { state } = useLocation()
 
     const goToClientMenu = () => {
-<<<<<<< HEAD
-        
-        navigate('/clientMenu',{state});
-    },
-    goToUsersMenu = () => {
-        
-        navigate('/userMenu',{state});
-    },
-    goToAccountsMenu = () => {
-        
-        navigate('/accountMenu',{state});
-    },
-    goToMainMenu= () => {
-        
-        navigate('/mainMenu',{state});
-    };
-    useEffect(() => {
-            
-        
-        if (state == null){
-            navigate('/')
-        }else{
-            
-        }
-        
-=======
->>>>>>> 3c841f217ddb7a28f06848bc29af55c23ee64d2d
 
         navigate('/clientMenu', { state });
     },
