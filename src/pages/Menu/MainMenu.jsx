@@ -14,7 +14,7 @@ export function MainMenu() {
     const goToDataMenu = () => {
 
         localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
-        console.log('antes de enviar', state)
+        
         navigate('/dataMenu', { state });
     },
     goToLogOut = () => {

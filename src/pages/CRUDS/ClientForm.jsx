@@ -28,12 +28,12 @@ export function ClientForm() {
                 console.log(data)
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/updateClient', data);
                 alert('Se actualizo el código correctamente');
-                navigate('/codesMenu', { state });
+                navigate('/clientMenu', { state });
             } else {
                 console.log(data)
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/createClient', data);
                 alert('Se creo el cliente correctamente');
-                navigate('/codesMenu', { state });
+                navigate('/clientMenu', { state });
             }
         } catch (err) {
             alert(err, 'Error');
