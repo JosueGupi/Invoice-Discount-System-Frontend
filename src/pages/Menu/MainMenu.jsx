@@ -11,25 +11,37 @@ export function MainMenu() {
     const { state } = useLocation()
 
     const goToDataMenu = () => {
-        
-        localStorage.setItem('menuName',JSON.stringify('Data Menu'));
-        console.log('antes de enviar',state)
-        navigate('/dataMenu',{state});
-      };
-      useEffect(() => {
-            
-         
-        if (state == null){
+
+        localStorage.setItem('menuName', JSON.stringify('Data Menu'));
+        console.log('antes de enviar', state)
+        navigate('/dataMenu', { state });
+    },
+        goToLogOut = () => {
+            navigate("/");
+
+        };
+    useEffect(() => {
+
+
+        if (state == null) {
             navigate('/')
         }
-        
 
-    },[]);
+
+    }, []);
 
     return (
         <Fragment >
             <div className='backgroundColor'>
-                <div className='container container2'>
+                <div>
+
+                    <br />
+                    <br />
+                    <button className='back-button' onClick={goToLogOut}>Salir</button>
+
+                </div>
+                <div className='container'>
+
                     <div className='row'>
 
 
@@ -42,7 +54,7 @@ export function MainMenu() {
 
                         <center>
                             <div className="col-md-5">
-                                <input className="form-button-menu" type="button" value="Modificar Datos" onClick={goToDataMenu}/>
+                                <input className="form-button-menu" type="button" value="Modificar Datos" onClick={goToDataMenu} />
                                 <br />
                                 <br />
                                 <br />

@@ -21,6 +21,10 @@ export function DataMenu() {
     goToAccountsMenu = () => {
         
         navigate('/accountMenu',{state});
+    },
+    goToMainMenu= () => {
+        
+        navigate('/mainMenu',{state});
     };
     useEffect(() => {
             
@@ -39,6 +43,13 @@ export function DataMenu() {
     return (
         <Fragment >
             <div className='backgroundColor'>
+            <div>
+
+<br />
+<br />
+<button className='back-button' onClick={goToMainMenu}>Atras</button>
+
+</div>
                 <div className='container'>
                     <div className='row'>
 
