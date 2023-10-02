@@ -1,26 +1,37 @@
-html, body, #root,.App{
+html,
+body,
+#root,
+.App {
   height: 100%;
   width: 100%;
 }
+
 .backgroundImage {
-  
- 
+
+
   background-image: url('../public/bgImage.png');
   height: 100%;
   width: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  
+
 }
+
 .backgroundColor {
   background: linear-gradient(180deg, #FFF 0%, #FFF 0.01%, #72B7B2 100%);
   height: 100%;
   width: 100%;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
 }
 
 .inversion-title {
- 
+
   height: 241px;
   text-align: center;
   color: #FFF;
@@ -31,8 +42,9 @@ html, body, #root,.App{
   line-height: normal;
   margin-top: 10%;
 }
+
 .inversion-title2 {
- 
+
   height: 241px;
   text-align: center;
   color: #FFF;
@@ -46,21 +58,21 @@ html, body, #root,.App{
 
 
 .login-box {
-  
+
   margin-right: 10%;
   width: 100%;
   height: 550px;
   border-radius: 35px;
   background: #232323;
   color: #FFFFFF;
-  
-  
+
+
   padding: 30px 30px;
   text-align: center;
 }
 
 .form-input {
-  
+
   width: 70%;
   height: 60px;
   flex-shrink: 0;
@@ -77,7 +89,7 @@ html, body, #root,.App{
 }
 
 .form-button {
-  
+
   display: flex;
   width: 70%;
   height: 60px;
@@ -95,6 +107,7 @@ html, body, #root,.App{
   background: #58585B;
 
 }
-.container{
+
+.container {
   padding-top: 10%;
 }

@@ -6,72 +6,67 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
-export function MainMenu() {
+export function FormMenu() {
     const navigate = useNavigate();
     const { state } = useLocation()
-    localStorage.setItem('menuName', JSON.stringify('Menú Principal'));
 
-    const goToDataMenu = () => {
+    const goToInvoiceForm = () => {
 
-        localStorage.setItem('menuName', JSON.stringify('Menú de Datos'));
-        
-        navigate('/dataMenu', { state });
+        navigate('/invoiceForm', { state });
     },
-    goToFormMenu = () => {
-        localStorage.setItem('menuName', JSON.stringify('Menú de Formularios'));
-        navigate('/formMenu',{state});
-    },
-    goToLogOut = () => {
+        goToLoanForm = () => {
 
-        navigate('/',);
-    };
+            navigate('/loanForm', { state });
+        },
+        goToCreditForm = () => {
+
+            navigate('/creditForm', { state });
+        },
+
+        goToMainMenu = () => {
+            localStorage.setItem('menuName', JSON.stringify('Menú Principal'));
+            navigate("/mainMenu", { state });
+        };
     useEffect(() => {
 
 
         if (state == null) {
             navigate('/')
+        } else {
+
         }
 
 
     }, []);
 
+
+
     return (
         <Fragment >
             <div className='backgroundColor'>
-                <div>
-
-                    <br />
-                    <br />
-                    <button className='back-button' onClick={goToLogOut}>Salir</button>
-
-                </div>
+                <br />
+                <button className='back-button' onClick={goToMainMenu}>Menú</button>
                 <div className='container'>
-
                     <div className='row'>
 
-
-
-
                         <br />
                         <br />
                         <br />
-
 
                         <center>
                             <div className="col-md-5">
-                                <input className="form-button-menu" type="button" value="Modificar Datos" onClick={goToDataMenu} />
+                                <input className="form-button-menu" type="button" value="Generar Cesión" onClick={goToInvoiceForm} />
                                 <br />
                                 <br />
                                 <br />
                                 <br />
 
-
-                                <input className="form-button-menu" type="button" value="Formularios" onClick={goToFormMenu} />
+                                <input className="form-button-menu" type="button" value="Ingresar Prestamo" onClick={goToLoanForm} />
                                 <br />
                                 <br />
                                 <br />
                                 <br />
-                                <input className="form-button-menu" type="button" value="Datos" />
+                                <input className="form-button-menu" type="button" value="Ingresar Nota" onClick={goToCreditForm} />
                                 <br />
                                 <br />
                                 <br />

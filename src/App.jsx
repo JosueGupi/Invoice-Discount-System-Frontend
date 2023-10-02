@@ -22,6 +22,10 @@ import { AccountMenu } from './pages/CRUDS/AccountMenu';
 import { AccountForm } from './pages/CRUDS/AccountForm';
 import { BankMenu } from './pages/CRUDS/BankMenu';
 import { BankForm } from './pages/CRUDS/BankForm';
+import { FormMenu } from './pages/Menu/FormMenu';
+import { CreditForm } from "./pages/Forms/CreditForm";
+import { InvoiceForm } from "./pages/Forms/InvoiceForm";
+import { LoanForm } from "./pages/Forms/LoanForm"; 
 import Nav from './molecules/Nav';
 
 export function App() {
@@ -39,6 +43,8 @@ export function App() {
           <Route path="" element={<Nav />}>
             <Route exact path="/mainMenu" element={<MainMenu />} />
             <Route exact path="/dataMenu" element={<DataMenu />} />
+            <Route exact path="/formMenu" element={<FormMenu />} />
+
             <Route exact path="/clientMenu" element={<ClientMenu />} />
             <Route exact path="/clientForm" element={<ClientForm />} />
             <Route exact path="/userMenu" element={<UserMenu />} />
@@ -49,6 +55,10 @@ export function App() {
             <Route exact path="/bankForm" element={<BankForm />} />
             <Route exact path="/codesMenu" element={<CodesMenu />} />
             <Route exact path="/codesForm" element={<CodesForm />} />
+
+            <Route exact path="/creditForm" element={<CreditForm />} />
+            <Route exact path="/loanForm" element={<LoanForm />} />
+            <Route exact path="/invoiceForm" element={<InvoiceForm />} />
           </Route>
 
         </Routes>
