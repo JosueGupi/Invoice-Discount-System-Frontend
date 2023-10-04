@@ -31,6 +31,31 @@ export function InvoiceForm() {
     termRef = useRef(),
     rentTaxRef = useRef(0);
 
+    function obtainDates(term) {
+        const result = [];
+        let dateInfo = new Date();
+      
+        while (term > 0) {
+          const month = dateInfo.toLocaleString('default', { month: 'long' });
+          const daysMonth = new Date(dateInfo.getFullYear(), dateInfo.getMonth() + 1, 0).getDate();
+      
+          // Calcular cuántos días quedan en este mes sin pasar al siguiente
+          const daysInMonth = daysMonth - dateInfo.getDate() + 1;
+      
+          // Determinar cuántos días se pueden tomar en este mes
+          const takenDays = Math.min(term, daysInMonth);
+      
+          result.push({ month:month, days: takenDays, interest:0 });
+      
+          // Restar los días tomados de la cantidad total de días
+          term -= takenDays;
+      
+          // Avanzar al siguiente mes
+          dateInfo.setMonth(dateInfo.getMonth() + 1, 1);
+        }
+      
+        return result;
+      }
 
 
     const goToFormMenu = () => {
@@ -93,18 +118,19 @@ export function InvoiceForm() {
                 honoraries = Number(honorariesRef.current.value),
                 comission = Number(comissionsRef.current.value),
                 interest = Number(interestRef.current.value),
-                rentTax = Number(rentTaxRef.current.checked)
+                rentTax = Number(rentTaxRef.current.checked),
+                term = Number(termRef.current.value);
 
                
             for(let i = 0; i < invoices.length; i++){
                 
                 total += Number(invoices[i].amount);
             }
-            
+            let totalInterest = (((interest/100)/30)*term*total);
             total -= (cost 
             + honoraries
             +((comission/100)*total)
-            +((interest/100)*total)
+            +totalInterest
             +(rentTax*0.02*total));
             setTotalTransfer(total);
             
@@ -113,9 +139,15 @@ export function InvoiceForm() {
                 subTotal -= Number(reductions[i].amount);
             }
             setSubTotalTransfer(subTotal);
+            let interestList = obtainDates(term);
 
-        }
-        ;
+            for(let i = 0; i < interestList.length; i++){
+                interestList[i].interest = (interestList[i].days / term) * totalInterest; 
+            }
+            setMonths(interestList);
+
+        };
+        
     useEffect(() => {
 
 
@@ -130,7 +162,9 @@ export function InvoiceForm() {
 
 
     }, []);
+
     useEffect(() => {updateTotals()}, [invoices, reductions]); 
+
     
 
 
@@ -287,7 +321,7 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Plazo</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Plazo' type="number" />
+                                    <input className='form-input-space' placeholder='Plazo' type="number" ref={termRef} onChange={updateTotals}/>
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Impuesto de Renta</h2>
@@ -388,7 +422,13 @@ export function InvoiceForm() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
+                                            {months.map((month) =>
+                                                    <tr>
+                                                        <td>{month.month}</td>
+                                                        <td>{month.interest.toFixed(2)}</td>
+                                                    </tr>
+
+                                                )}
                                             </tbody>
 
                                         </table>
