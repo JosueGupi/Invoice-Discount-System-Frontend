@@ -91,7 +91,7 @@ export function CodesForm() {
                                     </select>
                                     <br />
                                     <br />
-                                    <br />
+
 
                                     <input className="form-input" type="text"
                                         placeholder="Código"
@@ -101,7 +101,7 @@ export function CodesForm() {
                                     />
                                     <br />
                                     <br />
-                                    <br />
+
 
                                     <input className="form-input" type="text"
                                         placeholder="Descripción"
@@ -109,11 +109,24 @@ export function CodesForm() {
                                         maxLength="128"
                                         {...register('description', { required: true })}
                                     />
+                                    <br />
+                                    <br />
+                                    <select className="form-input"
+                                        placeholder="Tipo de Código"
 
+                                        {...register('codeType', { required: true })}>
+                                        <option value="none" selected disabled hidden>Tipo de Código</option>
+                                        
+                                        <option value='0'>Gastos Legales</option>
+                                        <option value='1'>Intereses Reales</option>
+                                        <option value='2'>Intereses Diferidos</option>
+                                        <option value='3'>Otros</option>
+                                        
 
+                                    </select>
                                     <br />
                                     <br />
-                                    <br />
+
                                     <input className="form-button" type="submit" value="Guardar" />
 
 

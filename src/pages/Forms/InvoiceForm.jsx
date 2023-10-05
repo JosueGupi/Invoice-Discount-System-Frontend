@@ -8,54 +8,49 @@ import './Form.css'
 
 export function InvoiceForm() {
     const navigate = useNavigate(),
-    { state } = useLocation(),
-    [invoices, setInvoices] = useState([]),
-    [reductions, setReductions] = useState([]),
-    [codes, setCodes] = useState([]),
-    [clients, setClients] = useState([]),
-    [totalTransfer, setTotalTransfer] = useState([]),
-    [subTotalTransfer, setSubTotalTransfer] = useState([]),
-    [months, setMonths] = useState([]),
-    invoiceNumberRef = useRef(),
-    invoicePayerRef = useRef(),
-    invoiceAmountRef = useRef(),
-    invoiceDateRef = useRef(),
-    reductionNumberRef = useRef(),
-    reductionCodeRef = useRef(),
-    reductionAmountRef = useRef(),
-    reductionDescriptionRef = useRef(),
-    costRef = useRef(0),
-    honorariesRef = useRef(0),
-    comissionsRef = useRef(0),
-    interestRef = useRef(0),
-    termRef = useRef(),
-    rentTaxRef = useRef(0);
+        { state } = useLocation(),
+        [invoices, setInvoices] = useState([]),
+        [reductions, setReductions] = useState([]),
+        [codes, setCodes] = useState([]),
+        [clients, setClients] = useState([]),
+        [totalTransfer, setTotalTransfer] = useState([]),
+        [subTotalTransfer, setSubTotalTransfer] = useState([]),
+        [months, setMonths] = useState([]),
+        [clientCodes, setClientCodes] = useState([]),
+        invoiceNumberRef = useRef(),
+        invoicePayerRef = useRef(),
+        invoiceAmountRef = useRef(),
+        invoiceDateRef = useRef(),
+        reductionNumberRef = useRef(),
+        reductionCodeRef = useRef(),
+        reductionAmountRef = useRef(),
+        reductionDescriptionRef = useRef(),
+        costRef = useRef(0),
+        honorariesRef = useRef(0),
+        comissionsRef = useRef(0),
+        interestRef = useRef(0),
+        termRef = useRef(),
+        rentTaxRef = useRef(0),
+        clientIdRef = useRef(0),
+        retentionsRef = useRef(0);
 
     function obtainDates(term) {
         const result = [];
         let dateInfo = new Date();
-      
+
         while (term > 0) {
-          const month = dateInfo.toLocaleString('default', { month: 'long' });
-          const daysMonth = new Date(dateInfo.getFullYear(), dateInfo.getMonth() + 1, 0).getDate();
-      
-          // Calcular cuántos días quedan en este mes sin pasar al siguiente
-          const daysInMonth = daysMonth - dateInfo.getDate() + 1;
-      
-          // Determinar cuántos días se pueden tomar en este mes
-          const takenDays = Math.min(term, daysInMonth);
-      
-          result.push({ month:month, days: takenDays, interest:0 });
-      
-          // Restar los días tomados de la cantidad total de días
-          term -= takenDays;
-      
-          // Avanzar al siguiente mes
-          dateInfo.setMonth(dateInfo.getMonth() + 1, 1);
+            const month = dateInfo.toLocaleString('default', { month: 'long' });
+            const daysMonth = new Date(dateInfo.getFullYear(), dateInfo.getMonth() + 1, 0).getDate();
+            const daysInMonth = daysMonth - dateInfo.getDate() + 1;
+            const takenDays = Math.min(term, daysInMonth);
+
+            result.push({ month: month, days: takenDays, interest: 0 });
+            term -= takenDays;
+            dateInfo.setMonth(dateInfo.getMonth() + 1, 1);
         }
-      
+
         return result;
-      }
+    }
 
 
     const goToFormMenu = () => {
@@ -66,88 +61,108 @@ export function InvoiceForm() {
             console.log('CLick')
         },
         addInvoice = (event) => {
-            const newInvoiceNumber =  invoiceNumberRef.current.value,
-            newInvoicePayer = invoicePayerRef.current.value,
-            newInvoiceAmount = invoiceAmountRef.current.value,
-            newInvoiceDate = invoiceDateRef.current.value;
 
-            if (newInvoiceNumber === '' || newInvoicePayer === '' || newInvoiceAmount === '' || newInvoiceDate === ''){
+            const newInvoiceNumber = invoiceNumberRef.current.value,
+                newInvoicePayer = invoicePayerRef.current.value,
+                newInvoiceAmount = invoiceAmountRef.current.value,
+                newInvoiceDate = invoiceDateRef.current.value;
+            console.log('Invoice');
+
+            if (newInvoiceNumber === '' || newInvoicePayer === '' || newInvoiceAmount === '' || newInvoiceDate === '') {
                 return;
             }
-            setInvoices((prevInvoices)=> {
-                return [...prevInvoices,{number: newInvoiceNumber, amount: newInvoiceAmount, date:newInvoiceDate,payer:newInvoicePayer}];
+            setInvoices((prevInvoices) => {
+                return [...prevInvoices, { number: newInvoiceNumber, amount: newInvoiceAmount, date: newInvoiceDate, payer: newInvoicePayer }];
             })
             invoiceNumberRef.current.value = null;
             invoicePayerRef.current.value = null;
             invoiceAmountRef.current.value = null;
             invoiceDateRef.current.value = null;
-           
+
         },
-        cleanInvoices = (event) =>{
+        cleanInvoices = (event) => {
             setInvoices([]);
         },
         addReductions = (event) => {
-            
+
 
             const newReductionNumber = reductionNumberRef.current.value,
-            newReductionCode = reductionCodeRef.current.value,
-            newReductionAmount = reductionAmountRef.current.value,
-            newReductionDescription = reductionDescriptionRef.current.value;
+                newReductionCode = reductionCodeRef.current.value,
+                newReductionAmount = reductionAmountRef.current.value,
+                newReductionDescription = reductionDescriptionRef.current.value;
 
-            if (newReductionNumber === '' || newReductionAmount === '' ){
+            if (newReductionNumber === '' || newReductionAmount === '') {
                 return;
             }
-            setReductions((prevReductions)=> {
-                return [...prevReductions,{number: newReductionNumber, code: newReductionCode, amount:newReductionAmount,description:newReductionDescription}];
+            setReductions((prevReductions) => {
+                return [...prevReductions, { number: newReductionNumber, code: newReductionCode, amount: newReductionAmount, description: newReductionDescription }];
             })
             reductionNumberRef.current.value = null;
             reductionCodeRef.current.value = null;
             reductionAmountRef.current.value = null;
             reductionDescriptionRef.current.value = null;
-            
-            
+
+
         },
-        cleanReductions = (event) =>{
+        cleanReductions = (event) => {
             setReductions([]);
         },
-        updateTotals = () =>{
-            console.log('update')
-            let total = 0, 
-            subTotal = 0;
+        updateTotals = () => {
+
+            let total = 0,
+                subTotal = 0;
             const cost = Number(costRef.current.value),
                 honoraries = Number(honorariesRef.current.value),
                 comission = Number(comissionsRef.current.value),
                 interest = Number(interestRef.current.value),
                 rentTax = Number(rentTaxRef.current.checked),
-                term = Number(termRef.current.value);
+                term = Number(termRef.current.value),
+                retentions = Number(retentionsRef.current.value);
 
-               
-            for(let i = 0; i < invoices.length; i++){
-                
+
+            for (let i = 0; i < invoices.length; i++) {
+
                 total += Number(invoices[i].amount);
             }
-            let totalInterest = (((interest/100)/30)*term*total);
-            total -= (cost 
-            + honoraries
-            +((comission/100)*total)
-            +totalInterest
-            +(rentTax*0.02*total));
+            let totalInterest = (((interest / 100) / 30) * term * total);
+            total -= (cost
+                + honoraries
+                + ((comission / 100) * total)
+                + totalInterest
+                + (rentTax * 0.02 * total)
+                + ((retentions / 100) * total));
             setTotalTransfer(total);
-            
+
             subTotal = total;
-            for(let i = 0; i < reductions.length; i++){
+            for (let i = 0; i < reductions.length; i++) {
                 subTotal -= Number(reductions[i].amount);
             }
             setSubTotalTransfer(subTotal);
             let interestList = obtainDates(term);
-
-            for(let i = 0; i < interestList.length; i++){
-                interestList[i].interest = (interestList[i].days / term) * totalInterest; 
+            let index = 1;
+            for (let i = 0; i < interestList.length; i++) {
+                interestList[i].interest = (interestList[i].days / term) * totalInterest;
+                interestList[i].code = clientCodes[index === 1 ? index : 2]
+                index = 0;
             }
             setMonths(interestList);
 
+        },
+        getUserCodes = () => {
+            const idClient = clientIdRef.current.value,
+                data = { idClient: idClient };
+            console.log("data", data);
+            axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getClientCodes', data)
+                .then((response) => {
+                    let codesArray = [0, 0, 0, 0];
+
+                    for (let i = 0; i < response.data[0].length; i++) {
+                        codesArray[response.data[0][i].CodeType] = response.data[0][i].Code;
+                    }
+                    setClientCodes(codesArray);
+                })
         };
-        
+
     useEffect(() => {
 
 
@@ -163,9 +178,9 @@ export function InvoiceForm() {
 
     }, []);
 
-    useEffect(() => {updateTotals()}, [invoices, reductions]); 
+    useEffect(() => { updateTotals() }, [invoices, reductions]);
 
-    
+
 
 
 
@@ -189,9 +204,9 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Cliente</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <select className='form-input-space' >
-                                    <option value="none" selected disabled hidden>Cliente</option>
-                                        {clients.map((client)=> <option value={client.idClient}>{client.Name}</option>)}
+                                    <select className='form-input-space' onChange={getUserCodes} ref={clientIdRef}>
+                                        <option value="none" selected disabled hidden>Cliente</option>
+                                        {clients.map((client) => <option value={client.idClient}>{client.Name}</option>)}
                                     </select>
                                 </div>
 
@@ -200,9 +215,9 @@ export function InvoiceForm() {
                                 </div>
                                 <div className='col-2'>
                                     <select className='form-input-space' >
-                                    <option value="none" selected disabled hidden>Código</option>
-                                        {codes.map((code)=> <option value={code.Code}>{code.Code}</option>)}
-                                        
+                                        <option value="none" selected disabled hidden>Código</option>
+                                        {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
+
                                     </select>
                                 </div>
 
@@ -228,7 +243,7 @@ export function InvoiceForm() {
                                 <div className='col-1'>
                                     <input className='form-input-space' ref={invoiceNumberRef} placeholder='No. Factura' type="text" />
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input className='form-input-space' ref={invoiceDateRef}placeholder='Fecha' type="date" />
+                                    <input className='form-input-space' ref={invoiceDateRef} placeholder='Fecha' type="date" />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Monto</h2>
@@ -273,12 +288,31 @@ export function InvoiceForm() {
                                                     </tr>
 
                                                 )}
-                                              
+
                                             </tbody>
 
                                         </table>
                                     </div>
                                 </div>
+
+                                <div className='col-1'>
+                                    <h2 className='form-subtitle'>Comisión</h2>
+                                    <br />
+                                    <br />
+                                    <h2 className='form-subtitle'>Gastos Legales</h2>
+                                </div>
+                                <div className='col-2'>
+                                    <input className='form-input-space' value={clientCodes[0]} placeholder='Codigo Comisión' type="number" />
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+
+                                    <select className='form-input-space'  >
+                                        <option value="none" selected disabled hidden>Código Gastos Legales</option>
+                                        {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
+
+                                    </select>
+                                </div>
+
+
 
                             </div>
                             <br />
@@ -292,42 +326,66 @@ export function InvoiceForm() {
                             <br />
                             <div className='row'>
                                 <div className='col-1'>
-                                    <h2 className='form-subtitle'>Costo de Depósito </h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Costo' type="number" ref={costRef} onChange={updateTotals}/>
-                                </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Honorarios</h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Honorarios' type="number" ref={honorariesRef} onChange={updateTotals}/>
+                                    <h2 className='form-subtitle'>Costo de Transferencia </h2>
                                 </div>
 
+                                <div className='col-1'>
+                                    <input className='form-input-space' placeholder='Costo' type="number" ref={costRef} onChange={updateTotals} />
+                                </div>
+                                <div className='col-2'>
+                                    <h2 className='form-subtitle'>CódigoCosto de Transferencia </h2>
+                                </div>
+                                <div className='col-2'>
+                                    <select className='form-input-space'  >
+                                        <option value="none" selected disabled hidden>Código Costo Transferencia</option>
+                                        {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
+
+                                    </select>
+                                </div>
+                                <div className='col-1'>
+                                    <h2 className='form-subtitle'>Gastos Legales</h2>
+                                </div>
+                                <div className='col-1'>
+                                    <input className='form-input-space' placeholder='Honorarios' type="number" ref={honorariesRef} onChange={updateTotals} />
+                                </div>
+                                <div className='col-1'>
+                                    <h2 className='form-subtitle'>Retención</h2>
+                                </div>
+                                <div className='col-1'>
+                                    <input className='form-input-space' placeholder='Retención' type="number" ref={retentionsRef} onChange={updateTotals} />
+                                </div>
+                            </div>
+                            <div className='row'>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Comisión</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Comisión' type="number" ref={comissionsRef} onChange={updateTotals}/>
+                                    <input className='form-input-space' placeholder='Comisión' type="number" ref={comissionsRef} onChange={updateTotals} />
                                 </div>
 
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Intereses</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Intereses' type="number" ref={interestRef} onChange={updateTotals}/>
+                                    <input className='form-input-space' placeholder='Intereses' type="number" ref={interestRef} onChange={updateTotals} />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Plazo</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Plazo' type="number" ref={termRef} onChange={updateTotals}/>
+                                    <input className='form-input-space' placeholder='Plazo' type="number" ref={termRef} onChange={updateTotals} />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Impuesto de Renta</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' type="checkbox" ref={rentTaxRef} onChange={updateTotals}/>
+                                    <input className='form-input-space' type="checkbox" ref={rentTaxRef} onChange={updateTotals} />
+                                </div>
+                                <div className='col-1'>
+                                    <h2 className='form-subtitle'>Código Retención</h2>
+                                </div>
+                                <div className='col-2'>
+                                    <input className='form-input-space' placeholder='Retención' type="number" value={clientCodes[3]} />
                                 </div>
 
                             </div>
@@ -364,12 +422,12 @@ export function InvoiceForm() {
                                     </select>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <select className='form-input-space' ref={reductionCodeRef} >
-                                    <option value="none" selected disabled hidden>Código</option>
-                                        {codes.map((code)=> <option value={code.Code}>{code.Code}</option>)}
-                                      
+                                        <option value="none" selected disabled hidden>Código</option>
+                                        {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
+
                                     </select>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input className='form-input-space' placeholder='Monto' type="number" ref={reductionAmountRef}/>
+                                    <input className='form-input-space' placeholder='Monto' type="number" ref={reductionAmountRef} />
                                 </div>
                                 <div className='col-2'>
                                     <textarea className='form-text-area-space' placeholder='Descripción' type="text" ref={reductionDescriptionRef}></textarea>
@@ -392,12 +450,12 @@ export function InvoiceForm() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            {reductions.map((reduction) =>
+                                                {reductions.map((reduction) =>
                                                     <tr>
                                                         <td>{reduction.number}</td>
                                                         <td>{reduction.code}</td>
                                                         <td>{reduction.amount}</td>
-                                                       
+
                                                     </tr>
 
                                                 )}
@@ -416,16 +474,18 @@ export function InvoiceForm() {
                                                     </th>
                                                     <th className="th-sm">Monto
                                                     </th>
-
+                                                    <th className="th-sm">Código
+                                                    </th>
 
 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            {months.map((month) =>
+                                                {months.map((month) =>
                                                     <tr>
                                                         <td>{month.month}</td>
                                                         <td>{month.interest.toFixed(2)}</td>
+                                                        <td>{month.code}</td>
                                                     </tr>
 
                                                 )}
@@ -448,13 +508,13 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Sub-total </h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer}/>
+                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer} />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Total</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer}/>
+                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer} />
                                 </div>
                                 <div className='col-2'>
                                     <button className='form-button-space' type="button" onClick={testClick} >Guardar</button>

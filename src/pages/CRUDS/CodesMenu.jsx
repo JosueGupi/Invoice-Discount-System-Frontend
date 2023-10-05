@@ -84,7 +84,7 @@ export function CodesMenu() {
 
                         <div className='row'>
 
-                            {results.map((code) => <Card title={code.Name} caption={code.Code} description={code.Description}
+                            {results.map((code) => <Card title={code.Name} caption={code.Code} description={code.Description} type={code.TypeCode}
                                 handleEdit={() => { handleModify(code.idAccountingCodes, code.Name, code.Code, code.Description) }} handleDelete={() => { handleDelete(code.idAccountingCodes) }} />
 
                             )}
