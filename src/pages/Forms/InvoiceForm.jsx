@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 
-
+import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Form.css'
 
@@ -9,6 +9,7 @@ import './Form.css'
 export function InvoiceForm() {
     const navigate = useNavigate(),
         { state } = useLocation(),
+        { register, handleSubmit } = useForm(),
         [invoices, setInvoices] = useState([]),
         [reductions, setReductions] = useState([]),
         [codes, setCodes] = useState([]),
@@ -57,9 +58,7 @@ export function InvoiceForm() {
         localStorage.setItem('menuName', JSON.stringify('Menú Principal'));
         navigate("/formMenu", { state });
     },
-        testClick = () => {
-            console.log('CLick')
-        },
+
         addInvoice = (event) => {
 
             const newInvoiceNumber = invoiceNumberRef.current.value,
@@ -148,19 +147,26 @@ export function InvoiceForm() {
             setMonths(interestList);
 
         },
-        getUserCodes = () => {
-            const idClient = clientIdRef.current.value,
-                data = { idClient: idClient };
-            console.log("data", data);
-            axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getClientCodes', data)
-                .then((response) => {
-                    let codesArray = [0, 0, 0, 0];
+        getUserCodes = (e) => {
+            try {
 
-                    for (let i = 0; i < response.data[0].length; i++) {
-                        codesArray[response.data[0][i].CodeType] = response.data[0][i].Code;
-                    }
-                    setClientCodes(codesArray);
-                })
+                const idClient = clientIdRef.current.value,
+                    data = { idClient: idClient };
+                
+                axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getClientCodes', data)
+                    .then((response) => {
+                        let codesArray = [0, 0, 0, 0];
+
+                        for (let i = 0; i < response.data[0].length; i++) {
+                            codesArray[response.data[0][i].CodeType] = response.data[0][i].Code;
+                        }
+                        console.log("codesArray", codesArray)
+                        setClientCodes(codesArray);
+                    })
+            } catch (err) {
+                console.log(err)
+            }
+
         };
 
     useEffect(() => {
@@ -179,7 +185,16 @@ export function InvoiceForm() {
     }, []);
 
     useEffect(() => { updateTotals() }, [invoices, reductions]);
-
+    const onSubmit =  (data,event) => {
+        
+        console.log(data)
+        
+        try {
+            
+        } catch (err) {
+            
+        }
+    }
 
 
 
@@ -192,20 +207,21 @@ export function InvoiceForm() {
 
                 <div className='container-fluid big-container'>
                     <div className='form-container'>
-                        <form action="">
+                        <form onSubmit={handleSubmit(onSubmit)}>
                             <div className='row'>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>No. Operación</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='No. Operación' type="number" />
+                                    <input className='form-input-space' placeholder='No. Operación' type="number"  />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Cliente</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <select className='form-input-space' onChange={getUserCodes} ref={clientIdRef}>
-                                        <option value="none" selected disabled hidden>Cliente</option>
+                                    <select className='form-input-space' ref={clientIdRef} onChange={getUserCodes} >
+                                        
+                                        <option value="none" defaultValue disabled hidden>Cliente</option>
                                         {clients.map((client) => <option value={client.idClient}>{client.Name}</option>)}
                                     </select>
                                 </div>
@@ -214,8 +230,8 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Código Contable</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <select className='form-input-space' >
-                                        <option value="none" selected disabled hidden>Código</option>
+                                    <select className='form-input-space' {...register('opCode', { required: true })}>
+                                        <option value="none" defaultValue disabled hidden>Código</option>
                                         {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
 
                                     </select>
@@ -225,7 +241,7 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Dólares</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' type="checkbox" />
+                                    <input className='form-input-space' type="checkbox" {...register('dollars', { required: true })} />
                                 </div>
 
                             </div>
@@ -302,11 +318,11 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Gastos Legales</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' value={clientCodes[0]} placeholder='Codigo Comisión' type="number" />
+                                    <input className='form-input-space' value={clientCodes[0]} placeholder='Codigo Comisión' type="number" {...register('comissionCode', { required: true })} />
                                     &nbsp;&nbsp;&nbsp;&nbsp;
 
-                                    <select className='form-input-space'  >
-                                        <option value="none" selected disabled hidden>Código Gastos Legales</option>
+                                    <select className='form-input-space'  {...register('legalExpenseCode', { required: true })}>
+                                        <option value="none" defaultValue disabled hidden>Código Gastos Legales</option>
                                         {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
 
                                     </select>
@@ -337,7 +353,7 @@ export function InvoiceForm() {
                                 </div>
                                 <div className='col-2'>
                                     <select className='form-input-space'  >
-                                        <option value="none" selected disabled hidden>Código Costo Transferencia</option>
+                                        <option value="none" defaultValue disabled hidden>Código Costo Transferencia</option>
                                         {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
 
                                     </select>
@@ -385,7 +401,7 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Código Retención</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Retención' type="number" value={clientCodes[3]} />
+                                    <input className='form-input-space' placeholder='Codigo Retención' type="number" value={clientCodes[3]}  />
                                 </div>
 
                             </div>
@@ -422,12 +438,12 @@ export function InvoiceForm() {
                                     </select>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <select className='form-input-space' ref={reductionCodeRef} >
-                                        <option value="none" selected disabled hidden>Código</option>
+                                        <option value="none" defaultValue disabled hidden>Código</option>
                                         {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
 
                                     </select>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input className='form-input-space' placeholder='Monto' type="number" ref={reductionAmountRef} />
+                                    <input className='form-input-space' placeholder='Monto' type="number" ref={reductionAmountRef}  />
                                 </div>
                                 <div className='col-2'>
                                     <textarea className='form-text-area-space' placeholder='Descripción' type="text" ref={reductionDescriptionRef}></textarea>
@@ -508,16 +524,16 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Sub-total </h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer} />
+                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer} {...register('total', { required: true })}/>
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Total</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer} />
+                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer} {...register('subTotal', { required: true })}/>
                                 </div>
                                 <div className='col-2'>
-                                    <button className='form-button-space' type="button" onClick={testClick} >Guardar</button>
+                                <input className="form-button-space" type="submit" value="Guardar" />
                                 </div>
                             </div>
                         </form>
