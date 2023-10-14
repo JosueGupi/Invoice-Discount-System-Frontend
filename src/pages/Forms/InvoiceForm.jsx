@@ -18,6 +18,7 @@ export function InvoiceForm() {
         [subTotalTransfer, setSubTotalTransfer] = useState([]),
         [months, setMonths] = useState([]),
         [clientCodes, setClientCodes] = useState([]),
+        [idCodes,setIdCodes] = useState([]),
         invoiceNumberRef = useRef(),
         invoicePayerRef = useRef(),
         invoiceAmountRef = useRef(),
@@ -156,12 +157,15 @@ export function InvoiceForm() {
                 axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getClientCodes', data)
                     .then((response) => {
                         let codesArray = [0, 0, 0, 0];
+                        let idCodesArray = [0, 0, 0, 0];
 
                         for (let i = 0; i < response.data[0].length; i++) {
                             codesArray[response.data[0][i].CodeType] = response.data[0][i].Code;
+                            idCodesArray[response.data[0][i].CodeType] = response.data[0][i].idAccountingCodes
                         }
                         console.log("codesArray", codesArray)
                         setClientCodes(codesArray);
+                        setIdCodes(idCodesArray)
                     })
             } catch (err) {
                 console.log(err)
@@ -185,12 +189,31 @@ export function InvoiceForm() {
     }, []);
 
     useEffect(() => { updateTotals() }, [invoices, reductions]);
-    const onSubmit =  (data,event) => {
+    const onSubmit =  async (data,event) => {
         
-        console.log(data)
+        //console.log(data)
         
+        data.idClient = clientIdRef.current.value;
+        data.transferCost = costRef.current.value;
+        data.honoraries = honorariesRef.current.value;
+        data.comission = comissionsRef.current.value;
+        data.interest = interestRef.current.value;
+        data.term = termRef.current.value;
+        data.fee = rentTaxRef.current.checked;
+        data.total = totalTransfer;
+        data.subTotal = subTotalTransfer;
+        data.reductions = reductions;
+        data.invoices = invoices;
+        data.retention = retentionsRef.current.value;
+        data.comissionCode = idCodes[0];
+        data.retentionCode = idCodes[3];
+        data.realInterestCode = idCodes[1];
+        data.deferredInterestCode = idCodes[2];
+        console.log("aqui",data);
+
         try {
-            
+            const response = await axios.post('http://localhost:3001/operations/createOperation',data)
+            console.log(response,response);
         } catch (err) {
             
         }
@@ -232,7 +255,7 @@ export function InvoiceForm() {
                                 <div className='col-2'>
                                     <select className='form-input-space' {...register('opCode', { required: true })}>
                                         <option value="none" defaultValue disabled hidden>Código</option>
-                                        {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
+                                        {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
 
                                     </select>
                                 </div>
@@ -323,7 +346,7 @@ export function InvoiceForm() {
 
                                     <select className='form-input-space'  {...register('legalExpenseCode', { required: true })}>
                                         <option value="none" defaultValue disabled hidden>Código Gastos Legales</option>
-                                        {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
+                                        {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
 
                                     </select>
                                 </div>
@@ -352,9 +375,9 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>CódigoCosto de Transferencia </h2>
                                 </div>
                                 <div className='col-2'>
-                                    <select className='form-input-space'  >
+                                    <select className='form-input-space' {...register('transferCode', { required: true })} >
                                         <option value="none" defaultValue disabled hidden>Código Costo Transferencia</option>
-                                        {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
+                                        {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
 
                                     </select>
                                 </div>
@@ -401,7 +424,7 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Código Retención</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Codigo Retención' type="number" value={clientCodes[3]}  />
+                                    <input className='form-input-space' placeholder='Codigo Retención' type="number" value={clientCodes[3]}  {...register('retentionCode' , {required:true})}/>
                                 </div>
 
                             </div>
