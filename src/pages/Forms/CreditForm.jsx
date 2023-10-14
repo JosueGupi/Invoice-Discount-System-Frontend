@@ -1,15 +1,16 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useState, useRef } from 'react'
+import axios from 'axios'
+
 import { useForm } from 'react-hook-form';
-
-
 import { useNavigate, useLocation } from 'react-router-dom';
-
-
+import './Form.css'
 
 export function CreditForm() {
     const navigate = useNavigate();
     const { state } = useLocation()
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit } = useForm(),
+    [operations, setOperations] = useState([]),
+    [codes, setCodes] = useState([]);
 
     const goToFormMenu = () => {
 
@@ -28,7 +29,10 @@ export function CreditForm() {
         if (state == null) {
             navigate('/')
         } else {
-
+            axios.get('http://localhost:3001/operations/getOperations')
+                .then((response) => setOperations(response.data))
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getCodes')
+                .then((response) => setCodes(response.data))
         }
 
 
@@ -55,10 +59,9 @@ export function CreditForm() {
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <center>
 
-                                    <select className="form-input"
-                                        placeholder="Dueño"
-
-                                        {...register('idClient', { required: true })}>
+                                <select className='form-input'{...register('opNumber', { required: true })}>
+                                        <option value="none" defaultValue disabled hidden>Operacion</option>
+                                        {operations.map((operation) => <option value={operation.idOperation}>{operation.idOperation}</option>)}
                                     </select>
                                     <br />
                                     <br />
@@ -73,12 +76,11 @@ export function CreditForm() {
                                     <br />
                                     <br />
                                     <br />
-                                    <input className="form-input" type="text"
-                                        placeholder="Código"
-                                        
-                                        maxLength="32"
-                                        {...register('code', { required: true })}
-                                    />
+                                    <select className='form-input' {...register('opCode', { required: true })}>
+                                        <option value="none" defaultValue disabled hidden>Código</option>
+                                        {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
+
+                                    </select>
                                     <br />
                                     <br />
                                     <br />

@@ -1,37 +1,224 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useState, useRef } from 'react'
+import axios from 'axios'
 
-
-
+import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import './Form.css'
 
 
 export function LoanForm() {
-    const navigate = useNavigate();
-    const { state } = useLocation()
+    const navigate = useNavigate(),
+        { state } = useLocation(),
+        { register, handleSubmit } = useForm(),
+        [invoices, setInvoices] = useState([]),
+        [reductions, setReductions] = useState([]),
+        [codes, setCodes] = useState([]),
+        [operations, setOperations] = useState([]),
+        [clients, setClients] = useState([]),
+        [totalTransfer, setTotalTransfer] = useState([]),
+        [months, setMonths] = useState([]),
+        [clientCodes, setClientCodes] = useState([]),
+        [idCodes, setIdCodes] = useState([]),
+        [opNumberOg, setOpNumberOg] = useState([]),
+        invoiceNumberRef = useRef(),
+        invoicePayerRef = useRef(),
+        invoiceAmountRef = useRef(),
+        invoiceDateRef = useRef(),
+        reductionNumberRef = useRef(),
+        reductionCodeRef = useRef(),
+        reductionAmountRef = useRef(),
+        reductionDescriptionRef = useRef(),
+        costRef = useRef(0),
+        honorariesRef = useRef(0),
+        comissionsRef = useRef(0),
+        interestRef = useRef(0),
+        termRef = useRef(),
+        rentTaxRef = useRef(0),
+        clientIdRef = useRef(0),
+        retentionsRef = useRef(0),
+        subTotalRef = useRef(0);
 
-    const goToInvoiceForm = () => {
+    function obtainDates(term) {
+        const result = [];
+        let dateInfo = new Date();
 
-        navigate('/clientMenu', { state });
+        while (term > 0) {
+            const month = dateInfo.toLocaleString('default', { month: 'long' });
+            const daysMonth = new Date(dateInfo.getFullYear(), dateInfo.getMonth() + 1, 0).getDate();
+            const daysInMonth = daysMonth - dateInfo.getDate() + 1;
+            const takenDays = Math.min(term, daysInMonth);
+
+            result.push({ month: month, days: takenDays, interest: 0 });
+            term -= takenDays;
+            dateInfo.setMonth(dateInfo.getMonth() + 1, 1);
+        }
+
+        return result;
+    }
+
+
+    const goToFormMenu = () => {
+        localStorage.setItem('menuName', JSON.stringify('Menú Principal'));
+        navigate("/formMenu", { state });
     },
-        goToFormMenu = () => {
-            localStorage.setItem('menuName', JSON.stringify('Menú Principal'));
-            navigate("/formMenu", { state });
+
+        addInvoice = (event) => {
+
+            const newInvoiceNumber = invoiceNumberRef.current.value,
+                newInvoicePayer = invoicePayerRef.current.value,
+                newInvoiceAmount = invoiceAmountRef.current.value,
+                newInvoiceDate = invoiceDateRef.current.value;
+            console.log('Invoice');
+
+            if (newInvoiceNumber === '' || newInvoicePayer === '' || newInvoiceAmount === '' || newInvoiceDate === '') {
+                return;
+            }
+            setInvoices((prevInvoices) => {
+                return [...prevInvoices, { number: newInvoiceNumber, amount: newInvoiceAmount, date: newInvoiceDate, payer: newInvoicePayer }];
+            })
+            invoiceNumberRef.current.value = null;
+            invoicePayerRef.current.value = null;
+            invoiceAmountRef.current.value = null;
+            invoiceDateRef.current.value = null;
+
         },
-        testClick = () => {
-            console.log('CLick')
+        cleanInvoices = (event) => {
+            setInvoices([]);
+        },
+        addReductions = (event) => {
+
+
+            const newReductionNumber = reductionNumberRef.current.value,
+                newReductionCode = reductionCodeRef.current.value,
+                newReductionAmount = reductionAmountRef.current.value,
+                newReductionDescription = reductionDescriptionRef.current.value;
+
+            if (newReductionNumber === '' || newReductionAmount === '') {
+                return;
+            }
+            setReductions((prevReductions) => {
+                return [...prevReductions, { number: newReductionNumber, code: newReductionCode, amount: newReductionAmount, description: newReductionDescription }];
+            })
+            reductionNumberRef.current.value = null;
+            reductionCodeRef.current.value = null;
+            reductionAmountRef.current.value = null;
+            reductionDescriptionRef.current.value = null;
+
+
+        },
+        cleanReductions = (event) => {
+            setReductions([]);
+        },
+        updateTotals = () => {
+
+            let total = subTotalRef.current.value;
+                
+            const cost = Number(costRef.current.value),
+                honoraries = Number(honorariesRef.current.value),
+                comission = Number(comissionsRef.current.value),
+                interest = Number(interestRef.current.value),
+                rentTax = Number(rentTaxRef.current.checked),
+                term = Number(termRef.current.value),
+                retentions = Number(retentionsRef.current.value);
+
+
+            let totalInterest = (((interest / 100) / 30) * term * total);
+            total -= (cost
+                + honoraries
+                + ((comission / 100) * total)
+                + totalInterest
+                + (rentTax * 0.02 * total)
+                + ((retentions / 100) * total));
+
+            for (let i = 0; i < reductions.length; i++) {
+                total -= Number(reductions[i].amount);
+            }
+            
+            setTotalTransfer(total);
+            let interestList = obtainDates(term);
+            let index = 1;
+            for (let i = 0; i < interestList.length; i++) {
+                interestList[i].interest = (interestList[i].days / term) * totalInterest;
+                interestList[i].code = clientCodes[index === 1 ? index : 2]
+                index = 0;
+            }
+            setMonths(interestList);
+
+        },
+        getUserCodes = (e) => {
+            try {
+
+                const idClient = clientIdRef.current.value,
+                    data = { idClient: idClient };
+
+                axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getClientCodes', data)
+                    .then((response) => {
+                        let codesArray = [0, 0, 0, 0];
+                        let idCodesArray = [0, 0, 0, 0];
+
+                        for (let i = 0; i < response.data[0].length; i++) {
+                            codesArray[response.data[0][i].CodeType] = response.data[0][i].Code;
+                            idCodesArray[response.data[0][i].CodeType] = response.data[0][i].idAccountingCodes
+                        }
+                        console.log("codesArray", codesArray)
+                        setClientCodes(codesArray);
+                        setIdCodes(idCodesArray)
+                    })
+            } catch (err) {
+                console.log(err)
+            }
+
         };
+
     useEffect(() => {
 
 
         if (state == null) {
             navigate('/')
         } else {
-
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getCodes')
+                .then((response) => setCodes(response.data))
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
+                .then((response) => setClients(response.data))
+            axios.get('http://localhost:3001/operations/getLastNumberOP')
+                .then((response) => setOpNumberOg(response.data[0].opNumber))
+            axios.get('http://localhost:3001/operations/getOperations')
+                .then((response) => setOperations(response.data))
         }
 
 
     }, []);
+
+    useEffect(() => { updateTotals() }, [invoices, reductions]);
+    const onSubmit = async (data, event) => {
+
+
+        data.idClient = clientIdRef.current.value;
+        data.transferCost = costRef.current.value;
+        data.honoraries = honorariesRef.current.value;
+        data.comission = comissionsRef.current.value;
+        data.interest = interestRef.current.value;
+        data.term = termRef.current.value;
+        data.fee = rentTaxRef.current.checked;
+        data.total = totalTransfer;
+        data.subTotal = subTotalRef.current.value;
+        data.reductions = reductions;
+        data.invoices = invoices;
+        data.retention = retentionsRef.current.value;
+        data.comissionCode = idCodes[0];
+        data.retentionCode = idCodes[3];
+        data.realInterestCode = idCodes[1];
+        data.deferredInterestCode = idCodes[2];
+        console.log("aqui", data);
+
+        try {
+            const response = await axios.post('http://localhost:3001/operations/createOperation', data)
+            console.log("response", response);
+        } catch (err) {
+
+        }
+    }
+
 
 
 
@@ -43,35 +230,33 @@ export function LoanForm() {
 
                 <div className='container-fluid big-container'>
                     <div className='form-container'>
-                        <form action="">
+                        <form onSubmit={handleSubmit(onSubmit)}>
                             <div className='row'>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>No. Operación</h2>
                                 </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' placeholder='No. Operación' type="number" />
+                                <div className='col-2'>
+                                    <input className='form-input-space' value={opNumberOg} placeholder='No. Operación' type="number" />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Cliente</h2>
                                 </div>
-                                <div className='col-1'>
-                                    <select className='form-input-space' >
-                                        <option value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                <div className='col-2'>
+                                    <select className='form-input-space' ref={clientIdRef} onChange={getUserCodes} >
+
+                                        <option value="none" defaultValue disabled hidden>Cliente</option>
+                                        {clients.map((client) => <option value={client.idClient}>{client.Name}</option>)}
                                     </select>
                                 </div>
 
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Código Contable</h2>
                                 </div>
-                                <div className='col-1'>
-                                    <select className='form-input-space' >
-                                        <option value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                <div className='col-2'>
+                                    <select className='form-input-space' {...register('opCode', { required: true })}>
+                                        <option value="none" defaultValue disabled hidden>Código</option>
+                                        {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
+
                                     </select>
                                 </div>
 
@@ -79,12 +264,41 @@ export function LoanForm() {
                                     <h2 className='form-subtitle'>Dólares</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' type="checkbox" />
+                                    <input className='form-input-space' type="checkbox" {...register('dollars', { required: true })} />
                                 </div>
 
                             </div>
                             <br />
-                            
+
+
+                            <br />
+                            <div className='row'>
+
+                                <div className='col-1'>
+                                    <h2 className='form-subtitle'>Sub-Total</h2>
+                                </div>
+                                <div className='col-2'>
+                                    <input className='form-input-space' placeholder='Total' type="number"  ref={subTotalRef} onChange={updateTotals}/>
+                                </div>
+
+                                <div className='col-2'>
+                                    <h2 className='form-subtitle'>Comisión</h2>
+                                    <input className='form-input-space' value={clientCodes[0]} placeholder='Codigo Comisión' type="number" {...register('comissionCode', { required: true })} />
+                                </div>
+                                <div className='col-2'>
+                                    <h2 className='form-subtitle'>Gastos Legales</h2>
+                                    <select className='form-input-space'  {...register('legalExpenseCode', { required: true })}>
+                                        <option value="none" defaultValue disabled hidden>Código Gastos Legales</option>
+                                        {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
+
+                                    </select>
+                                </div>
+
+
+
+                            </div>
+                            <br />
+
                             <br />
                             <div className='row'>
                                 <center>
@@ -94,42 +308,66 @@ export function LoanForm() {
                             <br />
                             <div className='row'>
                                 <div className='col-1'>
-                                    <h2 className='form-subtitle'>Costo de Depósito </h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Costo' type="number" />
-                                </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Honorarios</h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Honorarios' type="number" />
+                                    <h2 className='form-subtitle'>Costo de Transferencia </h2>
                                 </div>
 
+                                <div className='col-1'>
+                                    <input className='form-input-space' placeholder='Costo' type="number" ref={costRef} onChange={updateTotals} />
+                                </div>
+                                <div className='col-2'>
+                                    <h2 className='form-subtitle'>CódigoCosto de Transferencia </h2>
+                                </div>
+                                <div className='col-2'>
+                                    <select className='form-input-space' {...register('transferCode', { required: true })} >
+                                        <option value="none" defaultValue disabled hidden>Código Costo Transferencia</option>
+                                        {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
+
+                                    </select>
+                                </div>
+                                <div className='col-1'>
+                                    <h2 className='form-subtitle'>Gastos Legales</h2>
+                                </div>
+                                <div className='col-1'>
+                                    <input className='form-input-space' placeholder='Honorarios' type="number" ref={honorariesRef} onChange={updateTotals} />
+                                </div>
+                                <div className='col-1'>
+                                    <h2 className='form-subtitle'>Retención</h2>
+                                </div>
+                                <div className='col-1'>
+                                    <input className='form-input-space' placeholder='Retención' type="number" ref={retentionsRef} onChange={updateTotals} />
+                                </div>
+                            </div>
+                            <div className='row'>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Comisión</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Comisión' type="number" />
+                                    <input className='form-input-space' placeholder='Comisión' type="number" ref={comissionsRef} onChange={updateTotals} />
                                 </div>
 
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Intereses</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Intereses' type="number" />
+                                    <input className='form-input-space' placeholder='Intereses' type="number" ref={interestRef} onChange={updateTotals} />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Plazo</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Plazo' type="number" />
+                                    <input className='form-input-space' placeholder='Plazo' type="number" ref={termRef} onChange={updateTotals} />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Impuesto de Renta</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' type="checkbox" />
+                                    <input className='form-input-space' type="checkbox" ref={rentTaxRef} onChange={updateTotals} />
+                                </div>
+                                <div className='col-1'>
+                                    <h2 className='form-subtitle'>Código Retención</h2>
+                                </div>
+                                <div className='col-2'>
+                                    <input className='form-input-space' placeholder='Codigo Retención' type="number" value={clientCodes[3]}  {...register('retentionCode', { required: true })} />
                                 </div>
 
                             </div>
@@ -158,204 +396,49 @@ export function LoanForm() {
 
                                 </div>
                                 <div className='col-2'>
-                                    <select className='form-input-space' >
-                                        <option value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                    <select className='form-input-space' ref={reductionNumberRef}>
+                                        <option value="none" defaultValue disabled hidden>Código</option>
+                                        {operations.map((operation) => <option value={operation.idOperation}>{operation.idOperation}</option>)}
                                     </select>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <select className='form-input-space' >
-                                        <option value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                    <select className='form-input-space' ref={reductionCodeRef} >
+                                        <option value="none" defaultValue disabled hidden>Código</option>
+                                        {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
+
                                     </select>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input className='form-input-space' placeholder='Monto' type="number" />
+                                    <input className='form-input-space' placeholder='Monto' type="number" ref={reductionAmountRef} />
                                 </div>
                                 <div className='col-2'>
-                                    <textarea className='form-text-area-space' placeholder='Descripción' type="text" ></textarea>
+                                    <textarea className='form-text-area-space' placeholder='Descripción' type="text" ref={reductionDescriptionRef}></textarea>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <button className='form-button-space' type="button" onClick={testClick} >Agregar</button>
+                                    <button className='form-button-space' type="button" onClick={addReductions} >Agregar</button>
                                 </div>
                                 <div className='col-3'>
                                     <div className='scroll-table'>
                                         <table className='table table-striped' width="100%">
                                             <thead className='table-own'>
                                                 <tr>
-                                                    <th class="th-sm">No. Operacion
+                                                    <th className="th-sm">No. Operacion
                                                     </th>
-                                                    <th class="th-sm">Código
+                                                    <th className="th-sm">Código
                                                     </th>
-                                                    <th class="th-sm">Monto
+                                                    <th className="th-sm">Monto
                                                     </th>
 
 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Tiger Nixon</td>
-                                                    <td>System Architect</td>
-                                                    <td>Edinburgh</td>
+                                                {reductions.map((reduction) =>
+                                                    <tr>
+                                                        <td>{reduction.number}</td>
+                                                        <td>{reduction.code}</td>
+                                                        <td>{reduction.amount}</td>
 
+                                                    </tr>
 
-                                                </tr>
-                                                <tr>
-                                                    <td>Garrett Winters</td>
-                                                    <td>Accountant</td>
-                                                    <td>Tokyo</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Ashton Cox</td>
-                                                    <td>Junior Technical Author</td>
-                                                    <td>San Francisco</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Cedric Kelly</td>
-                                                    <td>Senior Javascript Developer</td>
-                                                    <td>Edinburgh</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Airi Satou</td>
-                                                    <td>Accountant</td>
-                                                    <td>Tokyo</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Brielle Williamson</td>
-                                                    <td>Integration Specialist</td>
-                                                    <td>New York</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Herrod Chandler</td>
-                                                    <td>Sales Assistant</td>
-                                                    <td>San Francisco</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Rhona Davidson</td>
-                                                    <td>Integration Specialist</td>
-                                                    <td>Tokyo</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Colleen Hurst</td>
-                                                    <td>Javascript Developer</td>
-                                                    <td>San Francisco</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Sonya Frost</td>
-                                                    <td>Software Engineer</td>
-                                                    <td>Edinburgh</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Jena Gaines</td>
-                                                    <td>Office Manager</td>
-                                                    <td>London</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Quinn Flynn</td>
-                                                    <td>Support Lead</td>
-                                                    <td>Edinburgh</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Charde Marshall</td>
-                                                    <td>Regional Director</td>
-                                                    <td>San Francisco</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Haley Kennedy</td>
-                                                    <td>Senior Marketing Designer</td>
-                                                    <td>London</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Tatyana Fitzpatrick</td>
-                                                    <td>Regional Director</td>
-                                                    <td>London</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Michael Silva</td>
-                                                    <td>Marketing Designer</td>
-                                                    <td>London</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Paul Byrd</td>
-                                                    <td>Chief Financial Officer (CFO)</td>
-                                                    <td>New York</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Gloria Little</td>
-                                                    <td>Systems Administrator</td>
-                                                    <td>New York</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Bradley Greer</td>
-                                                    <td>Software Engineer</td>
-                                                    <td>London</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Dai Rios</td>
-                                                    <td>Personnel Lead</td>
-                                                    <td>Edinburgh</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Jenette Caldwell</td>
-                                                    <td>Development Lead</td>
-                                                    <td>New York</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Yuri Berry</td>
-                                                    <td>Chief Marketing Officer (CMO)</td>
-                                                    <td>New York</td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Caesar Vance</td>
-                                                    <td>Pre-Sales Support</td>
-                                                    <td>New York</td>
-
-
-                                                </tr>
+                                                )}
 
                                             </tbody>
 
@@ -367,178 +450,25 @@ export function LoanForm() {
                                         <table className='table table-striped' width="100%">
                                             <thead className='table-own'>
                                                 <tr>
-                                                    <th class="th-sm">Mes
+                                                    <th className="th-sm">Mes
                                                     </th>
-                                                    <th class="th-sm">Monto
+                                                    <th className="th-sm">Monto
                                                     </th>
-
+                                                    <th className="th-sm">Código
+                                                    </th>
 
 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Tiger Nixon</td>
-                                                    <td>System Architect</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Garrett Winters</td>
-                                                    <td>Accountant</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Ashton Cox</td>
-                                                    <td>Junior Technical Author</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Cedric Kelly</td>
-                                                    <td>Senior Javascript Developer</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Airi Satou</td>
-                                                    <td>Accountant</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Brielle Williamson</td>
-                                                    <td>Integration Specialist</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Herrod Chandler</td>
-                                                    <td>Sales Assistant</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Rhona Davidson</td>
-                                                    <td>Integration Specialist</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Colleen Hurst</td>
-                                                    <td>Javascript Developer</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Sonya Frost</td>
-                                                    <td>Software Engineer</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Jena Gaines</td>
-                                                    <td>Office Manager</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Quinn Flynn</td>
-                                                    <td>Support Lead</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Charde Marshall</td>
-                                                    <td>Regional Director</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Haley Kennedy</td>
-                                                    <td>Senior Marketing Designer</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Tatyana Fitzpatrick</td>
-                                                    <td>Regional Director</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Michael Silva</td>
-                                                    <td>Marketing Designer</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Paul Byrd</td>
-                                                    <td>Chief Financial Officer (CFO)</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Gloria Little</td>
-                                                    <td>Systems Administrator</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Bradley Greer</td>
-                                                    <td>Software Engineer</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Dai Rios</td>
-                                                    <td>Personnel Lead</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Jenette Caldwell</td>
-                                                    <td>Development Lead</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Yuri Berry</td>
-                                                    <td>Chief Marketing Officer (CMO)</td>
-
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Caesar Vance</td>
-                                                    <td>Pre-Sales Support</td>
-
-
-
-                                                </tr>
-
+                                                {months.map((month) =>
+                                                    <tr>
+                                                        <td>{month.month}</td>
+                                                        <td>{month.interest.toFixed(2)}</td>
+                                                        <td>{month.code}</td>
+                                                    </tr>
+
+                                                )}
                                             </tbody>
 
                                         </table>
@@ -555,19 +485,14 @@ export function LoanForm() {
                             <br />
                             <div className='row'>
                                 <div className='col-1'>
-                                    <h2 className='form-subtitle'>Sub-total </h2>
+                                    <h2 className='form-subtitle'>Total </h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Sub-total' type="number" />
+                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer} {...register('total', { required: true })} />
                                 </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Total</h2>
-                                </div>
+
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Total' type="number" />
-                                </div>
-                                <div className='col-2'>
-                                    <button className='form-button-space' type="button" onClick={testClick} >Guardar</button>
+                                    <input className="form-button-space" type="submit" value="Guardar" />
                                 </div>
                             </div>
                         </form>

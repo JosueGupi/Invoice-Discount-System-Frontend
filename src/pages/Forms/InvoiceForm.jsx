@@ -13,12 +13,14 @@ export function InvoiceForm() {
         [invoices, setInvoices] = useState([]),
         [reductions, setReductions] = useState([]),
         [codes, setCodes] = useState([]),
+        [operations, setOperations] = useState([]),
         [clients, setClients] = useState([]),
         [totalTransfer, setTotalTransfer] = useState([]),
         [subTotalTransfer, setSubTotalTransfer] = useState([]),
         [months, setMonths] = useState([]),
         [clientCodes, setClientCodes] = useState([]),
         [idCodes,setIdCodes] = useState([]),
+        [opNumberOg, setOpNumberOg] = useState([]),
         invoiceNumberRef = useRef(),
         invoicePayerRef = useRef(),
         invoiceAmountRef = useRef(),
@@ -131,13 +133,14 @@ export function InvoiceForm() {
                 + totalInterest
                 + (rentTax * 0.02 * total)
                 + ((retentions / 100) * total));
-            setTotalTransfer(total);
+            
 
             subTotal = total;
             for (let i = 0; i < reductions.length; i++) {
-                subTotal -= Number(reductions[i].amount);
+                total -= Number(reductions[i].amount);
             }
             setSubTotalTransfer(subTotal);
+            setTotalTransfer(total);
             let interestList = obtainDates(term);
             let index = 1;
             for (let i = 0; i < interestList.length; i++) {
@@ -183,6 +186,10 @@ export function InvoiceForm() {
                 .then((response) => setCodes(response.data))
             axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
                 .then((response) => setClients(response.data))
+            axios.get('http://localhost:3001/operations/getLastNumberOP')
+                .then((response) => setOpNumberOg(response.data[0].opNumber))
+            axios.get('http://localhost:3001/operations/getOperations')
+                .then((response) => setOperations(response.data))
         }
 
 
@@ -236,7 +243,7 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>No. Operación</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='No. Operación' type="number"  />
+                                    <input className='form-input-space' value={opNumberOg}placeholder='No. Operación' type="number"  />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Cliente</h2>
@@ -454,10 +461,8 @@ export function InvoiceForm() {
                                 </div>
                                 <div className='col-2'>
                                     <select className='form-input-space' ref={reductionNumberRef}>
-                                        <option value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                        <option value="none" defaultValue disabled hidden>Código</option>
+                                        {operations.map((operation) => <option value={operation.idOperation}>{operation.idOperation}</option>)}
                                     </select>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <select className='form-input-space' ref={reductionCodeRef} >
@@ -544,13 +549,13 @@ export function InvoiceForm() {
                             <br />
                             <div className='row'>
                                 <div className='col-1'>
-                                    <h2 className='form-subtitle'>Sub-total </h2>
+                                    <h2 className='form-subtitle'>Total </h2>
                                 </div>
                                 <div className='col-2'>
                                     <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer} {...register('total', { required: true })}/>
                                 </div>
                                 <div className='col-1'>
-                                    <h2 className='form-subtitle'>Total</h2>
+                                    <h2 className='form-subtitle'>Sub-Total</h2>
                                 </div>
                                 <div className='col-2'>
                                     <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer} {...register('subTotal', { required: true })}/>
