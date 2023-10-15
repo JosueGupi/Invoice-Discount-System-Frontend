@@ -18,7 +18,8 @@ export function CreditForm() {
     },
     onSubmit = async (data) => {
         try {
-            
+            console.log(data);
+            //const response = await axios.post('http://localhost:3001/operations/createOperation', data)
         } catch (err) {
             alert(err, 'Error');
         }

@@ -4,6 +4,7 @@ body,
 .App {
   height: 100%;
   width: 100%;
+  
 }
 
 .backgroundImage {
@@ -27,6 +28,7 @@ body,
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  background-position: center;
 
 }
 

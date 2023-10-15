@@ -198,7 +198,7 @@ export function InvoiceForm() {
     useEffect(() => { updateTotals() }, [invoices, reductions]);
     const onSubmit =  async (data,event) => {
         
-        //console.log(data)
+
         
         data.idClient = clientIdRef.current.value;
         data.transferCost = costRef.current.value;
@@ -221,6 +221,7 @@ export function InvoiceForm() {
         try {
             const response = await axios.post('http://localhost:3001/operations/createOperation',data)
             console.log(response,response);
+            
         } catch (err) {
             
         }
@@ -243,7 +244,7 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>No. Operación</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' value={opNumberOg}placeholder='No. Operación' type="number"  />
+                                    <input className='form-input-space' value={opNumberOg} placeholder='No. Operación' type="number" disabled />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Cliente</h2>
@@ -271,7 +272,7 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Dólares</h2>
                                 </div>
                                 <div className='col-1'>
-                                    <input className='form-input-space' type="checkbox" {...register('dollars', { required: true })} />
+                                    <input className='form-input-space' type="checkbox" {...register('dollars', { required: false })} />
                                 </div>
 
                             </div>
@@ -348,7 +349,7 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Gastos Legales</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' value={clientCodes[0]} placeholder='Codigo Comisión' type="number" {...register('comissionCode', { required: true })} />
+                                    <input className='form-input-space' value={clientCodes[0]} placeholder='Codigo Comisión' type="number" disabled {...register('comissionCode', { required: false })} />
                                     &nbsp;&nbsp;&nbsp;&nbsp;
 
                                     <select className='form-input-space'  {...register('legalExpenseCode', { required: true })}>
@@ -397,7 +398,7 @@ export function InvoiceForm() {
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Retención</h2>
                                 </div>
-                                <div className='col-1'>
+                                <div className='col-2'>
                                     <input className='form-input-space' placeholder='Retención' type="number" ref={retentionsRef} onChange={updateTotals} />
                                 </div>
                             </div>
@@ -431,7 +432,7 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Código Retención</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Codigo Retención' type="number" value={clientCodes[3]}  {...register('retentionCode' , {required:true})}/>
+                                    <input className='form-input-space' placeholder='Codigo Retención' type="number" value={clientCodes[3]}  disabled {...register('retentionCode' , {required:false})}/>
                                 </div>
 
                             </div>
@@ -552,13 +553,13 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Total </h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer} {...register('total', { required: true })}/>
+                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer} {...register('total', { required: false })}/>
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Sub-Total</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer} {...register('subTotal', { required: true })}/>
+                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer} {...register('subTotal', { required: false })}/>
                                 </div>
                                 <div className='col-2'>
                                 <input className="form-button-space" type="submit" value="Guardar" />
