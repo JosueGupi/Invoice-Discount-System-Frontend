@@ -12,6 +12,8 @@ import { MatrixVerification } from './pages/PasswordRecover/MatrixVerification';
 import { NewPassword } from './pages/PasswordRecover/NewPassword';
 import { MainMenu } from './pages/Menu/MainMenu';
 import { DataMenu } from './pages/Menu/DataMenu';
+import { ShowDataMenu } from './pages/Menu/ShowDataMenu';
+import { Calendar } from './pages/Calendar/Calendar';
 import { ClientMenu } from './pages/CRUDS/ClientMenu';
 import { ClientForm } from './pages/CRUDS/ClientForm';
 import { UserMenu } from './pages/CRUDS/UserMenu';
@@ -44,6 +46,9 @@ export function App() {
             <Route exact path="/mainMenu" element={<MainMenu />} />
             <Route exact path="/dataMenu" element={<DataMenu />} />
             <Route exact path="/formMenu" element={<FormMenu />} />
+            
+            <Route exact path="/showDataMenu" element={<ShowDataMenu />} />
+            <Route exact path="/calendar" element={<Calendar />} />
 
             <Route exact path="/clientMenu" element={<ClientMenu />} />
             <Route exact path="/clientForm" element={<ClientForm />} />

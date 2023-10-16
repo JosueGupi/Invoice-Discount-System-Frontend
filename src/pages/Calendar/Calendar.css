@@ -1,0 +1,112 @@
+.calendar-box{
+    width: 80%;
+    height: 80%;
+    background-color: #232323;
+    margin: 0 auto;
+    border-radius: 50px;
+    padding: 1.5rem;
+}
+
+.calendar-container{
+    width: 65%;
+    padding: 1.5rem;
+}
+
+.fc {
+    display: flex;
+    flex-direction: row;
+    font-size: 1em;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+    margin: 1.5em;
+    display: block;
+}
+
+.fc .fc-button-group {
+    display: inline-flex;
+    position: relative;
+    vertical-align: middle;
+    margin: 1.5em;
+}
+
+.fc .fc-view-harness-active > .fc-view {
+    inset: 0px;
+    position: absolute;
+    height: 80%;
+}
+
+.fc .fc-scrollgrid-section, .fc .fc-scrollgrid-section > td {
+    height: 1px;
+    background-color: #ffffff;
+}
+
+
+.fc .fc-col-header-cell-cushion {
+    display: inline-block;
+    padding: 2px 4px;
+    color: black;
+    text-decoration: none;
+}
+
+.fc .fc-daygrid-day-number {
+    padding: 4px;
+    position: relative;
+    z-index: 4;
+    color: black;
+    text-decoration: none;
+}
+
+.fc .fc-col-header-cell {
+    background-color: #9f9f9f;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.75em;
+    margin: 0px;
+    color: white;
+}
+
+.fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    margin-left: -1px;
+    background-color: #ffffff;
+    border-color: #232323;
+}
+
+.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    background-color: #ffffff;
+    border-color: #232323;
+}
+
+.fc .fc-button-primary:disabled {
+    background-color: white;
+    border-color: white;
+    color: #000000;
+}
+
+.fc .fc-button-primary {
+    background-color: #ffffff;
+    border-color: white;
+    color: #000000;
+}
+
+.fc .fc-button-primary:hover  {
+    background-color: #9f9f9f;
+    border-color: #9f9f9f;
+    color: #000000;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.75em;
+    margin: 0 auto;
+    color: white;
+    margin-top: 50%;
+}
+
+.fc-event-time {
+    display: none;
+}

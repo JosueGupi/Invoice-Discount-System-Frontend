@@ -21,6 +21,10 @@ export function MainMenu() {
         localStorage.setItem('menuName', JSON.stringify('Menú de Formularios'));
         navigate('/formMenu',{state});
     },
+    goToShowMenu = () => {
+        localStorage.setItem('menuName', JSON.stringify('Menú de ver datos'));
+        navigate('/showDataMenu',{state});
+    },
     goToLogOut = () => {
 
         navigate('/',);
@@ -71,7 +75,7 @@ export function MainMenu() {
                                 <br />
                                 <br />
                                 <br />
-                                <input className="form-button-menu" type="button" value="Datos" />
+                                <input className="form-button-menu" type="button" value="Datos" onClick={goToShowMenu}/>
                                 <br />
                                 <br />
                                 <br />

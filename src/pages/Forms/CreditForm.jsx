@@ -30,7 +30,7 @@ export function CreditForm() {
         if (state == null) {
             navigate('/')
         } else {
-            axios.get('http://localhost:3001/operations/getOperations')
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/getOperations')
                 .then((response) => setOperations(response.data))
             axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getCodes')
                 .then((response) => setCodes(response.data))

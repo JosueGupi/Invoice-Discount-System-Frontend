@@ -180,9 +180,9 @@ export function LoanForm() {
                 .then((response) => setCodes(response.data))
             axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
                 .then((response) => setClients(response.data))
-            axios.get('http://localhost:3001/operations/getLastNumberOP')
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/getLastNumberOP')
                 .then((response) => setOpNumberOg(response.data[0].opNumber))
-            axios.get('http://localhost:3001/operations/getOperations')
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/getOperations')
                 .then((response) => setOperations(response.data))
         }
 
@@ -212,7 +212,7 @@ export function LoanForm() {
         console.log("aqui", data);
 
         try {
-            const response = await axios.post('http://localhost:3001/operations/createOperation', data)
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/createOperation', data)
             console.log("response", response);
             console.log("response");
         } catch (err) {
