@@ -15,7 +15,7 @@ export function LoanForm() {
         [codes, setCodes] = useState([]),
         [operations, setOperations] = useState([]),
         [clients, setClients] = useState([]),
-        [totalTransfer, setTotalTransfer] = useState([]),
+        [totalTransfer, setTotalTransfer] = useState(0),
         [months, setMonths] = useState([]),
         [clientCodes, setClientCodes] = useState([]),
         [idCodes, setIdCodes] = useState([]),
