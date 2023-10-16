@@ -111,3 +111,11 @@ center {
     --bs-table-bg:#58585B;
     
 }
+.check-icon{
+    background-image:url('../../../public/check.png');
+    width: 140px; 
+    height: 140px;
+    background-size: cover; 
+    border: none;
+}
+

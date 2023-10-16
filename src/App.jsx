@@ -28,6 +28,7 @@ import { FormMenu } from './pages/Menu/FormMenu';
 import { CreditForm } from "./pages/Forms/CreditForm";
 import { InvoiceForm } from "./pages/Forms/InvoiceForm";
 import { LoanForm } from "./pages/Forms/LoanForm"; 
+import { PDFMenu } from "./pages/Forms/PDFMenu"; 
 import Nav from './molecules/Nav';
 
 export function App() {
@@ -64,6 +65,7 @@ export function App() {
             <Route exact path="/creditForm" element={<CreditForm />} />
             <Route exact path="/loanForm" element={<LoanForm />} />
             <Route exact path="/invoiceForm" element={<InvoiceForm />} />
+            <Route exact path="/pdfMenu" element={<PDFMenu />} />
           </Route>
 
         </Routes>

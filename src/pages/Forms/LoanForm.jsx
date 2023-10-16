@@ -213,8 +213,7 @@ export function LoanForm() {
 
         try {
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/createOperation', data)
-            console.log("response", response);
-            console.log("response");
+            //navigate('/userMenu',{state});
         } catch (err) {
 
         }
@@ -493,7 +492,7 @@ export function LoanForm() {
                                     <h2 className='form-subtitle'>Total </h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer} {...register('total', { required: false })} />
+                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer.toFixed(2)} {...register('total', { required: false })} />
                                 </div>
 
                                 <div className='col-2'>

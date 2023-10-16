@@ -221,7 +221,7 @@ export function InvoiceForm() {
         try {
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/createOperation',data)
             console.log(response,response);
-            
+            //navigate('/userMenu',{state});
         } catch (err) {
             
         }
@@ -553,13 +553,13 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Total </h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer} {...register('total', { required: false })}/>
+                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer.toFixed(2)} {...register('total', { required: false })}/>
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Sub-Total</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer} {...register('subTotal', { required: false })}/>
+                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer.toFixed(2)} {...register('subTotal', { required: false })}/>
                                 </div>
                                 <div className='col-2'>
                                 <input className="form-button-space" type="submit" value="Guardar" />
