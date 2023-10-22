@@ -295,7 +295,6 @@ export function InvoiceForm() {
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Monto</h2>
                                     <br />
-                                    <br />
                                     <h2 className='form-subtitle'>Pagador</h2>
                                 </div>
                                 <div className='col-1'>
@@ -345,7 +344,6 @@ export function InvoiceForm() {
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Comisión</h2>
                                     <br />
-                                    <br />
                                     <h2 className='form-subtitle'>Gastos Legales</h2>
                                 </div>
                                 <div className='col-2'>
@@ -380,7 +378,9 @@ export function InvoiceForm() {
                                     <input className='form-input-space' placeholder='Costo' type="number" ref={costRef} onChange={updateTotals} />
                                 </div>
                                 <div className='col-2'>
-                                    <h2 className='form-subtitle'>CódigoCosto de Transferencia </h2>
+                                    <h2 className='form-subtitle'>Código de Transferencia </h2>
+                                    <br/>
+                                    <br/>
                                 </div>
                                 <div className='col-2'>
                                     <select className='form-input-space' {...register('transferCode', { required: true })} >
