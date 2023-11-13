@@ -1,5 +1,4 @@
-
-.nav-container{
+.nav-container {
     color: white;
     background-color: #232323;
     height: 80px;
@@ -8,14 +7,13 @@
     font-weight: bold;
 }
 
-.name-container{
-    color:#232323;
+.name-container {
+    color: #232323;
     background-color: white;
     border-radius: 30px 0px 0px 30px;
-    
+
     width: 20%;
-   right: 0%;
-   position: absolute;
-     
+    right: 0%;
+    position: absolute;
+
 }
- 

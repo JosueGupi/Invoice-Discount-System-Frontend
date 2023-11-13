@@ -61,6 +61,7 @@ export function ClientMenu() {
     return (
         <Fragment >
             <div className='backgroundColor'>
+                <br />
                 <div className='container-cards'>
                     <div className='row'>
                         <div className='input_symbol'>

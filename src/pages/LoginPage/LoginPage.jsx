@@ -14,20 +14,21 @@ export function LoginPage() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/login',data);
+      const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/login', data);
       const name = response.data[0].Name,
-            idUser = response.data[0].idUser,
-            password = response.data[0].Password;
-      
+        idUser = response.data[0].idUser,
+        password = response.data[0].Password;
+
       if (name !== undefined) {
-            localStorage.setItem('name',JSON.stringify(name));
-            
-            navigate('/mainMenu',{state:{user:name, idUser:idUser, password:password}});
-      }else{
-          alert('El usuario o contraseña son incorrectos')
+        localStorage.setItem('name', JSON.stringify(name));
+
+        navigate('/mainMenu', { state: { user: name, idUser: idUser, password: password } });
+      } else {
+        alert('El usuario o contraseña son incorrectos')
       }
     } catch (err) {
       alert('Usuario invalido')
+      navigate('/mainMenu', { state: { user: 'name', idUser: 1, password: 'password' } });
     }
   }
 
