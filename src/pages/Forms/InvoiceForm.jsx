@@ -19,7 +19,7 @@ export function InvoiceForm() {
         [subTotalTransfer, setSubTotalTransfer] = useState(0),
         [months, setMonths] = useState([]),
         [clientCodes, setClientCodes] = useState([]),
-        [idCodes,setIdCodes] = useState([]),
+        [idCodes, setIdCodes] = useState([]),
         [opNumberOg, setOpNumberOg] = useState([]),
         invoiceNumberRef = useRef(),
         invoicePayerRef = useRef(),
@@ -133,7 +133,7 @@ export function InvoiceForm() {
                 + totalInterest
                 + (rentTax * 0.02 * total)
                 + ((retentions / 100) * total));
-            
+
 
             subTotal = total;
             for (let i = 0; i < reductions.length; i++) {
@@ -156,7 +156,7 @@ export function InvoiceForm() {
 
                 const idClient = clientIdRef.current.value,
                     data = { idClient: idClient };
-                
+
                 axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getClientCodes', data)
                     .then((response) => {
                         let codesArray = [0, 0, 0, 0];
@@ -174,6 +174,13 @@ export function InvoiceForm() {
                 console.log(err)
             }
 
+        },
+        saveCesion = () => {
+            // save cesion 
+            // ???
+
+            // navigate to pdfmenu
+            navigate("/pdfMenu", { state });
         };
 
     useEffect(() => {
@@ -196,10 +203,10 @@ export function InvoiceForm() {
     }, []);
 
     useEffect(() => { updateTotals() }, [invoices, reductions]);
-    const onSubmit =  async (data,event) => {
-        
+    const onSubmit = async (data, event) => {
 
-        
+
+
         data.idClient = clientIdRef.current.value;
         data.transferCost = costRef.current.value;
         data.honoraries = honorariesRef.current.value;
@@ -216,14 +223,14 @@ export function InvoiceForm() {
         data.retentionCode = idCodes[3];
         data.realInterestCode = idCodes[1];
         data.deferredInterestCode = idCodes[2];
-        console.log("aqui",data);
+        console.log("aqui", data);
 
         try {
-            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/createOperation',data)
-            console.log(response,response);
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/createOperation', data)
+            console.log(response, response);
             //navigate('/userMenu',{state});
         } catch (err) {
-            
+
         }
     }
 
@@ -251,7 +258,7 @@ export function InvoiceForm() {
                                 </div>
                                 <div className='col-2'>
                                     <select className='form-input-space' ref={clientIdRef} onChange={getUserCodes} >
-                                        
+
                                         <option value="none" defaultValue disabled hidden>Cliente</option>
                                         {clients.map((client) => <option value={client.idClient}>{client.Name}</option>)}
                                     </select>
@@ -379,8 +386,8 @@ export function InvoiceForm() {
                                 </div>
                                 <div className='col-2'>
                                     <h2 className='form-subtitle'>Código de Transferencia </h2>
-                                    <br/>
-                                    <br/>
+                                    <br />
+                                    <br />
                                 </div>
                                 <div className='col-2'>
                                     <select className='form-input-space' {...register('transferCode', { required: true })} >
@@ -432,7 +439,7 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Código Retención</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Codigo Retención' type="number" value={clientCodes[3]}  disabled {...register('retentionCode' , {required:false})}/>
+                                    <input className='form-input-space' placeholder='Codigo Retención' type="number" value={clientCodes[3]} disabled {...register('retentionCode', { required: false })} />
                                 </div>
 
                             </div>
@@ -472,7 +479,7 @@ export function InvoiceForm() {
 
                                     </select>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input className='form-input-space' placeholder='Monto' type="number" ref={reductionAmountRef}  />
+                                    <input className='form-input-space' placeholder='Monto' type="number" ref={reductionAmountRef} />
                                 </div>
                                 <div className='col-2'>
                                     <textarea className='form-text-area-space' placeholder='Descripción' type="text" ref={reductionDescriptionRef}></textarea>
@@ -553,16 +560,16 @@ export function InvoiceForm() {
                                     <h2 className='form-subtitle'>Total </h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer.toFixed(2)} {...register('total', { required: false })}/>
+                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer.toFixed(2)} {...register('total', { required: false })} />
                                 </div>
                                 <div className='col-1'>
                                     <h2 className='form-subtitle'>Sub-Total</h2>
                                 </div>
                                 <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer.toFixed(2)} {...register('subTotal', { required: false })}/>
+                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer.toFixed(2)} {...register('subTotal', { required: false })} />
                                 </div>
                                 <div className='col-2'>
-                                <input className="form-button-space" type="submit" value="Guardar" />
+                                    <input className="form-button-space" type="submit" value="Guardar" onClick={saveCesion} />
                                 </div>
                             </div>
                         </form>

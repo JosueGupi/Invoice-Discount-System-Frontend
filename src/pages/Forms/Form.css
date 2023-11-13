@@ -2,7 +2,7 @@
     background: #232323;
     color: #FFFFFF;
 
-    height: 900px;
+    height: 1000px;
     width: 98%;
 
     border-radius: 35px;
@@ -53,18 +53,18 @@ center {
     width: 100%;
     height: 40px;
     border-radius: 50px;
-  
+
     font-size: 2vh;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-  
+
     justify-content: center;
     align-items: center;
-  
+
     color: #FFF;
     background: #58585B;
-  
+
 }
 
 .form-text-area-space {
@@ -80,41 +80,46 @@ center {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-  
-  }
+
+}
 
 
 .grand-line {
     height: 4px;
-    
+
     background: #D9D9D9;
     width: 100%;
-    
+
 }
 
 .scroll-table {
-    
-    
+
+
     overflow-y: scroll;
     height: 200px;
 }
-.scroll-table2{
-    
-    
+
+.scroll-table2 {
+
+
     overflow-y: scroll;
     height: 150px;
 }
 
-.table-own{
-    --bs-table-bg:#FFFFFF;
-    --bs-table-bg:#58585B;
-    
+.table-own {
+    --bs-table-bg: #FFFFFF;
+    --bs-table-bg: #58585B;
+
 }
-.check-icon{
-    background-image:url('../../../public/check.png');
-    width: 140px; 
-    height: 120px;
-    background-size: cover; 
+
+.check-icon {
+    width: 200px;
+    height: 200px;
+
     border: none;
 }
 
+.form-box {
+    height: 38rem;
+    width: 32%;
+}
