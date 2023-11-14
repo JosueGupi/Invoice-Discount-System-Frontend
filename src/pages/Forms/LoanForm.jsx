@@ -333,7 +333,7 @@ export function LoanForm() {
 
                                 </select>
 
-                                <input className='form-input-space' placeholder='Monto' type="number" ref={reductionAmountRef} />
+                                <input className='form-input-space-4' placeholder='Monto' type="number" ref={reductionAmountRef} />
 
                             </div>
 
