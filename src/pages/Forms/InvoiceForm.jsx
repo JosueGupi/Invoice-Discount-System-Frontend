@@ -238,7 +238,7 @@ export function InvoiceForm() {
 
 
     return (
-        <Fragment >
+        <Fragment>
             <div className='backgroundColor'>
                 <br />
                 <button className='back-button' onClick={goToFormMenu}>Atras</button>
@@ -246,128 +246,239 @@ export function InvoiceForm() {
                 <div className='container-fluid big-container'>
                     <div className='form-container'>
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className='row'>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>No. Operación</h2>
-                                </div>
-                                <div className='col-2'>
-                                    <input className='form-input-space' value={opNumberOg} placeholder='No. Operación' type="number" disabled />
-                                </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Cliente</h2>
-                                </div>
-                                <div className='col-2'>
-                                    <select className='form-input-space' ref={clientIdRef} onChange={getUserCodes} >
 
-                                        <option value="none" defaultValue disabled hidden>Cliente</option>
-                                        {clients.map((client) => <option value={client.idClient}>{client.Name}</option>)}
-                                    </select>
-                                </div>
 
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Código Contable</h2>
-                                </div>
-                                <div className='col-2'>
-                                    <select className='form-input-space' {...register('opCode', { required: true })}>
-                                        <option value="none" defaultValue disabled hidden>Código</option>
-                                        {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
 
-                                    </select>
-                                </div>
+                            <div className='form-grid'>
+                                <h2 for="nOperacion" className='form-subtitle'>No. Operación</h2>
+                                <input id='nOperacion' className='form-input-space' value={opNumberOg} placeholder='No. Operación' type="number"
+                                    disabled />
 
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Dólares</h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' type="checkbox" {...register('dollars', { required: false })} />
-                                </div>
+                                <h2 className='form-subtitle'>Cliente</h2>
+
+
+                                <select className='form-input-space' ref={clientIdRef} onChange={getUserCodes}>
+
+                                    <option value="none" defaultValue disabled hidden>Cliente</option>
+                                    {clients.map((client) => <option value={client.idClient}>{client.Name}</option>)}
+                                </select>
+
+                                <h2 className='form-subtitle'>Código Contable</h2>
+                                <select className='form-input-space' {...register('opCode', { required: true })}>
+                                    <option value="none" defaultValue disabled hidden>Código</option>
+                                    {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
+
+                                </select>
+
+                                <h2 className='form-subtitle'>Dólares</h2><input className='form-input-space' type="checkbox" {...register('dollars', { required: false })} />
+                            </div>
+
+
+
+                            <h1 className='form-title'>Agregar Facturas</h1>
+
+                            <div className='form-grid'>
+                                <h2 className='form-subtitle'>No. Factura</h2>
+
+                                <input className='form-input-space' ref={invoiceNumberRef} placeholder='No. Factura' type="text" />
+                                <h2 className='form-subtitle'>Fecha</h2>
+                                <input className='form-input-space' ref={invoiceDateRef} placeholder='Fecha' type="date" />
+                                <h2 className='form-subtitle'>Monto</h2>
+                                <input className='form-input-space' ref={invoiceAmountRef} placeholder='Monto' type="number" />
+                                <h2 className='form-subtitle'>Pagador</h2>
+                                <input className='form-input-space' ref={invoicePayerRef} placeholder='Pagador' type="text" />
+                                <button className='form-button-space' type="button" onClick={addInvoice}>Agregar</button>
+                                <button className='form-button-space' type="button" onClick={cleanInvoices}>Limpiar</button>
+                            </div>
+
+
+                            <div className='scroll-table2'>
+                                <table className='table table-striped' >
+                                    <thead className='table-own'>
+                                        <tr>
+                                            <th className="th-sm">No. Factura
+                                            </th>
+                                            <th className="th-sm">Fecha
+                                            </th>
+                                            <th className="th-sm">Monto
+                                            </th>
+                                            <th className="th-sm">Pagador
+                                            </th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {invoices.map((invoice) =>
+                                            <tr>
+                                                <td>{invoice.number}</td>
+                                                <td>{invoice.date}</td>
+                                                <td>{invoice.amount}</td>
+                                                <td>{invoice.payer}</td>
+                                            </tr>
+
+                                        )}
+
+                                    </tbody>
+
+                                </table>
 
                             </div>
-                            <br />
-                            <div className='row'>
-                                <h1 className='form-title'>Agregar Facturas</h1>
+
+
+
+
+
+                            <div className='form-grid'>
+                                <h2 className='form-subtitle'>Comisión</h2>
+                                <input className='form-input-space' value={clientCodes[0]} placeholder='Codigo Comisión'
+                                    type="number" disabled {...register('comissionCode', { required: false })} />
+
+                                <h2 className='form-subtitle'>Gastos Legales</h2>
+                                <select className='form-input-space' {...register('legalExpenseCode', { required: true })}>
+                                    <option value="none" defaultValue disabled hidden>Código Gastos Legales</option>
+                                    {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
+
+                                </select>
+                            </div>
+
+
+
+                            <div>
+                                <center>
+                                    <div className='grand-line'></div>
+                                </center>
                             </div>
                             <br />
-                            <div className='row'>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>No. Factura</h2>
-                                    <br />
-                                    <h2 className='form-subtitle'>Fecha</h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' ref={invoiceNumberRef} placeholder='No. Factura' type="text" />
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input className='form-input-space' ref={invoiceDateRef} placeholder='Fecha' type="date" />
-                                </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Monto</h2>
-                                    <br />
-                                    <h2 className='form-subtitle'>Pagador</h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' ref={invoiceAmountRef} placeholder='Monto' type="number" />
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input className='form-input-space' ref={invoicePayerRef} placeholder='Pagador' type="text" />
-                                </div>
-                                <div className='col-1'>
-                                    <button className='form-button-space' type="button" onClick={addInvoice} >Agregar</button>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <button className='form-button-space' type="button" onClick={cleanInvoices} >Limpiar</button>
-                                </div>
-                                <div className='col-4'>
-                                    <div className='scroll-table2'>
-                                        <table className='table table-striped' width="100%">
-                                            <thead className='table-own'>
-                                                <tr>
-                                                    <th className="th-sm">No. Factura
-                                                    </th>
-                                                    <th className="th-sm">Fecha
-                                                    </th>
-                                                    <th className="th-sm">Monto
-                                                    </th>
-                                                    <th className="th-sm">Pagador
-                                                    </th>
 
 
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {invoices.map((invoice) =>
-                                                    <tr>
-                                                        <td>{invoice.number}</td>
-                                                        <td>{invoice.date}</td>
-                                                        <td>{invoice.amount}</td>
-                                                        <td>{invoice.payer}</td>
-                                                    </tr>
 
-                                                )}
+                            <div className='form-grid-4'>
+                                <h2 className='form-subtitle'>Costo de Transferencia </h2>
+                                <input className='form-input-space-4' placeholder='Costo' type="number" ref={costRef}
+                                    onChange={updateTotals} />
 
-                                            </tbody>
+                                <h2 className='form-subtitle'>Código de Transferencia </h2>
+                                <select className='form-input-space-4' {...register('transferCode', { required: true })}>
+                                    <option value="none" defaultValue disabled hidden>Código Costo Transferencia</option>
+                                    {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
 
-                                        </table>
-                                    </div>
-                                </div>
+                                </select>
 
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Comisión</h2>
-                                    <br />
-                                    <h2 className='form-subtitle'>Gastos Legales</h2>
-                                </div>
-                                <div className='col-2'>
-                                    <input className='form-input-space' value={clientCodes[0]} placeholder='Codigo Comisión' type="number" disabled {...register('comissionCode', { required: false })} />
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h2 className='form-subtitle'>Gastos Legales</h2>
+                                <input className='form-input-space-4' placeholder='Honorarios' type="number" ref={honorariesRef}
+                                    onChange={updateTotals} />
 
-                                    <select className='form-input-space'  {...register('legalExpenseCode', { required: true })}>
-                                        <option value="none" defaultValue disabled hidden>Código Gastos Legales</option>
-                                        {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
+                                <h2 className='form-subtitle'>Retención</h2>
+                                <input className='form-input-space-4' placeholder='Retención' type="number" ref={retentionsRef}
+                                    onChange={updateTotals} />
 
-                                    </select>
-                                </div>
+                                <h2 className='form-subtitle'>Comisión</h2>
+                                <input className='form-input-space-4' placeholder='Comisión' type="number" ref={comissionsRef}
+                                    onChange={updateTotals} />
 
+                                <h2 className='form-subtitle'>Intereses</h2>
+                                <input className='form-input-space-4' placeholder='Intereses' type="number" ref={interestRef}
+                                    onChange={updateTotals} />
 
+                                <h2 className='form-subtitle'>Plazo</h2>
+                                <input className='form-input-space-4' placeholder='Plazo' type="number" ref={termRef}
+                                    onChange={updateTotals} />
+
+                                <h2 className='form-subtitle'>Impuesto de Renta</h2>
+                                <input className='form-input-space-4' type="checkbox" ref={rentTaxRef} onChange={updateTotals} />
+
+                                <h2 className='form-subtitle'>Código Retención</h2>
+                                <input className='form-input-space-4' placeholder='Codigo Retención' type="number"
+                                    value={clientCodes[3]} disabled {...register('retentionCode', { required: false })} />
 
                             </div>
-                            <br />
+
+                            <div className='grand-line'></div>
+
+                            <h1 className='form-title'>Agregar Deducciones</h1>
+                            <div className='form-grid-4'>
+                                <h2 className='form-subtitle'>No. de Operación</h2>
+                                <select className='form-input-space-4' ref={reductionNumberRef}>
+                                    <option value="none" defaultValue disabled hidden>Código</option>
+                                    {operations.map((operation) => <option value={operation.idOperation}>
+                                        {operation.idOperation}</option>)}
+                                </select>
+
+                                <h2 className='form-subtitle'>Código Contable</h2>
+                                <select className='form-input-space-4' ref={reductionCodeRef}>
+                                    <option value="none" defaultValue disabled hidden>Código</option>
+                                    {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
+
+                                </select>
+
+                                <h2 className='form-subtitle'>Monto</h2>
+                                <input className='form-input-space-4' placeholder='Monto' type="number" ref={reductionAmountRef} />
+                            </div>
+                            <h2 className='form-subtitle'>Descripción</h2>
+                            <textarea className='form-text-area-space' placeholder='Descripción' type="text"
+                                ref={reductionDescriptionRef}></textarea>
+
+                            <button className='form-button-space' type="button" onClick={addReductions}>Agregar</button>
+                            <p> </p>
+                            <div className='scroll-table'>
+                                <table className='table table-striped' width="100%">
+                                    <thead className='table-own'>
+                                        <tr>
+                                            <th className="th-sm">No. Operacion
+                                            </th>
+                                            <th className="th-sm">Código
+                                            </th>
+                                            <th className="th-sm">Monto
+                                            </th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {reductions.map((reduction) =>
+                                            <tr>
+                                                <td>{reduction.number}</td>
+                                                <td>{reduction.code}</td>
+                                                <td>{reduction.amount}</td>
+
+                                            </tr>
+
+                                        )}
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <p> </p>
+                            <div className='scroll-table'>
+                                <table className='table table-striped' width="100%">
+                                    <thead className='table-own'>
+                                        <tr>
+                                            <th className="th-sm">Mes
+                                            </th>
+                                            <th className="th-sm">Monto
+                                            </th>
+                                            <th className="th-sm">Código
+                                            </th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {months.map((month) =>
+                                            <tr>
+                                                <td>{month.month}</td>
+                                                <td>{month.interest.toFixed(2)}</td>
+                                                <td>{month.code}</td>
+                                            </tr>
+
+                                        )}
+                                    </tbody>
+
+                                </table>
+                            </div>
+
 
                             <br />
                             <div className='row'>
@@ -375,212 +486,25 @@ export function InvoiceForm() {
                                     <div className='grand-line'></div>
                                 </center>
                             </div>
-                            <br />
-                            <div className='row'>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Costo de Transferencia </h2>
-                                </div>
 
-                                <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Costo' type="number" ref={costRef} onChange={updateTotals} />
-                                </div>
-                                <div className='col-2'>
-                                    <h2 className='form-subtitle'>Código de Transferencia </h2>
-                                    <br />
-                                    <br />
-                                </div>
-                                <div className='col-2'>
-                                    <select className='form-input-space' {...register('transferCode', { required: true })} >
-                                        <option value="none" defaultValue disabled hidden>Código Costo Transferencia</option>
-                                        {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
+                            <div className='form-grid'>
+                                <h2 className='form-subtitle'>Total </h2>
+                                <h2 className='form-subtitle'>Sub-Total</h2>
 
-                                    </select>
-                                </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Gastos Legales</h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Honorarios' type="number" ref={honorariesRef} onChange={updateTotals} />
-                                </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Retención</h2>
-                                </div>
-                                <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Retención' type="number" ref={retentionsRef} onChange={updateTotals} />
-                                </div>
+                                <input className='form-input-space-4' placeholder='Sub-total' type="number"
+                                    value={totalTransfer.toFixed(2)} {...register('total', { required: false })} />
+
+                                <input className='form-input-space-4' placeholder='Total' type="number"
+                                    value={subTotalTransfer.toFixed(2)} {...register('subTotal', { required: false })} />
                             </div>
-                            <div className='row'>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Comisión</h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Comisión' type="number" ref={comissionsRef} onChange={updateTotals} />
-                                </div>
 
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Intereses</h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Intereses' type="number" ref={interestRef} onChange={updateTotals} />
-                                </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Plazo</h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' placeholder='Plazo' type="number" ref={termRef} onChange={updateTotals} />
-                                </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Impuesto de Renta</h2>
-                                </div>
-                                <div className='col-1'>
-                                    <input className='form-input-space' type="checkbox" ref={rentTaxRef} onChange={updateTotals} />
-                                </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Código Retención</h2>
-                                </div>
-                                <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Codigo Retención' type="number" value={clientCodes[3]} disabled {...register('retentionCode', { required: false })} />
-                                </div>
-
-                            </div>
-                            <br />
-                            <div className='row'>
-                                <center>
-                                    <div className='grand-line'></div>
-                                </center>
-                            </div>
-                            <br />
-                            <div className='row'>
-                                <h1 className='form-title'>Agregar Deducciones</h1>
-                            </div>
-                            <br />
-
-
-                            <div className='row'>
-                                <div className='col-2'>
-                                    <h2 className='form-subtitle'>No. de Operación</h2>
-                                    <br />
-                                    <br />
-                                    <h2 className='form-subtitle'>Código Contable</h2>
-                                    <br />
-                                    <br />
-                                    <h2 className='form-subtitle'>Monto</h2>
-
-                                </div>
-                                <div className='col-2'>
-                                    <select className='form-input-space' ref={reductionNumberRef}>
-                                        <option value="none" defaultValue disabled hidden>Código</option>
-                                        {operations.map((operation) => <option value={operation.idOperation}>{operation.idOperation}</option>)}
-                                    </select>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <select className='form-input-space' ref={reductionCodeRef} >
-                                        <option value="none" defaultValue disabled hidden>Código</option>
-                                        {codes.map((code) => <option value={code.Code}>{code.Code}</option>)}
-
-                                    </select>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input className='form-input-space' placeholder='Monto' type="number" ref={reductionAmountRef} />
-                                </div>
-                                <div className='col-2'>
-                                    <textarea className='form-text-area-space' placeholder='Descripción' type="text" ref={reductionDescriptionRef}></textarea>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <button className='form-button-space' type="button" onClick={addReductions} >Agregar</button>
-                                </div>
-                                <div className='col-3'>
-                                    <div className='scroll-table'>
-                                        <table className='table table-striped' width="100%">
-                                            <thead className='table-own'>
-                                                <tr>
-                                                    <th className="th-sm">No. Operacion
-                                                    </th>
-                                                    <th className="th-sm">Código
-                                                    </th>
-                                                    <th className="th-sm">Monto
-                                                    </th>
-
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {reductions.map((reduction) =>
-                                                    <tr>
-                                                        <td>{reduction.number}</td>
-                                                        <td>{reduction.code}</td>
-                                                        <td>{reduction.amount}</td>
-
-                                                    </tr>
-
-                                                )}
-
-                                            </tbody>
-
-                                        </table>
-                                    </div>
-                                </div>
-                                <div className='col-3'>
-                                    <div className='scroll-table'>
-                                        <table className='table table-striped' width="100%">
-                                            <thead className='table-own'>
-                                                <tr>
-                                                    <th className="th-sm">Mes
-                                                    </th>
-                                                    <th className="th-sm">Monto
-                                                    </th>
-                                                    <th className="th-sm">Código
-                                                    </th>
-
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {months.map((month) =>
-                                                    <tr>
-                                                        <td>{month.month}</td>
-                                                        <td>{month.interest.toFixed(2)}</td>
-                                                        <td>{month.code}</td>
-                                                    </tr>
-
-                                                )}
-                                            </tbody>
-
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <br />
-                            <div className='row'>
-                                <center>
-                                    <div className='grand-line'></div>
-                                </center>
-                            </div>
-                            <br />
-                            <div className='row'>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Total </h2>
-                                </div>
-                                <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Sub-total' type="number" value={totalTransfer.toFixed(2)} {...register('total', { required: false })} />
-                                </div>
-                                <div className='col-1'>
-                                    <h2 className='form-subtitle'>Sub-Total</h2>
-                                </div>
-                                <div className='col-2'>
-                                    <input className='form-input-space' placeholder='Total' type="number" value={subTotalTransfer.toFixed(2)} {...register('subTotal', { required: false })} />
-                                </div>
-                                <div className='col-2'>
-                                    <input className="form-button-space" type="submit" value="Guardar" onClick={saveCesion} />
-                                </div>
-                            </div>
+                            <input className="form-button-space" type="submit" value="Guardar" onClick={saveCesion} />
+                            <br /><br />
                         </form>
-
-
-
+                        <br /><br />
                     </div>
                 </div>
-
             </div>
-
         </Fragment>
     )
 }
