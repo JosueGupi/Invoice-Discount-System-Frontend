@@ -154,6 +154,12 @@ center {
     grid-column-gap: 1px;
 }
 
+.form-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 1px;
+}
+
 .form-input-space-4 {
     border: 1px solid #8B4F4F;
     background: #FFF;
