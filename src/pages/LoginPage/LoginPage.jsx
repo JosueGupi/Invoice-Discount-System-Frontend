@@ -28,7 +28,6 @@ export function LoginPage() {
       }
     } catch (err) {
       alert('Usuario invalido')
-      navigate('/mainMenu', { state: { user: 'name', idUser: 1, password: 'password' } });
     }
   }
 
