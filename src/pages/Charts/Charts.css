@@ -1,0 +1,16 @@
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Adjust the size of the chart as needed */
+.my-chart {
+    width: 80%;
+    height: 70%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+}
