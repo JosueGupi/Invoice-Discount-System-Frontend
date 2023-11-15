@@ -14,7 +14,7 @@ export function ShowDataMenu() {
         navigate('/calendar', { state });
     },
         goToClientDebt = () => {
-            localStorage.setItem('menuName', JSON.stringify('Menú Principal'));
+            localStorage.setItem('menuName', JSON.stringify('Deuda por cliente'));
             navigate("/clientDebt", { state });
         },
         goToInterestEarned = () => {
@@ -26,8 +26,8 @@ export function ShowDataMenu() {
             //deudas por cobrar
         },
         goToMovements = () => {
-
-            //deudas por cobrar
+            localStorage.setItem('menuName', JSON.stringify('Todos los movimientos'));
+            navigate("/allMovements", { state });
         },
 
         goToMainMenu = () => {

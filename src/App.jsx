@@ -30,6 +30,7 @@ import { InvoiceForm } from "./pages/Forms/InvoiceForm";
 import { LoanForm } from "./pages/Forms/LoanForm";
 import { PDFMenu } from "./pages/Forms/PDFMenu";
 import { DebtClient } from "./pages/Charts/DebtClient";
+import { AllMovements } from "./pages/Tables/AllMovements";
 
 import Nav from './molecules/Nav';
 
@@ -68,7 +69,9 @@ export function App() {
             <Route exact path="/loanForm" element={<LoanForm />} />
             <Route exact path="/invoiceForm" element={<InvoiceForm />} />
             <Route exact path="/pdfMenu" element={<PDFMenu />} />
+
             <Route exact path="/clientDebt" element={<DebtClient />} />
+            <Route exact path="/allMovements" element={<AllMovements />} />
           </Route>
 
         </Routes>
