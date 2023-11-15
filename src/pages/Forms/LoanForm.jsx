@@ -156,9 +156,9 @@ export function LoanForm() {
                         let codesArray = [0, 0, 0, 0];
                         let idCodesArray = [0, 0, 0, 0];
 
-                        for (let i = 0; i < response.data[0].length; i++) {
-                            codesArray[response.data[0][i].CodeType] = response.data[0][i].Code;
-                            idCodesArray[response.data[0][i].CodeType] = response.data[0][i].idAccountingCodes
+                        for (let i = 0; i < response.data.length; i++) {
+                            codesArray[response.data[i].CodeType] = response.data[i].Code;
+                            idCodesArray[response.data[i].CodeType] = response.data[i].idAccountingCodes
                         }
                         console.log("codesArray", codesArray)
                         setClientCodes(codesArray);
