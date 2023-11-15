@@ -29,65 +29,64 @@ export function DebtClient() {
         };
 
         fetchData();
-        return () => {
-            if (myChart) {
-                myChart.destroy();
-                setMyChart(null);
-            }
-        };
     }, []);
 
     const renderChart = (data) => {
-
-        if (myChart) {
-            myChart.destroy();
-            setMyChart(null);
-        }
-
         if (chartRef && chartRef.current) {
             const ctx = chartRef.current.getContext('2d');
-            const newChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.map(item => item.Name), // Use 'Name' for labels
-                    datasets: [{
-                        label: 'Deuda por cliente',
-                        data: data.map(item => item.totalBalance), // Use 'totalBalance' for data
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
-                            'rgba(255, 205, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(201, 203, 207, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(255, 159, 64)',
-                            'rgb(255, 205, 86)',
-                            'rgb(75, 192, 192)',
-                            'rgb(54, 162, 235)',
-                            'rgb(153, 102, 255)',
-                            'rgb(201, 203, 207)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
-            });
 
-            setMyChart(newChart);
+            if (!myChart) {
+                // Crear un nuevo gráfico si aún no existe
+                const newChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.map(item => item.Name), // Use 'Name' for labels
+                        datasets: [{
+                            label: 'Deuda por cliente',
+                            data: data.map(item => item.totalBalance), // Use 'totalBalance' for data
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(201, 203, 207, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(255, 159, 64)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(54, 162, 235)',
+                                'rgb(153, 102, 255)',
+                                'rgb(201, 203, 207)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+                setMyChart(newChart);
+            } else {
+                // Actualizar los datos del gráfico existente
+                myChart.data.labels = data.map(item => item.Name);
+                myChart.data.datasets.forEach((dataset) => {
+                    dataset.data = data.map(item => item.totalBalance);
+                });
+                myChart.update();
+            }
         }
     };
+
 
     const goToDataMenu = () => {
         navigate("/showDataMenu", { state });
