@@ -15,20 +15,34 @@ export function AllMovements() {
     const { state } = useLocation()
 
     useEffect(() => {
-        /*const fetchData = async () => {
+        const fetchData = async () => {
             try {
-                const response = await axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/charts/getClientDeb');
+                const response = await axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/tables/getTableMovements');
                 setDataR(response.data);
             } catch (error) {
                 console.error("Error al cargar los datos", error);
             }
         };
 
-        fetchData();*/
+        fetchData();
     }, []);
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const year = date.getFullYear();
 
+        return `${day}-${month}-${year}`;
+    };
 
+    const movementType = (type) => {
+        if (type == 1) {
+            return 'Crédito '
+        } else {
+            return 'Débito'
+        }
+    }
 
     const goToDataMenu = () => {
         navigate("/showDataMenu", { state });
@@ -58,12 +72,12 @@ export function AllMovements() {
                             <tbody>
                                 {dataR.map((item, index) => (
                                     <tr key={index}>
-                                        <td>{item.noOperacion}</td>
-                                        <td>{item.fechaMovimiento}</td>
-                                        <td>{item.codigoContable}</td>
-                                        <td>{item.cliente}</td>
-                                        <td>{item.monto}</td>
-                                        <td>{item.tipoMovimiento}</td>
+                                        <td>{item.idOperation}</td>
+                                        <td>{formatDate(item.Date)}</td>
+                                        <td>{item.Code}</td>
+                                        <td>{item.Name}</td>
+                                        <td>{item.Amount}</td>
+                                        <td>{movementType(item.MovementType)}</td>
                                     </tr>
                                 ))}
                             </tbody>
