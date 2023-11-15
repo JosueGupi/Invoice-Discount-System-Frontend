@@ -38,7 +38,13 @@ export function PDFMenu() {
             console.error('Error sending email:', error);
             alert('Error sending email. Please try again later.');
         }
-    }
+    };
+
+    const goToFormMenu = () => {
+        localStorage.setItem('menuName', JSON.stringify('Menú de Formularios'));
+        navigate("/formMenu", { state });
+    };
+
     return (
         <Fragment >
             <div className='backgroundColor'>
@@ -52,7 +58,7 @@ export function PDFMenu() {
 
                             <h2 className='form-subtitle'>Cesión agregada con éxito</h2>
                             <br />
-                            <input className="form-button" type="button" value="Aceptar" />
+                            <input className="form-button" type="button" value="Aceptar" onClick={goToFormMenu}/>
                             <br />
                             <input className="form-button" type="button" value="Generar PDF" />
                             <br />

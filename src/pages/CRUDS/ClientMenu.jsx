@@ -51,6 +51,8 @@ export function ClientMenu() {
         else {
             axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
                 .then((response) => setDataR(response.data))
+
+            console.log(dataR);
         }
     }, [refresh]);
 
@@ -67,7 +69,7 @@ export function ClientMenu() {
                         <div className='input_symbol'>
 
                             <input className='search-space ' placeholder='Buscar por nombre' type="text" value={search} onChange={searcher} />
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <i className="fa-solid fa-magnifying-glass"></i>
                             <button className='back-button' onClick={goToDataMenu}>Menú</button>
                             <br />
                             <br />
