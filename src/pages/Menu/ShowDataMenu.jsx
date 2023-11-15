@@ -18,12 +18,11 @@ export function ShowDataMenu() {
             navigate("/clientDebt", { state });
         },
         goToInterestEarned = () => {
-
             //interes generado
         },
         goToReceivables = () => {
-
-            //deudas por cobrar
+            localStorage.setItem('menuName', JSON.stringify('Cuentas por cobrar'));
+            navigate("/allReceivables", { state });
         },
         goToMovements = () => {
             localStorage.setItem('menuName', JSON.stringify('Todos los movimientos'));
