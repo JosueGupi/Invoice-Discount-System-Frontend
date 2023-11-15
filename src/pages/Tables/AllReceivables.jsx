@@ -34,6 +34,16 @@ export function AllReceivables() {
         navigate("/showDataMenu", { state });
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const year = date.getFullYear();
+
+        return `${day}-${month}-${year}`;
+    };
+
+
     return (
         <Fragment >
             <div className='backgroundColor'>
@@ -48,22 +58,24 @@ export function AllReceivables() {
                             <thead>
                                 <tr>
                                     <th>No operación</th>
-                                    <th>Fecha movimiento</th>
-                                    <th>Código contable</th>
+                                    <th>Fecha creación</th>
+                                    <th>Vencimiento</th>
                                     <th>Cliente</th>
                                     <th>Monto</th>
-                                    <th>Tipo movimiento</th>
+                                    <th>Saldo</th>
+                                    <th>Estado</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {dataR.map((item, index) => (
                                     <tr key={index}>
-                                        <td>{item.noOperacion}</td>
-                                        <td>{item.fechaMovimiento}</td>
-                                        <td>{item.codigoContable}</td>
-                                        <td>{item.cliente}</td>
-                                        <td>{item.monto}</td>
-                                        <td>{item.tipoMovimiento}</td>
+                                        <td>{item.Operation}</td>
+                                        <td>{formatDate(item.StartDate)}</td>
+                                        <td>{formatDate(item.EndDate)}</td>
+                                        <td>{item.ClientName}</td>
+                                        <td>{item.Total}</td>
+                                        <td>{item.Balance}</td>
+                                        <td>{item.State}</td>
                                     </tr>
                                 ))}
                             </tbody>
