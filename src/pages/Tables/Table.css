@@ -31,5 +31,5 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: rgb(212, 212, 212);
+    background-color: #b7e3e0;
 }
