@@ -42,7 +42,7 @@ export function GeneratedInterest() {
                 const newChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: data.map(item => item.month),
+                        labels: data.map(item => item.month + '-' + item.year),
                         datasets: [{
                             label: 'Intereses Generados',
                             data: data.map(item => item.interest),
