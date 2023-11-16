@@ -230,7 +230,7 @@ export function InvoiceForm() {
         console.log("aqui", data);
 
         try {
-            const response = await axios.post('http://localhost:3001/operations/createOperation', data)
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/createOperation', data)
             console.log(response, response);
 
             // agregar parametro al navigate
