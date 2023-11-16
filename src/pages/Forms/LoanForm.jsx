@@ -190,6 +190,7 @@ export function LoanForm() {
     }, []);
 
     useEffect(() => { updateTotals() }, [invoices, reductions]);
+
     const onSubmit = async (data, event) => {
 
 
@@ -209,6 +210,7 @@ export function LoanForm() {
         data.retentionCode = idCodes[3];
         data.realInterestCode = idCodes[1];
         data.deferredInterestCode = idCodes[2];
+        data.factSum = totalTransfer;
         console.log("aqui", data);
 
         try {
