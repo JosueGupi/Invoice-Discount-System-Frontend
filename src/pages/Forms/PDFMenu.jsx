@@ -10,8 +10,10 @@ export function PDFMenu() {
     const navigate = useNavigate(),
         { state } = useLocation();
 
-    useEffect(() => {
+    const responseOperation = useRef(null);
 
+    useEffect(() => {
+        console.log(state.idOperation);
         console.log('pantalla');
         if (state == null) {
 
@@ -23,11 +25,26 @@ export function PDFMenu() {
     }, []);
 
     const handleEmail = async () => {
+
+        try {
+            const json = {
+                idOperation: state.idOperation
+            }
+            console.log(json);
+            responseOperation = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/operationDetail', json);
+            console.log("--------------------------------------------------")
+            console.log(responseOperation);
+        }
+        catch (err) {
+            console.log(err);
+            alert('Error getting data for email. Please try again later.');
+        }
+
         const formData = {
-            numero: "100",
-            fecha: '2021-05-05',
-            monto: '1000',
-            pagador: 'Juan Perez'
+            numero: responseOperation.idOperation,
+            fecha: responseOperation.Date,
+            monto: responseOperation.Total,
+            pagador: responseOperation.Name
         };
 
         try {
@@ -58,7 +75,7 @@ export function PDFMenu() {
 
                             <h2 className='form-subtitle'>Cesión agregada con éxito</h2>
                             <br />
-                            <input className="form-button" type="button" value="Aceptar" onClick={goToFormMenu}/>
+                            <input className="form-button" type="button" value="Aceptar" onClick={goToFormMenu} />
                             <br />
                             <input className="form-button" type="button" value="Generar PDF" />
                             <br />

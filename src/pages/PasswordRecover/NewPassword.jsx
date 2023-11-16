@@ -9,45 +9,57 @@ import { useNavigate, useLocation } from 'react-router-dom';
 export function NewPassword() {
     const { register, handleSubmit } = useForm(),
         navigate = useNavigate(),
-        {state} = useLocation(),
-        [username,setUsername] = useState(),
-        [idUser,setIdUser] = useState();
+        { state } = useLocation(),
+        [username, setUsername] = useState(),
+        [idUser, setIdUser] = useState();
 
-    
+
 
     const onSubmit = async (data) => {
         try {
             data.idUser = idUser;
-            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/changePassword',data);
-            if(response.data){
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/changePassword', data);
+            if (response.data) {
                 alert('Contraseña cambiada correctamente');
                 navigate('/');
-            }else{
+            } else {
                 alert('Error del servidor');
             }
-            
+
 
         } catch (err) {
             alert('Error del servidor');
         }
     }
     useEffect(() => {
-        
-        if (state == null){
+
+        if (state == null) {
             navigate('/')
-        }else{
+        } else {
             setUsername(state.user);
             setIdUser(state.idUser);
         }
-        
-
-    },[]);
 
 
+    }, []);
+
+    const goToLogin = () => {
+
+        navigate('/',);
+    };
 
     return (
         <Fragment >
             <div className='backgroundColor'>
+
+                <div>
+
+                    <br />
+                    <br />
+                    <button className='back-button' onClick={goToLogin}>Inicio</button>
+
+                </div>
+
                 <center >
                     <div className='container'>
                         <div className="submit-password-box">
@@ -58,15 +70,15 @@ export function NewPassword() {
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <center >
 
-                                    <input className="newpassword-input" type="password" 
+                                    <input className="newpassword-input" type="password"
                                         placeholder='Nueva contraseña'
                                         maxLength="16"
                                         {...register('password', { required: true })}
                                     />
                                     <br />
                                     <br />
-                                    
-                                    <input className="newpassword-input" type="password" 
+
+                                    <input className="newpassword-input" type="password"
                                         placeholder='Confirme la contraseña'
                                         maxLength="16"
                                         {...register('confirmPassword', { required: true })}

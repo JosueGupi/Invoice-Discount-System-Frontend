@@ -159,7 +159,7 @@ export function InvoiceForm() {
 
                 axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getClientCodes', data)
                     .then((response) => {
-                        console.log('response',response)
+                        console.log('response', response)
                         let codesArray = [0, 0, 0, 0];
                         let idCodesArray = [0, 0, 0, 0];
 
@@ -177,8 +177,8 @@ export function InvoiceForm() {
 
         },
         saveCesion = () => {
-            // save cesion 
-            // ???
+            // agregar parametro al navigate
+            const state = { idOperation: opNumberOg };
 
             // navigate to pdfmenu
             navigate("/pdfMenu", { state });
@@ -229,9 +229,15 @@ export function InvoiceForm() {
         try {
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/createOperation', data)
             console.log(response, response);
-            //navigate('/userMenu',{state});
-        } catch (err) {
 
+            // agregar parametro al navigate
+            const state = { idOperation: opNumberOg };
+
+            // navigate to pdfmenu
+            navigate("/pdfMenu", { state });
+
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -499,7 +505,7 @@ export function InvoiceForm() {
                                     value={subTotalTransfer.toFixed(2)} {...register('subTotal', { required: false })} />
                             </div>
 
-                            <input className="form-button-space" type="submit" value="Guardar" onClick={saveCesion} />
+                            <input className="form-button-space" type="submit" value="Guardar" />
                             <br /><br />
                         </form>
                         <br /><br />
