@@ -10,11 +10,8 @@ export function PDFMenu() {
     const navigate = useNavigate(),
         { state } = useLocation();
 
-    const responseOperation = useRef(null);
-
     useEffect(() => {
         console.log(state.idOperation);
-        console.log('pantalla');
         if (state == null) {
 
         } else {
@@ -27,33 +24,32 @@ export function PDFMenu() {
     const handleEmail = async () => {
 
         try {
-            const json = {
+            /*const json = {
                 idOperation: state.idOperation
+            }*/
+            console.log("llamando al back...")
+            console.log(state.idOperation);
+            const responseOperation = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/operationDetail', { idOperation: state.idOperation });
+
+            const formData = {
+                numero: responseOperation.data[0].idOperation,
+                fecha: responseOperation.data[0].Date,
+                monto: responseOperation.data[0].Total,
+                pagador: responseOperation.data[0].Name
+            };
+
+            try {
+                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/email/send-email', formData);
+                console.log(response.data);
+                alert('Email sent successfully!');
+            } catch (error) {
+                console.error('Error sending email:', error);
+                alert('Error sending email. Please try again later.');
             }
-            console.log(json);
-            responseOperation = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/operationDetail', json);
-            console.log("--------------------------------------------------")
-            console.log(responseOperation);
         }
         catch (err) {
             console.log(err);
             alert('Error getting data for email. Please try again later.');
-        }
-
-        const formData = {
-            numero: responseOperation.idOperation,
-            fecha: responseOperation.Date,
-            monto: responseOperation.Total,
-            pagador: responseOperation.Name
-        };
-
-        try {
-            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/email/send-email', formData);
-            console.log(response.data);
-            alert('Email sent successfully!');
-        } catch (error) {
-            console.error('Error sending email:', error);
-            alert('Error sending email. Please try again later.');
         }
     };
 
