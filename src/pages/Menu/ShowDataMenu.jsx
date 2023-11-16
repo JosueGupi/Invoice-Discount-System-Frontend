@@ -18,7 +18,8 @@ export function ShowDataMenu() {
             navigate("/clientDebt", { state });
         },
         goToInterestEarned = () => {
-            //interes generado
+            localStorage.setItem('menuName', JSON.stringify('Interés generado'));
+            navigate("/generatedInterest", { state });
         },
         goToReceivables = () => {
             localStorage.setItem('menuName', JSON.stringify('Cuentas por cobrar'));

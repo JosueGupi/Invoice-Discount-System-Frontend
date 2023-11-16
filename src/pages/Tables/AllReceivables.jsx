@@ -5,20 +5,26 @@ import './Table.css';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-
+import { FiltersReceivablesFunction } from './FiltersReceivables';
 
 export function AllReceivables() {
-    const navigate = useNavigate();
+    const navigate = useNavigate(),
+        clientIdRef = useRef(0),
+        [clientCodes, setClientCodes] = useState([]),
+        [clients, setClients] = useState([]),
+        [idCodes, setIdCodes] = useState([]),
+        [dataR, setDataR] = useState([]);
 
-    const [dataR, setDataR] = useState([]);
-
-    const { state } = useLocation()
+    const { state } = useLocation();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/tables/getTableReceivables');
-                setDataR(response.data);
+                await axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/tables/getTableReceivables')
+                    .then((response) => setDataR(response.data));
+                axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
+                    .then((response) => setClients(response.data));
+                //FiltersReceivablesFunction();
             } catch (error) {
                 console.error("Error al cargar los datos", error);
             }
@@ -26,8 +32,6 @@ export function AllReceivables() {
 
         fetchData();
     }, []);
-
-
 
 
     const goToDataMenu = () => {
@@ -53,8 +57,37 @@ export function AllReceivables() {
                     <button className='back-button' onClick={goToDataMenu}>Atras</button>
 
                     <div>
-                        <h2>Cuentas por cobrar</h2>
-                        <table>
+                        <h2 className='title' >Cuentas por cobrar</h2>
+                        <h3 className='title' >Filtros</h3>
+                        <p>Cliente</p>
+                        <select id='clientSelect' className='selectFilter' ref={clientIdRef}>
+                            {clients.map((client) => <option value={client.idClient}>{client.Name}</option>)}
+                        </select>
+                        <p>Fecha Creación</p>
+                        <input
+                            type="date"
+                            id="startDateSelect"
+                            className="selectFilter"
+                            placeholder="Fecha Creación"
+                        />
+                        <p>Fecha Vencimiento</p>
+                        <input
+                            type="date"
+                            id="endDateSelect"
+                            className="selectFilter"
+                            placeholder="Fecha Vencimiento"
+                        />
+                        <p>Estado</p>
+                        <select id='stateSelect' className='selectFilter'>
+                            <option value="0" defaultValue>Cancelado</option>
+                            <option value="1" defaultValue>Atrasado</option>
+                            <option value="2" defaultValue>En proceso</option>
+                        </select>
+                        <br />
+                        <p>Rangos</p>
+                        <input className='selectFilter' type="number" id="min_value" name="min_value" placeholder='Mínimo' />
+                        <input className='selectFilter' type="number" id="max_value" name="max_value" placeholder='Máximo' />
+                        <table id='receivablesTable'>
                             <thead>
                                 <tr>
                                     <th>No operación</th>
@@ -80,10 +113,12 @@ export function AllReceivables() {
                                 ))}
                             </tbody>
                         </table>
+
+
                     </div>
 
                 </div>
             </div>
-        </Fragment>
+        </Fragment >
     )
 }

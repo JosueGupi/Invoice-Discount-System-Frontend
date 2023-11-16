@@ -32,6 +32,7 @@ import { PDFMenu } from "./pages/Forms/PDFMenu";
 import { DebtClient } from "./pages/Charts/DebtClient";
 import { AllMovements } from "./pages/Tables/AllMovements";
 import { AllReceivables } from "./pages/Tables/AllReceivables";
+import { GeneratedInterest } from "./pages/Charts/GeneratedInterest";
 
 import Nav from './molecules/Nav';
 
@@ -74,6 +75,8 @@ export function App() {
             <Route exact path="/clientDebt" element={<DebtClient />} />
             <Route exact path="/allMovements" element={<AllMovements />} />
             <Route exact path="/allReceivables" element={<AllReceivables />} />
+            <Route exact path="/generatedInterest" element={<GeneratedInterest />} />
+
           </Route>
 
         </Routes>
