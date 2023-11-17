@@ -15,6 +15,7 @@ export function LoginPage() {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/login', data);
+      console.log(response)
       const name = response.data[0].Name,
         idUser = response.data[0].idUser,
         password = response.data[0].Password;
@@ -28,6 +29,7 @@ export function LoginPage() {
       }
     } catch (err) {
       alert('Usuario invalido')
+      console.log(err);
     }
   }
 

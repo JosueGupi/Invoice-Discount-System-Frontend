@@ -19,10 +19,11 @@ export function NewPassword() {
         try {
             data.idUser = idUser;
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/changePassword', data);
-            if (response.data) {
+            if (response.status === 200) {
                 alert('Contraseña cambiada correctamente');
                 navigate('/');
             } else {
+                console.log(response)
                 alert('Error del servidor');
             }
 

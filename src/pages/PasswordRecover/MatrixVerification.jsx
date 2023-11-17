@@ -60,6 +60,7 @@ export function MatrixVerification() {
 
 
         } catch (err) {
+            console.log(err);
             alert('Error del servidor')
         }
     }
