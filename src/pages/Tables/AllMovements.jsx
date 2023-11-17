@@ -18,13 +18,14 @@ export function AllMovements() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/tables/getTableMovements')
-                    .then((response) => setDataR(response.data));
-                axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
-                    .then((response) => setClients(response.data));
-                axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getCodes')
-                    .then((response) => setClientCodes(response.data));
-                console.log(dataR)
+                const movements = await axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/tables/getTableMovements');
+                setDataR(movements.data);
+
+                const clientsData = await axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients');
+                setClients(clientsData.data);
+
+                const codesData = await axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getCodes');
+                setClientCodes(codesData.data);
             } catch (error) {
                 console.error("Error al cargar los datos", error);
             }
@@ -32,6 +33,7 @@ export function AllMovements() {
 
         fetchData();
     }, []);
+
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
