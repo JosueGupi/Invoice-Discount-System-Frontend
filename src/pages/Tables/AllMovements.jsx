@@ -4,7 +4,6 @@ import './Table.css';
 
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 
 
 export function AllMovements() {
@@ -13,24 +12,26 @@ export function AllMovements() {
         clientIdRef = useRef(0),
         [clientCodes, setClientCodes] = useState([]),
         [clients, setClients] = useState([]),
-        [idCodes, setIdCodes] = useState([]),
         { state } = useLocation();
 
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/tables/getTableMovements');
-                setDataR(response.data);
+                await axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/tables/getTableMovements')
+                    .then((response) => setDataR(response.data));
                 axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
                     .then((response) => setClients(response.data));
+                axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getCodes')
+                    .then((response) => setClientCodes(response.data));
+                console.log(dataR)
             } catch (error) {
                 console.error("Error al cargar los datos", error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [dataR]);
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -42,7 +43,7 @@ export function AllMovements() {
     };
 
     const movementType = (type) => {
-        if (type == 1) {
+        if (type === 1) {
             return 'Crédito '
         } else {
             return 'Débito'
@@ -53,6 +54,36 @@ export function AllMovements() {
         navigate("/showDataMenu", { state });
     };
 
+    //Owner Name
+    const [searchName, setSearchName] = useState("");
+    const nameSearcher = (e) => {
+        setSearchName(e.target.value)
+        console.log(searchName)
+    };
+
+    //State
+    const [searchType, setsearchType] = useState("");
+    const typeSearcher = (e) => {
+        setsearchType(e.target.value)
+    };
+
+    //Start Date
+    const [searchStartDate, setsearchStartDate] = useState("");
+    const StartDateSearcher = (e) => {
+        setsearchStartDate(e.target.value)
+    };
+
+    //Accounting code
+    const [searchCode, setsearchCode] = useState("");
+    const CodeSearcher = (e) => {
+        setsearchCode(e.target.value)
+    };
+
+    //Apply filters
+    var results = searchName === 'Todos' ? dataR : dataR.filter((customer) => customer.Name.toLowerCase().includes(searchName.toLocaleLowerCase())
+            && (searchType === 'Todos' ? customer.MovementType : movementType(customer.MovementType).toLowerCase().includes(searchType.toLocaleLowerCase()))
+            && (!searchStartDate ? customer.Date : new Date(customer.Date) > new Date(searchStartDate))
+            && (searchCode === 'Todos' ? customer.Code : customer.Code.toLowerCase().includes(searchCode.toLocaleLowerCase())));
 
     return (
         <Fragment >
@@ -65,57 +96,62 @@ export function AllMovements() {
                     <div>
                         <br></br>
 
-                        <div className='filter-grid-2row'>
+                        <div className='filter-grid-2'>
                             <p>Cliente</p>
-                            <select id='clientSelect' className='selectFilter' ref={clientIdRef}>
-                                {clients.map((client) => <option value={client.idClient}>{client.Name}</option>)}
+                            <select id='clientSelect' className='selectFilter' ref={clientIdRef} onChange={nameSearcher}>
+                                <option value=''>Todos</option>
+                                {clients.map((client) => <option value={client.Name}>{client.Name}</option>)}
                             </select>
-                            <p>Fecha Creación</p>
+                            <p>Fecha</p>
                             <input
                                 type="date"
                                 id="startDateSelect"
                                 className="selectFilter"
                                 placeholder="Fecha Creación"
+                                onChange={StartDateSearcher}
                             />
-                            <p>Fecha Vencimiento</p>
-                            <input
-                                type="date"
-                                id="endDateSelect"
-                                className="selectFilter"
-                                placeholder="Fecha Vencimiento"
-                            />
-                            <p>Estado</p>
-                            <select id='stateSelect' className='selectFilter'>
-                                <option value="0" defaultValue>Cancelado</option>
-                                <option value="1" defaultValue>Atrasado</option>
-                                <option value="2" defaultValue>En proceso</option>
+                            <p>Tipo</p>
+                            <select id='stateSelect' className='selectFilter' onChange={typeSearcher}>
+                                <option value='Todos'>Todos</option>
+                                <option value="Crédito" >Credito</option>
+                                <option value="Débito" >Debito</option>
                             </select>
+
+                            <p>Codigo Contable</p>
+                            <select id='codeSelect' className='selectFilter' onChange={CodeSearcher}>
+                                <option value=''>Todos</option>
+                                {clientCodes.map((code) => <option value={code.Code}>{code.Code}</option>)}
+                            </select>
+
                         </div>
 
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>No operación</th>
-                                    <th>Fecha movimiento</th>
-                                    <th>Código contable</th>
-                                    <th>Cliente</th>
-                                    <th>Monto</th>
-                                    <th>Tipo movimiento</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {dataR.map((item, index) => (
-                                    <tr key={index}>
-                                        <td>{item.idOperation}</td>
-                                        <td>{formatDate(item.Date)}</td>
-                                        <td>{item.Code}</td>
-                                        <td>{item.Name}</td>
-                                        <td>{item.Amount}</td>
-                                        <td>{movementType(item.MovementType)}</td>
+                        <div className='scroll-table'>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>No operación</th>
+                                        <th>Fecha movimiento</th>
+                                        <th>Código contable</th>
+                                        <th>Cliente</th>
+                                        <th>Monto</th>
+                                        <th>Tipo movimiento</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {results.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{item.idOperation}</td>
+                                            <td>{formatDate(item.Date)}</td>
+                                            <td>{item.Code}</td>
+                                            <td>{item.Name}</td>
+                                            <td>{item.Amount}</td>
+                                            <td>{movementType(item.MovementType)}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <br></br>
                     </div>
 
                 </div>
