@@ -31,7 +31,7 @@ export function AllMovements() {
         };
 
         fetchData();
-    }, [dataR]);
+    }, []);
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -81,9 +81,9 @@ export function AllMovements() {
 
     //Apply filters
     var results = searchName === 'Todos' ? dataR : dataR.filter((customer) => customer.Name.toLowerCase().includes(searchName.toLocaleLowerCase())
-            && (searchType === 'Todos' ? customer.MovementType : movementType(customer.MovementType).toLowerCase().includes(searchType.toLocaleLowerCase()))
-            && (!searchStartDate ? customer.Date : new Date(customer.Date) > new Date(searchStartDate))
-            && (searchCode === 'Todos' ? customer.Code : customer.Code.toLowerCase().includes(searchCode.toLocaleLowerCase())));
+        && (searchType === 'Todos' ? customer.MovementType : movementType(customer.MovementType).toLowerCase().includes(searchType.toLocaleLowerCase()))
+        && (!searchStartDate ? customer.Date : new Date(customer.Date) > new Date(searchStartDate))
+        && (searchCode === 'Todos' ? customer.Code : customer.Code.toLowerCase().includes(searchCode.toLocaleLowerCase())));
 
     return (
         <Fragment >
