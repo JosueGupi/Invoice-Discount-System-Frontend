@@ -215,7 +215,8 @@ export function LoanForm() {
 
         try {
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/createOperation', data)
-            //navigate('/userMenu',{state});
+            const state = { idOperation: opNumberOg };
+            navigate("/pdfMenu", { state });
         } catch (err) {
 
         }
