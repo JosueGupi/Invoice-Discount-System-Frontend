@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState, useRef } from 'react'
 import axios from 'axios'
-
+import Axios from 'axios'
+import FileDownload from 'js-file-download'
 import { useNavigate, useLocation } from 'react-router-dom';
 import checkImg from '../../images/check.png'
 import './Form.css'
@@ -20,13 +21,33 @@ export function PDFMenu() {
 
 
     }, []);
+    const downloadFile = () => {
+        console.log(state.idOperation);
+        /*Axios({
+            url: 'http://localhost:3001/users/getPDFOp',
+            method: 'GET',
+            responseType: 'blob', // Important
+            data :{ idOperation: state.idOperation }
+        }).then((response) => {
+            FileDownload(response.data, 'file.pdf');
+        });*/
+        axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/getPDFOp',{ idOperation: state.idOperation },{ responseType: 'blob' })
+        .then((response) => {
+            FileDownload(response.data, 'file.pdf');
+        });
 
+
+
+
+
+    }
     const handleEmail = async () => {
 
         try {
             /*const json = {
                 idOperation: state.idOperation
             }*/
+            //const email = await axios.post('http://localhost:3001/users/sendEmailOP', { idOperation: state.idOperation });
             console.log("llamando al back...")
             console.log(state.idOperation);
             const responseOperation = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/operationDetail', { idOperation: state.idOperation });
@@ -37,7 +58,7 @@ export function PDFMenu() {
                 monto: responseOperation.data[0].Total,
                 pagador: responseOperation.data[0].Name
             };
-
+            
             try {
                 const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/email/send-email', formData);
                 console.log(response.data);
@@ -73,7 +94,7 @@ export function PDFMenu() {
                             <br />
                             <input className="form-button" type="button" value="Aceptar" onClick={goToFormMenu} />
                             <br />
-                            <input className="form-button" type="button" value="Generar PDF" />
+                            <input className="form-button" type="button" value="Generar PDF" onClick={downloadFile} />
                             <br />
                             <input className="form-button" type="button" value="Enviar correo" onClick={handleEmail} />
                         </center>
