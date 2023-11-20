@@ -178,7 +178,7 @@ export function LoanForm() {
         } else {
             axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getCodes')
                 .then((response) => setCodes(response.data))
-            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getFunctionalClients')
                 .then((response) => setClients(response.data))
             axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/getLastNumberOP')
                 .then((response) => setOpNumberOg(response.data[0].opNumber))
@@ -215,7 +215,8 @@ export function LoanForm() {
 
         try {
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/createOperation', data)
-            //navigate('/userMenu',{state});
+            const state = { idOperation: opNumberOg };
+            navigate("/pdfMenu", { state });
         } catch (err) {
 
         }

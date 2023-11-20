@@ -194,7 +194,7 @@ export function InvoiceForm() {
         } else {
             axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/codes/getCodes')
                 .then((response) => setCodes(response.data))
-            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getClients')
+            axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/clients/getFunctionalClients')
                 .then((response) => setClients(response.data))
             axios.get('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/getLastNumberOP')
                 .then((response) => setOpNumberOg(response.data[0].opNumber))
@@ -237,7 +237,7 @@ export function InvoiceForm() {
             const state = { idOperation: opNumberOg };
 
             // navigate to pdfmenu
-            //navigate("/pdfMenu", { state });
+            navigate("/pdfMenu", { state });
 
         } catch (err) {
             console.log(err);
@@ -398,7 +398,7 @@ export function InvoiceForm() {
                                 <h2 className='form-subtitle'>Impuesto de Renta</h2>
                                 <input className='form-input-space-4' type="checkbox" ref={rentTaxRef} onChange={updateTotals} />
 
-        
+
 
                                 <h2 className='form-subtitle'>Código Retención</h2>
                                 <input className='form-input-space-4' placeholder='Codigo Retención' type="number"

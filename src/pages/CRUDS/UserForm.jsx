@@ -13,45 +13,46 @@ export function UserForm() {
     const { state } = useLocation()
     const { register, handleSubmit } = useForm();
     const [mode, setMode] = useState("edit"),
-        [name,setName] = useState(""),
-        [email,setEmail] = useState(""),
-        [idUser,setIdUser] = useState(0);
+        [name, setName] = useState(""),
+        [email, setEmail] = useState(""),
+        [idUser, setIdUser] = useState(0);
 
 
 
 
     const onSubmit = async (data) => {
         try {
-            if(mode === "edit") {
+            if (mode === "edit") {
                 data.idUser = idUser;
                 console.log(data)
-                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/updateUser',data);
+                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/updateUser', data);
                 alert('Se actualizo el usuario correctamente');
-                navigate('/userMenu',{state});
-            }else{
-                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/createUser',data);
+                navigate('/userMenu', { state });
+            } else {
+                const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/users/createUser', data);
+                console.log(response);
                 alert('Se creo el usuario correctamente');
-                navigate('/userMenu',{state});
+                navigate('/userMenu', { state });
             }
         } catch (err) {
             alert(err, 'Error');
         }
     }
     const goToUserMenu = () => {
-        navigate("/userMenu",{state});
+        navigate("/userMenu", { state });
 
     };
     useEffect(() => {
-        if (state == null){
+        if (state == null) {
             navigate('/');
-        }else{
+        } else {
             setMode(state.mode);
-            
-            if(state.mode === "edit"){
+
+            if (state.mode === "edit") {
                 setName(state.username);
                 setEmail(state.email)
                 setIdUser(state.id)
-                
+
             }
         }
     }, [])
@@ -62,10 +63,10 @@ export function UserForm() {
         <Fragment >
             <div className='backgroundColor'>
                 <div className='container-cards'>
-                <div className='row'>
+                    <div className='row'>
                         <div>
 
-                            
+
                             <br />
                             <br />
                             <button className='back-button' onClick={goToUserMenu}>Atras</button>
@@ -88,8 +89,8 @@ export function UserForm() {
                                     <br />
                                     <input className="form-input" type="email"
                                         placeholder="Correo"
-                                        defaultValue = {email}
-                                        maxLength="128"                                        
+                                        defaultValue={email}
+                                        maxLength="128"
                                         {...register('email', { required: true })}
                                     />
                                     <br />
@@ -100,8 +101,8 @@ export function UserForm() {
 
                                     <input className="form-input" type="password"
                                         placeholder="Contraseña"
-                                        
-                                        hidden={ (mode !== 'create') }
+
+                                        hidden={(mode !== 'create')}
                                         maxLength="16"
                                         {...register('password', { required: mode === 'create' })}
                                     />
