@@ -34,6 +34,8 @@ import { AllMovements } from "./pages/Tables/AllMovements";
 import { AllReceivables } from "./pages/Tables/AllReceivables";
 import { GeneratedInterest } from "./pages/Charts/GeneratedInterest";
 
+import { DocPDF } from "./pages/DocPDF";
+
 import Nav from './molecules/Nav';
 
 export function App() {
@@ -76,7 +78,7 @@ export function App() {
             <Route exact path="/allMovements" element={<AllMovements />} />
             <Route exact path="/allReceivables" element={<AllReceivables />} />
             <Route exact path="/generatedInterest" element={<GeneratedInterest />} />
-
+            <Route exact path="/docPDF" element={<DocPDF />} />
           </Route>
 
         </Routes>

@@ -211,7 +211,7 @@ export function LoanForm() {
         data.realInterestCode = idCodes[1];
         data.deferredInterestCode = idCodes[2];
         data.factSum = totalTransfer;
-        console.log("aqui", data);
+       
 
         try {
             const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/createOperation', data)
@@ -304,9 +304,16 @@ export function LoanForm() {
 
                                 <h2 className='form-subtitle'>Impuesto de Renta</h2>
                                 <input className='form-input-space-4' type="checkbox" ref={rentTaxRef} onChange={updateTotals} />
-
+                                
                                 <h2 className='form-subtitle'>Código Retención</h2>
                                 <input className='form-input-space-4' placeholder='Codigo Retención' type="number" value={clientCodes[3]}  {...register('retentionCode', { required: false })} />
+                           
+                                <h2 className='form-subtitle'>Código de Impuesto </h2>
+                                <select className='form-input-space-4' {...register('feeCode', { required: false })}>
+                                    <option value="none" defaultValue disabled hidden>Código de Impuesto</option>
+                                    {codes.map((code) => <option value={code.idAccountingCodes}>{code.Code}</option>)}
+
+                                </select>                          
                             </div>
                             <br />
                             <center>
