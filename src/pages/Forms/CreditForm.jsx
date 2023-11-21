@@ -13,13 +13,12 @@ export function CreditForm() {
     [codes, setCodes] = useState([]);
 
     const goToFormMenu = () => {
-
         navigate('/formMenu', { state });
     },
     onSubmit = async (data) => {
         try {
             console.log(data);
-            const response = await axios.post('http://localhost:3001/operations/updateOperation', data)
+            const response = await axios.post('https://inversiones-ellens-7b3ebbfa2822.herokuapp.com/operations/updateOperation', data)
             navigate('/formMenu',{ state })
         } catch (err) {
             alert(err, 'Error');
