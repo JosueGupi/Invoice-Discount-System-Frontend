@@ -19,7 +19,8 @@ export function CreditForm() {
     onSubmit = async (data) => {
         try {
             console.log(data);
-            //const response = await axios.post('http://localhost:3001/operations/createOperation', data)
+            const response = await axios.post('http://localhost:3001/operations/updateOperation', data)
+            navigate('/formMenu',{ state })
         } catch (err) {
             alert(err, 'Error');
         }
@@ -68,7 +69,7 @@ export function CreditForm() {
                                     <br />
                                     <br />
 
-                                    <input className="form-input" type="text"
+                                    <input className="form-input" type="number"
                                         placeholder="Monto"
                                         
                                         maxLength="32"

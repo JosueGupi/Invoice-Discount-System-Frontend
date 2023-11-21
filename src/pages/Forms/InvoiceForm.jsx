@@ -234,8 +234,8 @@ export function InvoiceForm() {
             console.log(response, response);
 
             // agregar parametro al navigate
-            const state = { idOperation: opNumberOg };
-
+            
+            state.idOperation = opNumberOg ;
             // navigate to pdfmenu
             navigate("/pdfMenu", { state });
 
